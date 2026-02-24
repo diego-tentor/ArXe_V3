@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArXe — Ontological Hierarchy Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #07080a;
+  --surface: #0e1016;
+  --border: rgba(255,255,255,0.07);
+  --text: #d8d4cc;
+  --dim: #5a5650;
+  --bright: #eee9e0;
+
+  --closed: #4a9eff;
+  --open: #ff6b35;
+  --prime: #a8e063;
+  --zero: #cc88ff;
+
+  --font-serif: 'Libre Baskerville', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 2.5rem 3rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--bright);
+  letter-spacing: -0.02em;
+}
+.logo span { color: var(--open); font-style: normal; }
+.tagline {
+  font-size: 0.68rem;
+  color: var(--dim);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ── LAYOUT ── */
+.shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 80px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+  text-transform: uppercase;
+  padding: 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.level-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0.7rem 1.5rem;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  color: var(--dim);
+}
+.level-btn:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+.level-btn.active {
+  border-left-color: currentColor;
+  background: rgba(255,255,255,0.04);
+  color: var(--bright);
+}
+
+.level-btn .tk {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  min-width: 40px;
+}
+.level-btn .info { display: flex; flex-direction: column; gap: 0.1rem; }
+.level-btn .term { font-size: 0.72rem; letter-spacing: 0.05em; }
+.level-btn .physics-tag { font-size: 0.6rem; color: var(--dim); opacity: 0.7; }
+.level-btn.active .physics-tag { opacity: 1; }
+
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* ── MAIN PANEL ── */
+.main {
+  padding: 2.5rem 3rem;
+  overflow-y: auto;
+}
+
+/* ── LEVEL DISPLAY ── */
+.level-display { display: none; animation: fadeIn 0.35s ease; }
+.level-display.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.level-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.level-symbol {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  line-height: 1;
+  color: var(--bright);
+  flex-shrink: 0;
+}
+
+.level-meta { flex: 1; min-width: 200px; }
+.level-meta h1 {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--bright);
+  margin-bottom: 0.4rem;
+  font-style: italic;
+}
+.level-meta .problem-text {
+  font-size: 0.8rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.level-meta .arxe-term {
+  display: inline-block;
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.7rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--open);
+  text-transform: uppercase;
+}
+
+/* BADGE ROW */
+.badges {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  flex-wrap: wrap;
+}
+.badge {
+  padding: 0.2rem 0.65rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+.badge-bc-closed { color: var(--closed); border-color: rgba(74,158,255,0.3); background: rgba(74,158,255,0.06); }
+.badge-bc-open   { color: var(--open);   border-color: rgba(255,107,53,0.3);  background: rgba(255,107,53,0.06); }
+.badge-bc-both   { color: var(--prime);  border-color: rgba(168,224,99,0.3);  background: rgba(168,224,99,0.06); }
+.badge-bc-zero   { color: var(--zero);   border-color: rgba(204,136,255,0.3); background: rgba(204,136,255,0.06); }
+.badge-prime     { color: var(--prime);  border-color: rgba(168,224,99,0.3);  background: rgba(168,224,99,0.06); }
+.badge-neutral   { color: var(--dim);    border-color: var(--border); }
+
+/* GRID OF PROPERTIES */
+.prop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 2rem;
+}
+.prop {
+  background: var(--surface);
+  padding: 1.2rem 1.4rem;
+}
+.prop-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.prop-value {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--bright);
+  line-height: 1.35;
+}
+.prop-value.mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+/* DESCRIPTION BLOCK */
+.desc-block {
+  border-left: 2px solid var(--border);
+  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+.desc-block p {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 0.8rem;
+}
+
+/* PATTERN SECTION */
+.pattern-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.pattern-section h3 {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.pattern-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.78rem;
+}
+.pattern-key { color: var(--dim); min-width: 90px; font-size: 0.65rem; letter-spacing: 0.1em; }
+.pattern-val { color: var(--text); font-family: var(--font-serif); }
+.pattern-val em { font-style: italic; color: var(--bright); }
+
+/* VISUAL GEOMETRY */
+.geo-canvas {
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.geo-canvas canvas {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+}
+.geo-info { flex: 1; min-width: 180px; }
+.geo-info h4 {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.geo-info p {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* ── OVERVIEW MODE ── */
+.overview { display: none; }
+.overview.active { display: block; }
+
+.ov-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--bright);
+  margin-bottom: 0.5rem;
+}
+.ov-sub {
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+
+.ov-table { width: 100%; border-collapse: collapse; }
+.ov-table th {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.ov-table td {
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.78rem;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.ov-table tr:hover td { background: rgba(255,255,255,0.025); }
+.ov-table .col-tk { font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--bright); }
+.ov-table .col-problem { font-family: var(--font-serif); color: var(--text); }
+.ov-table .col-physics { color: var(--dim); font-size: 0.72rem; }
+.ov-table .col-term { color: var(--open); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.ov-table .col-bc span { font-size: 0.6rem; }
+
+/* PATTERNS OVERVIEW */
+.ov-patterns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-top: 2.5rem;
+}
+.ov-pattern-card {
+  background: var(--surface);
+  padding: 1.5rem;
+}
+.ov-pattern-card h4 {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.ov-pattern-card p {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+.ov-pattern-card .highlight { color: var(--prime); }
+
+/* SCROLL */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; padding: 0.5rem; gap: 0.3rem; }
+  .sidebar-label { display: none; }
+  .level-btn { width: auto; padding: 0.4rem 0.8rem; border-left: none; border-bottom: 2px solid transparent; }
+  .level-btn .info .physics-tag { display: none; }
+  .dot { display: none; }
+  header { padding: 1.5rem; }
+  .main { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Ar<span>X</span>e</div>
+  <div class="tagline">Ontological Hierarchy Explorer · Dimensional Table</div>
+</header>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-label">Levels</div>
+  </nav>
+
+  <main class="main" id="main">
+    <!-- dynamically populated -->
+  </main>
+</div>
+
+<script>
+const LEVELS = [
+  {
+    id: 'overview',
+    tk: '—',
+    n: null,
+    k: null,
+    prime: null,
+    bc: { closed: 0, open: 0 },
+    term: 'Overview',
+    physics: 'All levels',
+    problem: 'Complete table',
+    logic: '—',
+    probability: '—',
+    geometry: '—',
+    philosophy: '—',
+    sides: 0,
+    color: '#5a5650',
+    description: null
+  },
+  {
+    id: 't0',
+    tk: 'T⁰',
+    n: 1, k: 0,
+    prime: null,
+    bc: { closed: 0, open: 0 },
+    term: 'istence',
+    physics: 'Temporal quantum Tf',
+    problem: 'Foundation without presuppositions',
+    logic: 'Contradictory (S∧¬S)',
+    probability: 'δ(x−a₀) — contradictory certainty',
+    geometry: 'Self-negating point',
+    philosophy: 'Pure act, encia',
+    sides: 0,
+    color: '#cc88ff',
+    description: [
+      'T⁰ is the absolute ground of ArXe — the level at which existence and non-existence co-arise in a single, irreducible act. It is not a state; it is a happening.',
+      'Logically, it instantiates a contradiction: S∧¬S. Rather than treating this as a formal error, ArXe takes it as the only possible foundation — the point before distinction, before time, before geometry. The probability distribution is a Dirac delta: certainty of a specific, singular event with no spread, no alternative.',
+      'In physical terms, this level corresponds to the fundamental temporal quantum Tf — the smallest possible unit of temporal structure, prior to the emergence of flow or directionality.',
+    ]
+  },
+  {
+    id: 't1',
+    tk: 'T¹',
+    n: 3, k: 1,
+    prime: null,
+    bc: { closed: 1, open: 0 },
+    term: 'parencia',
+    physics: 'Temporal flow, particle↔wave',
+    problem: 'Distinction without third',
+    logic: 'Binary, excluded middle',
+    probability: 'P(A) + P(¬A) = 1',
+    geometry: 'Segment, 1D',
+    philosophy: 'Parencia, formal identity',
+    sides: 2,
+    color: '#4a9eff',
+    description: [
+      'T¹ is the first level of differentiation. From the contradictory ground of T⁰, the first distinction emerges: something versus something-else, one versus other. This is physical time — not duration, but the bare capacity for before and after.',
+      'The logic is binary and strict: either A or ¬A, never both. The probability law follows: P(A) + P(¬A) = 1. Geometry: a segment, one-dimensional, bounded at both ends — a closed boundary condition.',
+      'This level corresponds to the particle-wave duality as a binary alternation, not a superposition. The system oscillates between states rather than inhabiting both simultaneously.',
+    ]
+  },
+  {
+    id: 'tm1',
+    tk: 'T⁻¹',
+    n: 3, k: -1,
+    prime: 3,
+    bc: { closed: 0, open: 1 },
+    term: 'appearance',
+    physics: 'Observer, emergent π, gauge field',
+    problem: 'Connection without collapse',
+    logic: 'Ternary, included middle',
+    probability: 'Bayesian P(A|B)',
+    geometry: 'Triangle, plane, π',
+    philosophy: 'Appearance, periencia, medium',
+    sides: 3,
+    color: '#ff6b35',
+    description: [
+      'T⁻¹ is where mediation appears. If T¹ gave us binary opposition, T⁻¹ introduces the third element that connects opposites without collapsing them: the observer, the medium, the included middle.',
+      'This is the first open boundary condition — the level cannot exist in isolation. It requires T¹ to be meaningful. Logically, ternary structure admits intermediate truth values. Probabilistically, it is Bayesian: P(A|B) — truth is always conditional on context.',
+      'Crucially, π emerges here for the first time. The triangle is the minimal closed polygon; as the number of sides grows toward infinity, the polygon approaches a circle, and the ratio of circumference to diameter approaches π. Buffon\'s needle connects ternary probability directly to this geometric constant. π is not imposed — it is derived.',
+    ]
+  },
+  {
+    id: 't2',
+    tk: 'T²',
+    n: 5, k: 2,
+    prime: null,
+    bc: { closed: 2, open: 0 },
+    term: 'symmetry',
+    physics: '2D space, U(1)×U(1) symmetries',
+    problem: 'Independent opposites',
+    logic: '4-ary, structural frame',
+    probability: 'Uniform 1/4, joint P(A,B)',
+    geometry: 'Square, quadrature',
+    philosophy: 'Quadrature, frame, stability',
+    sides: 4,
+    color: '#4a9eff',
+    description: [
+      'T² introduces space — not as a backdrop, but as a necessary consequence of having two independent axes of opposition. Two closed boundary conditions yield two-dimensional structure: a square, stable, symmetric, self-contained.',
+      'The gauge symmetry group here is U(1)×U(1) — two independent phase rotations corresponding to two independent spatial degrees of freedom. Space is not fundamental; it is the logical consequence of structural independence.',
+      'Probability at this level is uniform and joint: P(A,B) = 1/4 when A and B are independent. This captures the physical intuition of uniform spatial distribution — homogeneous, featureless, without preferred direction.',
+    ]
+  },
+  {
+    id: 'tm2',
+    tk: 'T⁻²',
+    n: 5, k: -2,
+    prime: 5,
+    bc: { closed: 1, open: 1 },
+    term: 'experience',
+    physics: 'Curvature, inertia, hysteresis',
+    problem: 'Persisting while changing',
+    logic: '5-ary temporal',
+    probability: 'Markov P(X_{t+1}|X_t)',
+    geometry: 'Pentagon, φ (golden ratio)',
+    philosophy: 'Experience, historicity',
+    sides: 5,
+    color: '#a8e063',
+    description: [
+      'T⁻² is the level of memory. It introduces an open boundary condition into a system that was previously closed — meaning the level cannot be isolated from its history. The past constrains the present.',
+      'Physically, this corresponds to inertia and curvature: a mass in motion resists change not because of a force, but because of structural memory encoded in the geometry of spacetime. Hysteresis — the dependence of a system\'s state on its history — is the most direct physical manifestation.',
+      'The governing prime is 5, and the associated polygon is the pentagon, uniquely related to the golden ratio φ = (1+√5)/2. The appearance of φ here is not ornamental: it represents the self-similar ratio at which past and present recursively combine. Probability is Markovian — the future depends only on the present state, but that state itself encodes all relevant history.',
+    ]
+  },
+  {
+    id: 't3',
+    tk: 'T³',
+    n: 7, k: 3,
+    prime: null,
+    bc: { closed: 3, open: 0 },
+    term: 'identity',
+    physics: 'Mass, 3D space, past/present/future',
+    problem: 'Objectivity',
+    logic: '6-ary epistemic',
+    probability: 'Gaussian, frequentist',
+    geometry: 'Hexagon, optimal packing',
+    philosophy: 'Fact, objective reality',
+    sides: 6,
+    color: '#4a9eff',
+    description: [
+      'T³ is the level of matter. Three closed boundary conditions yield three spatial dimensions, and at their intersection, mass emerges — not as a primitive substance, but as the logical consequence of triadic structural closure.',
+      'The temporal trichotomy past/present/future is established here: T³ is the level at which an "objective now" becomes possible, because the structure is sufficiently closed to support a stable reference frame. This is why mass is associated with measurement: measurement requires a stable observer, and stability requires closure.',
+      'Probability is Gaussian — the law of large numbers, frequentism, the statistics of repeated measurement. Geometry is hexagonal: the hexagon achieves optimal packing density, corresponding to the stability and efficiency of massive objects in 3D space. π re-emerges here as n=6=2×3, the second ternary level.',
+    ]
+  },
+  {
+    id: 'tm3',
+    tk: 'T⁻³',
+    n: 7, k: -3,
+    prime: 7,
+    bc: { closed: 2, open: 1 },
+    term: 'complexity',
+    physics: 'QCD color, confinement',
+    problem: 'Complexity without collapse',
+    logic: '7-ary paraconsistent',
+    probability: 'Power law P(x)∝x^{−α}',
+    geometry: 'Heptagon (non-constructible)',
+    philosophy: 'Holism, interiority',
+    sides: 7,
+    color: '#a8e063',
+    description: [
+      'T⁻³ introduces internal structure — the level of color confinement in QCD. Color charge cannot be observed in isolation: quarks are always bound into colorless composites. This is the physical expression of an open boundary condition: the level requires T³ to be observable at all.',
+      'The heptagon is the first regular polygon that cannot be constructed with compass and straightedge — a fact of deep geometric significance. Non-constructibility here reflects physical confinement: the structure exists, but cannot be directly accessed from outside.',
+      'Logic becomes 7-ary and paraconsistent — contradictions can coexist locally without propagating globally. This is the logic of complex systems, where local inconsistencies are absorbed rather than resolved. Probability follows a power law: scale-free distributions, the signature of systems poised at criticality.',
+    ]
+  },
+  {
+    id: 'tm5',
+    tk: 'T⁻⁵',
+    n: 11, k: -5,
+    prime: 11,
+    bc: { closed: 4, open: 1 },
+    term: 'regulation',
+    physics: 'Electromagnetism, α, renormalization',
+    problem: 'Self-limitation',
+    logic: '11-ary fuzzy',
+    probability: 'Extreme values (Gumbel)',
+    geometry: '11-gon, near-circle',
+    philosophy: 'Kantian autonomy',
+    sides: 11,
+    color: '#a8e063',
+    description: [
+      'T⁻⁵ is the level of electromagnetism — and of the fine structure constant α ≈ 1/137. This dimensionless number governs the strength of the electromagnetic interaction and appears throughout quantum electrodynamics.',
+      'In ArXe, α is not arbitrary. It is the encoded signature of the axiomatic choices made at this level of the hierarchy: 4 closed boundary conditions impose strong structural constraints, while 1 open BC introduces the irreducible freedom that renormalization must absorb. The running of the coupling constant with energy is the physical echo of this open boundary.',
+      'Logic here is fuzzy: 11-ary, admitting continuous gradations between states. The 11-gon approaches the circle — reflecting the near-rotational symmetry of U(1) gauge invariance. Extreme value statistics (Gumbel distribution) govern phenomena at the limits of the electromagnetic regime.',
+    ]
+  },
+  {
+    id: 'tm6',
+    tk: 'T⁻⁶',
+    n: 13, k: -6,
+    prime: 13,
+    bc: { closed: 5, open: 1 },
+    term: 'singularity',
+    physics: 'Weak interaction, β-decay',
+    problem: 'The exceptional',
+    logic: '13-ary exceptional',
+    probability: 'Poisson (small λ)',
+    geometry: '13-gon irregular',
+    philosophy: 'Miracle, event',
+    sides: 13,
+    color: '#a8e063',
+    description: [
+      'T⁻⁶ governs the weak interaction — the only fundamental force that violates parity symmetry, that transforms one type of particle into another, that is responsible for radioactive β-decay.',
+      'The prime 13 encodes the exceptional character of this level. Unlike the levels above it, T⁻⁶ deals with events that are structurally rare: decays that happen only because a small probability window exists. Poisson statistics with small λ is the natural language of rare, discrete events.',
+      'The (11,13) twin prime pair — representing EM and the Weak force — reflects a deep structural proximity: these two forces are unified at high energies into the electroweak interaction. ArXe encodes this proximity in the adjacency of the corresponding primes.',
+    ]
+  },
+  {
+    id: 'tm8',
+    tk: 'T⁻⁸',
+    n: 17, k: -8,
+    prime: 17,
+    bc: { closed: 6, open: 1 },
+    term: 'hierarchy',
+    physics: 'Particle generations, mass scales',
+    problem: 'Hierarchy without collapse',
+    logic: '17-ary spectral',
+    probability: 'Multimodal, mixture',
+    geometry: '17-gon spectral',
+    philosophy: 'Ontological hierarchy',
+    sides: 17,
+    color: '#a8e063',
+    description: [
+      'T⁻⁸ is the level of particle generations. The Standard Model contains three generations of fermions — electron, muon, tau and their corresponding neutrinos — whose masses span twelve orders of magnitude without any obvious explanation.',
+      'ArXe proposes that the existence of exactly three generations and their mass hierarchy reflects the spectral structure of this level: 17-ary logic admits multiple coexisting modes, and the multimodal probability distribution captures the clustering of masses around three separated scales.',
+      'The (17,19) twin prime pair — generations and dark matter — suggests a structural relationship between the visible matter hierarchy and the hidden sector. The proximity of these primes encodes what may be a deep symmetry between observable and non-observable degrees of freedom.',
+    ]
+  },
+  {
+    id: 'tm9',
+    tk: 'T⁻⁹',
+    n: 19, k: -9,
+    prime: 19,
+    bc: { closed: 7, open: 1 },
+    term: 'dark_matter',
+    physics: 'Dark matter (~532 GeV)',
+    problem: 'Hidden modulation',
+    logic: '19-ary dark',
+    probability: 'Dark distribution',
+    geometry: '19-gon modulated',
+    philosophy: 'Dark degrees of being',
+    sides: 19,
+    color: '#a8e063',
+    description: [
+      'T⁻⁹ is the level ArXe associates with dark matter. The predicted mass scale — approximately 532 GeV — emerges from the prime encoding at this level combined with the boundary condition algebra.',
+      'Dark matter is called "dark" because it does not interact electromagnetically. In ArXe terms, this corresponds to a level that lies beyond the EM horizon (T⁻⁵) and is therefore invisible to photon-mediated observation. It exists — its gravitational effects are well-established — but its internal structure is shielded by the open boundary condition.',
+      'This is a falsifiable prediction: if direct detection experiments or collider searches find a dark matter candidate near 532 GeV with the expected quantum numbers, it would constitute strong evidence for the prime-encoding framework.',
+    ]
+  },
+  {
+    id: 'tm11',
+    tk: 'T⁻¹¹',
+    n: 23, k: -11,
+    prime: 23,
+    bc: { closed: 8, open: 1 },
+    term: 'inflation',
+    physics: 'Cosmic inflation (~10¹⁶ GeV)',
+    problem: 'Self-similar growth',
+    logic: '23-ary fractal',
+    probability: 'Exponential growth',
+    geometry: '23-gon with gaps',
+    philosophy: 'Emanation, unfolding',
+    sides: 23,
+    color: '#a8e063',
+    description: [
+      'T⁻¹¹ corresponds to cosmic inflation — the brief period of exponential expansion in the early universe during which the observable cosmos grew by an enormous factor in an extremely short time.',
+      'The self-similar, fractal character of this level reflects the scale invariance of the inflationary power spectrum: quantum fluctuations stretched to cosmic scales produce a nearly scale-invariant distribution of density perturbations, which is precisely the exponential-growth probability signature of this level.',
+      'The energy scale of inflation (~10¹⁶ GeV) is encoded in the prime 23 and its boundary conditions. The 23-gon exhibits gaps in its constructibility — reflecting the incompleteness inherent to a rapidly expanding, causally disconnected structure.',
+    ]
+  },
+  {
+    id: 'tm14',
+    tk: 'T⁻¹⁴',
+    n: 29, k: -14,
+    prime: 29,
+    bc: { closed: 10, open: 1 },
+    term: 'vacuum',
+    physics: 'Dark energy, cosmological constant Λ',
+    problem: 'Persistent substrate',
+    logic: '29-ary background',
+    probability: '1/f noise',
+    geometry: '29-gon near-30',
+    philosophy: 'Substrate, foundation',
+    sides: 29,
+    color: '#a8e063',
+    description: [
+      'T⁻¹⁴ is the level of dark energy — the cosmological constant Λ that drives the accelerated expansion of the universe. It is the substrate: persistent, structureless, present everywhere without localisation.',
+      '1/f noise — the ubiquitous "pink noise" found in everything from electronic circuits to biological rhythms — is the probability signature of a background process that operates at all scales simultaneously. Dark energy, in this reading, is the fundamental 1/f process of the universe: an irreducible, scale-invariant substrate.',
+      'The cosmological constant problem — why is Λ so much smaller than naive quantum field theory predicts? — may find a structural answer here: the open boundary condition at T⁻¹⁴ absorbs the excess vacuum energy into the boundary itself, leaving only the residual substrate visible.',
+    ]
+  },
+  {
+    id: 'tm15',
+    tk: 'T⁻¹⁵',
+    n: 31, k: -15,
+    prime: 31,
+    bc: { closed: 11, open: 1 },
+    term: 'chaos',
+    physics: 'Phase transitions, turbulence',
+    problem: 'Stable irregularity',
+    logic: '31-ary chaotic',
+    probability: 'Logistic map',
+    geometry: '31-gon, indistinct from circle',
+    philosophy: 'Deterministic chaos',
+    sides: 31,
+    color: '#a8e063',
+    description: [
+      'T⁻¹⁵ is the level of deterministic chaos — the domain of systems that are fully deterministic yet practically unpredictable. Phase transitions, turbulence, and critical phenomena all live here.',
+      'The logistic map — one of the simplest dynamical systems exhibiting chaos — governs the probability structure at this level. Despite its simplicity, the logistic map produces behaviour of arbitrary complexity, including period-doubling cascades leading to chaos and fractal basin boundaries.',
+      'The 31-gon is visually indistinguishable from a circle at normal resolution — reflecting the near-continuous, near-isotropic character of chaotic dynamics. Yet the difference from a true circle is real and measurable: deterministic chaos is not randomness. It is order at a scale we cannot yet resolve.',
+    ]
+  }
+];
+
+// ─── UTILITIES ────────────────────────────────────────
+
+function getBCBadge(bc) {
+  const { closed, open } = bc;
+  if (closed === 0 && open === 0) return { cls: 'badge-bc-zero', label: 'BC 0/0 · Foundation' };
+  if (open === 0) return { cls: 'badge-bc-closed', label: `BC ${closed}/0 · Closed` };
+  if (closed === 0) return { cls: 'badge-bc-open', label: `BC 0/${open} · Open` };
+  return { cls: 'badge-bc-both', label: `BC ${closed}/${open} · Mixed` };
+}
+
+function drawGeometry(canvas, sides, color) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.38;
+
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color + '12';
+  ctx.lineWidth = 1.5;
+
+  if (sides === 0) {
+    // Point + radiating lines
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.strokeStyle = color + '30';
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(a) * R * 0.6, cy + Math.sin(a) * R * 0.6);
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    return;
+  }
+
+  if (sides === 2) {
+    // Line segment
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.moveTo(cx - R, cy);
+    ctx.lineTo(cx + R, cy);
+    ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx - R, cy, 4, 0, Math.PI*2); ctx.fillStyle = color; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + R, cy, 4, 0, Math.PI*2); ctx.fill();
+    return;
+  }
+
+  // Regular polygon
+  const offset = -Math.PI / 2;
+  ctx.beginPath();
+  for (let i = 0; i <= sides; i++) {
+    const a = offset + (i / sides) * Math.PI * 2;
+    const x = cx + Math.cos(a) * R;
+    const y = cy + Math.sin(a) * R;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = color + '10';
+  ctx.fill();
+  ctx.strokeStyle = color;
+  ctx.stroke();
+
+  // Diagonals (subtle)
+  ctx.strokeStyle = color + '18';
+  ctx.lineWidth = 0.5;
+  const verts = [];
+  for (let i = 0; i < sides; i++) {
+    const a = offset + (i / sides) * Math.PI * 2;
+    verts.push([cx + Math.cos(a) * R, cy + Math.sin(a) * R]);
+  }
+  for (let i = 0; i < verts.length; i++) {
+    for (let j = i + 2; j < verts.length - (i === 0 ? 1 : 0); j++) {
+      ctx.beginPath();
+      ctx.moveTo(verts[i][0], verts[i][1]);
+      ctx.lineTo(verts[j][0], verts[j][1]);
+      ctx.stroke();
+    }
+  }
+}
+
+// ─── BUILD SIDEBAR ────────────────────────────────────
+
+const sidebar = document.getElementById('sidebar');
+
+LEVELS.forEach(lvl => {
+  const btn = document.createElement('button');
+  btn.className = 'level-btn' + (lvl.id === 'overview' ? ' active' : '');
+  btn.dataset.id = lvl.id;
+
+  const kType = lvl.k === null ? 'neutral' : lvl.k > 0 ? 'closed' : lvl.k === 0 ? 'zero' : 'open';
+  const dotColor = { closed: 'var(--closed)', open: 'var(--open)', zero: 'var(--zero)', neutral: 'var(--dim)' }[kType];
+
+  btn.innerHTML = `
+    <span class="tk">${lvl.tk}</span>
+    <span class="info">
+      <span class="term">${lvl.term}</span>
+      <span class="physics-tag">${lvl.physics}</span>
+    </span>
+    <span class="dot" style="background:${dotColor}"></span>
+  `;
+  btn.addEventListener('click', () => showLevel(lvl.id));
+  sidebar.appendChild(btn);
+});
+
+// ─── BUILD OVERVIEW ───────────────────────────────────
+
+function buildOverview() {
+  const rows = LEVELS.filter(l => l.id !== 'overview').map(lvl => {
+    const { cls, label } = getBCBadge(lvl.bc);
+    return `
+      <tr data-id="${lvl.id}">
+        <td class="col-tk">${lvl.tk}</td>
+        <td class="col-problem">${lvl.problem}</td>
+        <td class="col-physics">${lvl.physics}</td>
+        <td><span class="badge ${cls}">${label}</span></td>
+        <td class="col-term">${lvl.term}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <div class="overview active" id="panel-overview">
+      <div class="ov-title">The Ontological Hierarchy</div>
+      <div class="ov-sub">ArXe Theory · Complete Dimensional Table · Click any row to explore</div>
+
+      <table class="ov-table">
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Problem</th>
+            <th>Physics</th>
+            <th>BC</th>
+            <th>ArXe Term</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+
+      <div class="ov-patterns">
+        <div class="ov-pattern-card">
+          <h4>Positive k → Closed BC</h4>
+          <p>Levels with positive k have only closed boundary conditions — they can exist in isolation. <span class="highlight">T¹</span> (time), <span class="highlight">T²</span> (space), <span class="highlight">T³</span> (mass) form the visible, self-contained scaffold of observable reality.</p>
+        </div>
+        <div class="ov-pattern-card">
+          <h4>Negative k → Open BC</h4>
+          <p>Negative levels carry at least one open boundary condition. They cannot exist alone; they require the positive levels as substrate. <span class="highlight">T⁻³</span> (color), <span class="highlight">T⁻⁵</span> (EM), <span class="highlight">T⁻⁶</span> (weak) are all structurally dependent.</p>
+        </div>
+        <div class="ov-pattern-card">
+          <h4>Twin Primes at Critical Transitions</h4>
+          <p>The pairs <span class="highlight">(5,7)</span> · <span class="highlight">(11,13)</span> · <span class="highlight">(17,19)</span> mark the boundaries between major physical regimes: inertia↔complexity, EM↔weak, generations↔dark matter.</p>
+        </div>
+        <div class="ov-pattern-card">
+          <h4>π Emerges at Ternary Levels</h4>
+          <p>π appears naturally at <span class="highlight">T⁻¹</span> (n=3) via Buffon's needle and the triangle, and again at <span class="highlight">T³</span> (n=6=2×3) in the context of mass and measurement. It is derived, not assumed.</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ─── BUILD LEVEL PANEL ────────────────────────────────
+
+function buildLevel(lvl) {
+  const { cls, label } = getBCBadge(lvl.bc);
+  const primeBadge = lvl.prime ? `<span class="badge badge-prime">Prime: ${lvl.prime}</span>` : '';
+  const nBadge = lvl.n ? `<span class="badge badge-neutral">n = ${lvl.n}</span>` : '';
+
+  const descHTML = (lvl.description || []).map(p => `<p>${p}</p>`).join('');
+
+  const geoName = {
+    0: 'Point (self-negating)',
+    2: 'Segment (1D)',
+    3: 'Triangle',
+    4: 'Square',
+    5: 'Pentagon',
+    6: 'Hexagon',
+    7: 'Heptagon',
+    11: '11-gon',
+    13: '13-gon',
+    17: '17-gon',
+    19: '19-gon',
+    23: '23-gon',
+    29: '29-gon',
+    31: '31-gon',
+  }[lvl.sides] || `${lvl.sides}-gon`;
+
+  return `
+    <div class="level-display active" id="panel-${lvl.id}">
+      <div class="level-header">
+        <div class="level-symbol">${lvl.tk}</div>
+        <div class="level-meta">
+          <h1>${lvl.problem}</h1>
+          <div class="problem-text">Ontological problem</div>
+          <div class="arxe-term">${lvl.term}</div>
+          <div class="badges">
+            <span class="badge ${cls}">${label}</span>
+            ${primeBadge}
+            ${nBadge}
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-grid">
+        <div class="prop">
+          <div class="prop-label">Physics</div>
+          <div class="prop-value">${lvl.physics}</div>
+        </div>
+        <div class="prop">
+          <div class="prop-label">Logic</div>
+          <div class="prop-value">${lvl.logic}</div>
+        </div>
+        <div class="prop">
+          <div class="prop-label">Probability</div>
+          <div class="prop-value mono">${lvl.probability}</div>
+        </div>
+        <div class="prop">
+          <div class="prop-label">Philosophy</div>
+          <div class="prop-value">${lvl.philosophy}</div>
+        </div>
+      </div>
+
+      <div class="geo-canvas">
+        <canvas id="canvas-${lvl.id}" width="180" height="180"></canvas>
+        <div class="geo-info">
+          <h4>Geometry</h4>
+          <p><strong style="color:var(--bright)">${geoName}</strong> — ${lvl.geometry}</p>
+        </div>
+      </div>
+
+      <div class="desc-block">${descHTML}</div>
+
+      <div class="pattern-section">
+        <h3>Structural data</h3>
+        <div class="pattern-row"><span class="pattern-key">Level T^k</span><span class="pattern-val"><em>${lvl.tk}</em></span></div>
+        <div class="pattern-row"><span class="pattern-key">n(k)</span><span class="pattern-val">${lvl.n ?? '—'}</span></div>
+        <div class="pattern-row"><span class="pattern-key">Prime</span><span class="pattern-val">${lvl.prime ?? '—'}</span></div>
+        <div class="pattern-row"><span class="pattern-key">BC (c/o)</span><span class="pattern-val">${lvl.bc.closed}/${lvl.bc.open}</span></div>
+        <div class="pattern-row"><span class="pattern-key">ArXe term</span><span class="pattern-val"><em>${lvl.term}</em></span></div>
+      </div>
+    </div>
+  `;
+}
+
+// ─── INIT ─────────────────────────────────────────────
+
+const main = document.getElementById('main');
+main.innerHTML = buildOverview();
+LEVELS.filter(l => l.id !== 'overview').forEach(lvl => {
+  main.innerHTML += buildLevel(lvl);
+});
+
+// Click on overview table rows
+main.querySelectorAll('.ov-table tr[data-id]').forEach(tr => {
+  tr.addEventListener('click', () => showLevel(tr.dataset.id));
+});
+
+function showLevel(id) {
+  // Sidebar buttons
+  document.querySelectorAll('.level-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.id === id);
+  });
+  // Panels
+  document.querySelectorAll('.level-display, .overview').forEach(p => {
+    p.classList.remove('active');
+  });
+  const panel = document.getElementById('panel-' + id);
+  if (panel) {
+    panel.classList.add('active');
+    // Draw geometry
+    const lvl = LEVELS.find(l => l.id === id);
+    if (lvl) {
+      requestAnimationFrame(() => {
+        const canvas = document.getElementById('canvas-' + id);
+        if (canvas) drawGeometry(canvas, lvl.sides, lvl.color);
+      });
+    }
+  }
+  main.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Draw overview on load
+showLevel('overview');
+</script>
+</body>
+</html>

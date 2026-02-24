@@ -1,0 +1,77 @@
+Reformulaciones
+-Sobre falsabilidad: ArXe cree errada y platonista la intepretacion actual
+Falsabilidad es que el autor ofrezca una prueba que refute la teoría
+ArXe cree que la ínterpretación correcta, la que Popper intentó proponer, es la actitud epistémologica:"admito que este conocimiento puede ser falso, no es dogmático"
+
+- Sobre la contradicción
+ArXe admite que el 'proposito'(interpretado, no ontologico)* del universo es eludir la contradicción
+las logicas n-arias son n-elusivas, es decir, la estructuas logicas son estructuras de elusión, por ello no reniega de la circularidad
+
+-En ArXe la 'demostración' como tal carece de sentido pues surge del principio clasico de tercero exludido y no contradicción
+ArXe admite indecidibilidad y admite naturalmente la emergencia de procesos estocasticos.
+NO se puede demostrar clasicamente la indecidibilidad, es una paradoja.
+
+-Sobre la interpretación.
+Lo demostrable esta en las matemáticas, todo término asginado es interpretacion y toda interpretación implíca perdida de información
+Si en ArXe (3x11) -> Constante física no debe demostrarse que 3x11 'sea' la constante, sino que tal constante es quien mejor se comporta como 3x11
+
+- En el axioma, la mención a Tiempo de Planck no debe entenderse que se 'demuestra ser tiempo de planck' sin que Tiempo de planck es quien mejor interpreta
+
+-En la tabla dimensional o en lo fenomenos fisicos cuando se mapea, por ejemplo a  masa cambiar a
+es mapeado por 'masa'
+No demostramos que la exentación n sea masa, sino que masa es quien mejor describe la exentacion n.
+
+*(interpretado, no ontologico): No se entienda que el universo tiene un propósito en si mismo sino que tal cosa surge en apariencia
+
+Apuntamos a toda la rigurosidad matematica posible para establecer un continuo coherente, no para demostrar.
+
+ArXe no viola los principios cientficoss
+- Falsabilidad: La interpreta , como popper, en actitud epistemológica
+-PNC: La contradicción no es posible, pero es actual (detallado en papers)
+-PTE: "Tercera cosa no se da" es verdadera exclusivamente en logica binaria, no lo es en logicas >2-aria
+
+
+-Si rechaza:
+Revision por pares: ArXe no es una contrucción colectivista y la revisión por pares es la colectivización del conocimiento
+
+-Leer sobre el rechazo al platonismo
+
+
+Observación interna:(no es para enunciar). Apuntamos comunicacionalmente a
+-Programadores con inquietud cientifica
+-Usuarios de LLM para hacer fisica
+-fisicos dispuestos a nuevas ideas
+
+-Apuntamos a:
+-Mostramos, no demostramos
+-Belleza más que verdad binaria 
+-Convencer, no demostrar
+-Dialogo mas que demostracion
+
+-No demostramos la ciencia (clasica) ni pretendemos que la ciencia dmeuestra ArXe, dialogamos, analogamos
+
+
+
+---Apuntes:
+
+¿Que es una exentación? es una elusión o n-elusion de la contradicción inicial
+Que es un n=5, es una 5 elusión de la contradiccion inicial
+
+¿Que es entonces k, por ejemplo k:-1
+Si n-> aridad
+Entoces k-> p-aridad (paridad), es la clasificacion por pares
+Positivo->Cerrados si la parificacion es exacta (por ejemplo n=2 -> k=1)
+Negativo->Abiertos si la parificacion no lo es (por ejemplo n=3 -> k=-1)
+Así la parificación es univoca
+Un par (abierto o cerrad) es el analogo comportamental a una Condicion de contorno fisica
+
+¿Que es T^n?
+Es la existencia de la estructura n-arias
+- T^n: T, para n significa que
+T^n se da cada n TF -> Tp
+Si T^1, solo se da logica binaria, pues k=1 -> n=2
+
+
+
+
+

@@ -1,0 +1,165 @@
+Falsifiability Without Truth:
+Karl Popper Against Dogmatism and the Misinterpretation of Modern Science
+Abstract
+
+Karl Popper’s criterion of falsifiability is commonly invoked as a methodological rule for scientific practice: a theory is said to be scientific if it can, in principle, be refuted by experience. However, this widespread interpretation subtly but decisively departs from Popper’s original epistemological intent. For Popper, falsifiability is not a mechanism for producing empirical truth, nor a procedure for conferring provisional certainty. Rather, it is a logical property of theories that functions as an antidote to dogmatism. This article reconstructs Popper’s position by distinguishing falsifiability from falsification, showing how falsifiability grounds a critical attitude rather than empirical authority, and arguing that the prevailing interpretation of Popper reinstates a form of epistemological Platonism that his philosophy explicitly sought to avoid.
+
+1. Falsifiability Is Not Falsification
+
+Popper draws a strict and non-negotiable distinction between falsifiability (Falsifizierbarkeit) and falsification (Falsifikation).
+
+Falsifiability is a logical property of a system of statements.
+
+Falsification is a methodological–empirical event.
+
+Popper’s thesis is therefore not:
+
+“A theory is scientific if there exists an experiment that refutes it.”
+
+Rather, his thesis is more exacting and more modest:
+
+A theory is scientific if it admits, in principle, the possibility of being false.
+
+As Popper states:
+
+“The criterion of the scientific status of a theory is its falsifiability, or refutability, or testability.”
+
+“Whether a theory is actually falsified is another matter.”
+
+— The Logic of Scientific Discovery, 1959, Ch. I, §6
+
+And more explicitly:
+
+“A theory is falsifiable if it allows the logical possibility of its being shown to be false.”
+
+This formulation decisively excludes:
+
+empirical certainty,
+
+guaranteed truth,
+
+and any form of epistemic closure.
+
+Falsifiability, for Popper, does not certify correctness; it merely prevents insulation from error.
+
+2. Falsifiability as an Antidote to Dogmatism
+
+The normative target of Popper’s philosophy of science is dogmatism, not metaphysics as such, and certainly not “unfalsified truth.”
+
+In Conjectures and Refutations, Popper defines dogmatism as an attitude rather than a doctrine:
+
+“The dogmatic attitude is the tendency to cling to a theory as long as possible, even if it is contradicted.”
+
+He contrasts this with what he calls the critical attitude:
+
+“The critical attitude is the readiness to consider a theory as possibly false.”
+— Conjectures and Refutations, 1963
+
+The decisive point here is that scientific rationality resides not in experiments but in logical openness.
+The experiment does not ground scientificity; the admission of possible error does.
+
+Thus, falsifiability is not primarily a methodological rule but a normative constraint on certainty.
+
+3. Why Popper Is Not a Platonist
+
+Popper’s epistemology is explicitly anti-foundationalist and anti-certainty. He denies:
+
+access to truth “in itself,”
+
+final verification,
+
+and any positive criterion of truth.
+
+His position is captured succinctly in two well-known formulations:
+
+“We do not know: we can only guess.”
+
+and
+
+“Science does not aim at certainty.”
+
+For Popper, science progresses not by accumulating truths but by eliminating errors provisionally. Even this elimination is never final.
+
+Therefore:
+
+a theory that survives criticism is not true,
+
+a theory that is falsified is not thereby meaningless,
+
+and science never acquires epistemic authority over truth itself.
+
+In this sense, Popper’s falsifiability is structurally anti-Platonist: it blocks any appeal to an ideal realm of verified truths, whether empirical or theoretical.
+
+4. The Contemporary Error: Turning Falsifiability into a Truth-Device
+
+The dominant contemporary interpretation subtly but decisively shifts Popper’s position. It commonly reads:
+
+“A theory is scientific if it admits a possible case of refutation.”
+
+This formulation appears faithful but introduces three illegitimate moves:
+
+It reintroduces a privileged observer, capable of deciding what counts as a decisive refutation.
+
+It transforms refutation into an act of epistemic authority.
+
+It reinstates a strong empirical notion of truth (“this has been refuted,” “this has been confirmed so far”).
+
+This is not Popper.
+
+For Popper:
+
+a falsified theory may remain rationally preferable,
+
+an unfalsified theory is never thereby true,
+
+and science does not possess truth, even provisionally.
+
+The common but illicit inference is:
+
+Falsifiable ∧ not falsified ⇒ true (for now)
+
+Popper never authorizes this step.
+“Not falsified” means only not yet eliminated, not epistemically validated.
+
+5. Axiom Versus Dogma: Convergence with ArXe
+
+The distinction you introduce within ArXe—between axiom and dogma—is deeply consonant with Popper’s intent.
+
+An axiom, in this critical sense:
+
+is not guaranteed to be true,
+
+is adopted explicitly as revisable,
+
+and includes its own possible falsity as a structural condition.
+
+This is precisely what distinguishes science from ideology in Popper’s framework.
+
+Popper would say:
+
+a system that does not admit its own possible falsity ceases to be scientific,
+
+regardless of its empirical success or formal elegance.
+
+In this respect, ArXe does not correct Popper; it radicalizes the very condition Popper imposed but did not formalize ontologically.
+
+6. Conclusion
+
+Popper’s falsifiability is not a tool for discovering truth.
+It is a constraint against certainty.
+
+A theory is scientific not because it can be refuted,
+but because it does not forbid the possibility of being false.
+
+This distinction:
+
+preserves science from dogmatism,
+
+blocks empirical absolutism,
+
+and prevents the reintroduction of Platonism through methodological means.
+
+Where contemporary science often uses falsifiability to legitimize results, Popper used it to limit legitimacy itself.
+
+To take Popper seriously is not to ask which theory is true,
+but to insist that no theory is allowed to claim that status.

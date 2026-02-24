@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLO Algorithm - Interactive Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .control-group label {
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        select, button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        select:hover, select:focus {
+            border-color: #2a5298;
+            outline: none;
+        }
+        
+        button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 12px 30px;
+        }
+        
+        button:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+        }
+        
+        .diagram-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .node {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .node:hover rect,
+        .node:hover ellipse,
+        .node:hover polygon {
+            filter: brightness(0.95);
+            stroke-width: 3;
+        }
+        
+        .node.active rect,
+        .node.active ellipse,
+        .node.active polygon {
+            filter: brightness(1.1);
+            stroke-width: 4;
+            stroke: #ff6b6b;
+        }
+        
+        .edge {
+            transition: all 0.3s;
+        }
+        
+        .edge.active {
+            stroke: #ff6b6b;
+            stroke-width: 3;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .node-text {
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .info-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 150px;
+        }
+        
+        .info-panel h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .info-panel p {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .formula-output {
+            background: #1e3c72;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            border: 2px solid #333;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔢 PLO Algorithm Flowchart</h1>
+        <p class="subtitle">Diagrama de flujo interactivo para construcción de fórmulas Prime-Logical Ontology</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="constantSelect">Seleccionar Constante Física:</label>
+                <select id="constantSelect">
+                    <option value="">-- Elegir constante --</option>
+                    <option value="alpha">α⁻¹ (Fine Structure)</option>
+                    <option value="muon">mμ/me (Muon-Electron mass ratio)</option>
+                    <option value="higgs">MH (Higgs mass)</option>
+                    <option value="proton">mp/me (Proton-Electron mass ratio)</option>
+                    <option value="custom">Constante personalizada</option>
+                </select>
+            </div>
+            
+            <button id="traceBtn">▶ Trazar Camino</button>
+            <button id="resetBtn">↺ Reset</button>
+            <button id="stepBtn">➜ Paso a Paso</button>
+        </div>
+        
+        <div class="diagram-container">
+            <svg id="flowchart" width="1200" height="1400"></svg>
+        </div>
+        
+        <div class="info-panel" id="infoPanel">
+            <h3>Información del Nodo</h3>
+            <p>Haz click en cualquier nodo del diagrama o selecciona una constante para ver el flujo de construcción.</p>
+        </div>
+        
+        <div class="formula-output" id="formulaOutput">
+            Fórmula PLO aparecerá aquí
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>Inicio/Entrada</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2196F3;"></div>
+                <span>Proceso/Cálculo</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF9800;"></div>
+                <span>Decisión</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #F44336;"></div>
+                <span>Salida/Resultado</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Esperar a que el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            initFlowchart();
+        });
+
+        function initFlowchart() {
+        // Definición de constantes físicas conocidas
+        const physicalConstants = {
+            alpha: {
+                name: "α⁻¹ (Fine Structure)",
+                dimensional: false,
+                hasMass: false,
+                temporal: true,
+                stochastic: "λ",
+                weakCoupling: true,
+                triadic: false,
+                primes: [2, 5, 7, 11],
+                formula: "(5 × 11 × 7 × 2) / (λ × 9) × (1 + ε)",
+                epsilon: "2.6×10⁻⁴"
+            },
+            muon: {
+                name: "mμ/me (Muon-Electron)",
+                dimensional: false,
+                hasMass: true,
+                temporal: true,
+                stochastic: "π",
+                weakCoupling: true,
+                triadic: true,
+                triadicPower: 4,
+                primes: [2, 19],
+                formula: "3⁴ + 40π + 2/19",
+                epsilon: "3×10⁻⁶"
+            },
+            higgs: {
+                name: "MH (Higgs mass)",
+                dimensional: true,
+                scale: "GeV",
+                hasMass: true,
+                temporal: true,
+                stochastic: "π",
+                weakCoupling: true,
+                triadic: false,
+                primes: [3, 5, 7, 11],
+                formula: "(5 × 11 × 7) / (3π) × (1 - 1/19)",
+                epsilon: "2.4×10⁻⁴"
+            },
+            proton: {
+                name: "mp/me (Proton-Electron)",
+                dimensional: false,
+                hasMass: true,
+                temporal: true,
+                stochastic: "π",
+                weakCoupling: false,
+                triadic: true,
+                triadicPower: 6,
+                primes: [2, 5],
+                formula: "3⁶ + 5 × 6π",
+                epsilon: "3×10⁻⁵"
+            }
+        };
+
+        // Crear el SVG del diagrama
+        const svg = document.getElementById("flowchart");
+        const width = 1200;
+        const height = 1400;
+        
+        // Namespace para SVG
+        const svgNS = "http://www.w3.org/2000/svg";
+
+        // Definir nodos del diagrama
+        const nodes = [
+            // Nivel 0: Entrada
+            {id: "start", x: 600, y: 50, type: "start", label: "ENTRADA:\nConstante C", color: "#4CAF50"},
+            
+            // Nivel 1: ¿Dimensional?
+            {id: "dimensional", x: 600, y: 150, type: "decision", label: "¿C es\nadimensional?", color: "#FF9800"},
+            
+            // Rama dimensional
+            {id: "identify_dim", x: 350, y: 250, type: "process", label: "Identificar\ndimensiones", color: "#2196F3"},
+            {id: "select_scale", x: 350, y: 350, type: "process", label: "Seleccionar escala\n(Planck, GeV, etc)", color: "#2196F3"},
+            
+            // Rama adimensional
+            {id: "pure_form", x: 850, y: 250, type: "process", label: "Forma multiplicativa\npura", color: "#2196F3"},
+            
+            // Nivel 2: ¿Masa/Energía?
+            {id: "has_mass", x: 600, y: 450, type: "decision", label: "¿Involucra\nmasa/energía?", color: "#FF9800"},
+            
+            // Ramas masa
+            {id: "include_3n", x: 350, y: 550, type: "process", label: "Incluir 3ⁿ\n(estructura triádica)", color: "#2196F3"},
+            {id: "determine_n", x: 350, y: 650, type: "process", label: "Determinar n\nsegún contexto", color: "#2196F3"},
+            {id: "omit_3", x: 850, y: 550, type: "process", label: "Omitir potencias\nde 3", color: "#2196F3"},
+            
+            // Nivel 3: ¿Temporal/Estadístico?
+            {id: "temporal", x: 600, y: 750, type: "decision", label: "¿Proceso\ntemporal/estadístico?", color: "#FF9800"},
+            
+            // Ramas temporales
+            {id: "select_kappa", x: 350, y: 850, type: "decision", label: "Seleccionar κ\nsegún tipo", color: "#FF9800"},
+            {id: "kappa_pi", x: 150, y: 950, type: "process", label: "κ = π\n(geométrico)", color: "#2196F3"},
+            {id: "kappa_lambda", x: 300, y: 950, type: "process", label: "κ = λ\n(factorización)", color: "#2196F3"},
+            {id: "kappa_gamma", x: 450, y: 950, type: "process", label: "κ = γ\n(armónico)", color: "#2196F3"},
+            {id: "kappa_zeta", x: 600, y: 950, type: "process", label: "κ = ζ(n)\n(distribucional)", color: "#2196F3"},
+            {id: "discrete", x: 850, y: 850, type: "process", label: "Forma discreta\npura (κ=1)", color: "#2196F3"},
+            
+            // Nivel 4: ¿Acoplamiento débil?
+            {id: "weak", x: 600, y: 1050, type: "decision", label: "¿Acoplamiento\ndébil/fino?", color: "#FF9800"},
+            
+            // Ramas acoplamiento
+            {id: "include_19", x: 350, y: 1150, type: "process", label: "Incluir corrección\n1/19", color: "#2196F3"},
+            {id: "omit_19", x: 850, y: 1150, type: "process", label: "Omitir corrección", color: "#2196F3"},
+            
+            // Nivel 5: Ensamblar
+            {id: "assemble", x: 600, y: 1250, type: "process", label: "Ensamblar fórmula\nF(primos, κ)", color: "#2196F3"},
+            
+            // Nivel 6: Salida
+            {id: "output", x: 600, y: 1350, type: "output", label: "SALIDA:\nFórmula + ε (LLN)", color: "#F44336"}
+        ];
+
+        // Definir conexiones
+        const edges = [
+            {from: "start", to: "dimensional", label: ""},
+            {from: "dimensional", to: "identify_dim", label: "NO"},
+            {from: "dimensional", to: "pure_form", label: "SÍ"},
+            {from: "identify_dim", to: "select_scale", label: ""},
+            {from: "select_scale", to: "has_mass", label: ""},
+            {from: "pure_form", to: "has_mass", label: ""},
+            {from: "has_mass", to: "include_3n", label: "SÍ"},
+            {from: "has_mass", to: "omit_3", label: "NO"},
+            {from: "include_3n", to: "determine_n", label: ""},
+            {from: "determine_n", to: "temporal", label: ""},
+            {from: "omit_3", to: "temporal", label: ""},
+            {from: "temporal", to: "select_kappa", label: "SÍ"},
+            {from: "temporal", to: "discrete", label: "NO"},
+            {from: "select_kappa", to: "kappa_pi", label: "Geom"},
+            {from: "select_kappa", to: "kappa_lambda", label: "Fact"},
+            {from: "select_kappa", to: "kappa_gamma", label: "Arm"},
+            {from: "select_kappa", to: "kappa_zeta", label: "Dist"},
+            {from: "kappa_pi", to: "weak", label: ""},
+            {from: "kappa_lambda", to: "weak", label: ""},
+            {from: "kappa_gamma", to: "weak", label: ""},
+            {from: "kappa_zeta", to: "weak", label: ""},
+            {from: "discrete", to: "weak", label: ""},
+            {from: "weak", to: "include_19", label: "SÍ"},
+            {from: "weak", to: "omit_19", label: "NO"},
+            {from: "include_19", to: "assemble", label: ""},
+            {from: "omit_19", to: "assemble", label: ""},
+            {from: "assemble", to: "output", label: ""}
+        ];
+
+        // Función para dibujar nodos
+        function drawNode(node) {
+            const g = document.createElementNS(svgNS, "g");
+            g.setAttribute("class", "node");
+            g.setAttribute("id", `node-${node.id}`);
+            g.style.cursor = "pointer";
+            
+            g.addEventListener("click", () => showNodeInfo(node));
+            g.addEventListener("mouseenter", function(event) {
+                showTooltip(event, getNodeTooltip(node));
+            });
+            g.addEventListener("mouseleave", hideTooltip);
+
+            if (node.type === "decision") {
+                // Rombo para decisiones
+                const size = 70;
+                const polygon = document.createElementNS(svgNS, "polygon");
+                polygon.setAttribute("points", `${node.x},${node.y - size} ${node.x + size},${node.y} ${node.x},${node.y + size} ${node.x - size},${node.y}`);
+                polygon.setAttribute("fill", node.color);
+                polygon.setAttribute("stroke", "#333");
+                polygon.setAttribute("stroke-width", "2");
+                g.appendChild(polygon);
+            } else if (node.type === "start" || node.type === "output") {
+                // Elipse para inicio/fin
+                const ellipse = document.createElementNS(svgNS, "ellipse");
+                ellipse.setAttribute("cx", node.x);
+                ellipse.setAttribute("cy", node.y);
+                ellipse.setAttribute("rx", "100");
+                ellipse.setAttribute("ry", "40");
+                ellipse.setAttribute("fill", node.color);
+                ellipse.setAttribute("stroke", "#333");
+                ellipse.setAttribute("stroke-width", "2");
+                g.appendChild(ellipse);
+            } else {
+                // Rectángulo para procesos
+                const rect = document.createElementNS(svgNS, "rect");
+                rect.setAttribute("x", node.x - 80);
+                rect.setAttribute("y", node.y - 35);
+                rect.setAttribute("width", "160");
+                rect.setAttribute("height", "70");
+                rect.setAttribute("rx", "10");
+                rect.setAttribute("fill", node.color);
+                rect.setAttribute("stroke", "#333");
+                rect.setAttribute("stroke-width", "2");
+                g.appendChild(rect);
+            }
+
+            // Texto del nodo
+            const lines = node.label.split('\n');
+            const text = document.createElementNS(svgNS, "text");
+            text.setAttribute("class", "node-text");
+            text.setAttribute("x", node.x);
+            text.setAttribute("y", node.y - (lines.length - 1) * 6);
+            text.setAttribute("text-anchor", "middle");
+            text.setAttribute("dominant-baseline", "middle");
+            text.setAttribute("fill", "white");
+            text.setAttribute("font-weight", "bold");
+            text.setAttribute("font-size", "13px");
+
+            lines.forEach((line, i) => {
+                const tspan = document.createElementNS(svgNS, "tspan");
+                tspan.setAttribute("x", node.x);
+                tspan.setAttribute("dy", i === 0 ? 0 : 15);
+                tspan.textContent = line;
+                text.appendChild(tspan);
+            });
+            
+            g.appendChild(text);
+            svg.appendChild(g);
+        }
+
+        // Función para dibujar conexiones
+        function drawEdge(edge) {
+            const fromNode = nodes.find(n => n.id === edge.from);
+            const toNode = nodes.find(n => n.id === edge.to);
+
+            const g = document.createElementNS(svgNS, "g");
+            g.setAttribute("class", "edge");
+            g.setAttribute("id", `edge-${edge.from}-${edge.to}`);
+
+            // Línea de conexión
+            const line = document.createElementNS(svgNS, "line");
+            line.setAttribute("x1", fromNode.x);
+            line.setAttribute("y1", fromNode.y + 40);
+            line.setAttribute("x2", toNode.x);
+            line.setAttribute("y2", toNode.y - 40);
+            line.setAttribute("stroke", "#666");
+            line.setAttribute("stroke-width", "2");
+            line.setAttribute("marker-end", "url(#arrowhead)");
+            g.appendChild(line);
+
+            // Etiqueta de la conexión
+            if (edge.label) {
+                const midX = (fromNode.x + toNode.x) / 2;
+                const midY = (fromNode.y + toNode.y) / 2;
+                
+                const text = document.createElementNS(svgNS, "text");
+                text.setAttribute("x", midX + 15);
+                text.setAttribute("y", midY);
+                text.setAttribute("fill", "#333");
+                text.setAttribute("font-size", "12px");
+                text.setAttribute("font-weight", "600");
+                text.textContent = edge.label;
+                g.appendChild(text);
+            }
+            
+            svg.appendChild(g);
+        }
+
+        // Definir marcador de flecha
+        const defs = document.createElementNS(svgNS, "defs");
+        const marker = document.createElementNS(svgNS, "marker");
+        marker.setAttribute("id", "arrowhead");
+        marker.setAttribute("markerWidth", "10");
+        marker.setAttribute("markerHeight", "10");
+        marker.setAttribute("refX", "5");
+        marker.setAttribute("refY", "3");
+        marker.setAttribute("orient", "auto");
+        
+        const polygon = document.createElementNS(svgNS, "polygon");
+        polygon.setAttribute("points", "0 0, 10 3, 0 6");
+        polygon.setAttribute("fill", "#666");
+        
+        marker.appendChild(polygon);
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+
+        // Dibujar todas las conexiones primero (para que estén detrás)
+        edges.forEach(drawEdge);
+        
+        // Dibujar todos los nodos
+        nodes.forEach(drawNode);
+
+        // Funciones de información de nodos
+        function getNodeTooltip(node) {
+            const tooltips = {
+                start: "Punto de entrada: se recibe la constante física C a analizar",
+                dimensional: "Primera decisión: ¿La constante tiene dimensiones (masa, longitud, tiempo)?",
+                identify_dim: "Analizar qué dimensiones tiene C (M, L, T, etc.)",
+                select_scale: "Elegir escala apropiada: Planck, GeV, metros, etc.",
+                pure_form: "Si es adimensional, usar solo productos de primos",
+                has_mass: "¿La constante involucra masa o energía?",
+                include_3n: "Las masas tienen estructura triádica (quarks: 3 colores, 3 generaciones)",
+                determine_n: "Calcular el exponente n según el contexto físico",
+                omit_3: "Sin estructura de masa, no usar potencias de 3",
+                temporal: "¿El proceso involucra evolución temporal o aspectos estadísticos?",
+                select_kappa: "Elegir constante estocástica según el tipo de proceso",
+                kappa_pi: "π para procesos geométricos, circulares, ondulatorios",
+                kappa_lambda: "λ (Golomb-Dickman) para procesos de factorización prima",
+                kappa_gamma: "γ (Euler-Mascheroni) para series armónicas",
+                kappa_zeta: "ζ(n) para distribuciones estadísticas",
+                discrete: "Proceso puramente discreto sin límites estocásticos",
+                weak: "¿Hay acoplamiento débil o ajuste fino en el sistema?",
+                include_19: "Incluir factor 1/19 (primo asociado a acoplamientos finos)",
+                omit_19: "No requiere corrección de acoplamiento débil",
+                assemble: "Combinar todos los componentes en la fórmula final",
+                output: "Resultado: F(primos, κ) con error ε predicho por LLN"
+            };
+            return tooltips[node.id] || "Nodo del algoritmo PLO";
+        }
+
+        function showNodeInfo(node) {
+            const info = {
+                start: {
+                    title: "Entrada del Algoritmo",
+                    content: "Se introduce la constante física C que queremos expresar en PLO. Puede ser dimensional (con unidades) o adimensional (número puro)."
+                },
+                dimensional: {
+                    title: "Análisis Dimensional",
+                    content: "Decisión clave: ¿C tiene dimensiones físicas? Si SÍ → necesitamos identificar y manejar escalas. Si NO → trabajamos con forma multiplicativa pura de primos."
+                },
+                has_mass: {
+                    title: "Estructura de Masa",
+                    content: "Las constantes que involucran masa/energía típicamente incluyen 3ⁿ por la estructura triádica de la materia (3 colores en QCD, 3 generaciones de fermiones)."
+                },
+                temporal: {
+                    title: "Procesos Temporales",
+                    content: "¿C emerge de un proceso iterativo, estadístico o con extensión temporal? Esto determina si incluimos constantes estocásticas (π, λ, γ, ζ)."
+                },
+                select_kappa: {
+                    title: "Selección de Constante Estocástica",
+                    content: "Cada tipo de proceso físico corresponde a una constante matemática:\n• Geométrico → π\n• Factorización → λ\n• Armónico → γ\n• Distribucional → ζ(n)"
+                },
+                weak: {
+                    title: "Acoplamiento Débil",
+                    content: "El factor 1/19 aparece en sistemas con ajuste fino o acoplamientos débiles. 19 es el primo asociado a estas correcciones sutiles."
+                },
+                assemble: {
+                    title: "Ensamblaje de Fórmula",
+                    content: "Combinamos todos los componentes:\nF = escala × 3ⁿ × ∏primos × κ × (1 ± 1/19)"
+                },
+                output: {
+                    title: "Salida con Predicción de Error",
+                    content: "La fórmula final incluye ε predicho por la Ley de Grandes Números (LLN):\nε ∝ 1/√N donde N es la extensión temporal del fenómeno."
+                }
+            };
+
+            const nodeInfo = info[node.id] || {
+                title: node.label.replace('\n', ' '),
+                content: "Nodo del algoritmo de construcción PLO."
+            };
+
+            document.getElementById('infoPanel').innerHTML = `
+                <h3>${nodeInfo.title}</h3>
+                <p>${nodeInfo.content}</p>
+            `;
+        }
+
+        // Sistema de tooltips
+        const tooltip = document.getElementById('tooltip');
+        
+        function showTooltip(event, text) {
+            tooltip.textContent = text;
+            tooltip.classList.add('visible');
+            updateTooltipPosition(event);
+        }
+
+        function hideTooltip() {
+            tooltip.classList.remove('visible');
+        }
+
+        function updateTooltipPosition(event) {
+            const x = event.pageX + 15;
+            const y = event.pageY + 15;
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+
+        // Función para trazar camino según constante seleccionada
+        function tracePath(constantKey) {
+            // Reset primero
+            resetDiagram();
+
+            if (!constantKey) return;
+
+            const constant = physicalConstants[constantKey];
+            const path = [];
+
+            // Siempre empezamos desde start
+            path.push("start", "dimensional");
+
+            // ¿Dimensional?
+            if (constant.dimensional) {
+                path.push("identify_dim", "select_scale");
+            } else {
+                path.push("pure_form");
+            }
+
+            // ¿Masa?
+            path.push("has_mass");
+            if (constant.hasMass) {
+                path.push("include_3n");
+                if (constant.triadic) {
+                    path.push("determine_n");
+                }
+            } else {
+                path.push("omit_3");
+            }
+
+            // ¿Temporal?
+            path.push("temporal");
+            if (constant.temporal) {
+                path.push("select_kappa");
+                // Determinar qué kappa
+                if (constant.stochastic === "π") path.push("kappa_pi");
+                else if (constant.stochastic === "λ") path.push("kappa_lambda");
+                else if (constant.stochastic === "γ") path.push("kappa_gamma");
+                else if (constant.stochastic.includes("ζ")) path.push("kappa_zeta");
+            } else {
+                path.push("discrete");
+            }
+
+            // ¿Acoplamiento débil?
+            path.push("weak");
+            if (constant.weakCoupling) {
+                path.push("include_19");
+            } else {
+                path.push("omit_19");
+            }
+
+            // Final
+            path.push("assemble", "output");
+
+            // Activar nodos y edges en el camino
+            animatePath(path, constant);
+        }
+
+        function animatePath(path, constant) {
+            let delay = 0;
+            const stepDelay = 500;
+
+            path.forEach((nodeId, index) => {
+                setTimeout(() => {
+                    // Activar nodo
+                    const nodeElement = document.getElementById(`node-${nodeId}`);
+                    if (nodeElement) {
+                        nodeElement.classList.add('active');
+                    }
+
+                    // Activar edge al siguiente nodo
+                    if (index < path.length - 1) {
+                        const nextNodeId = path[index + 1];
+                        const edgeElement = document.getElementById(`edge-${nodeId}-${nextNodeId}`);
+                        if (edgeElement) {
+                            edgeElement.classList.add('active');
+                        }
+                    }
+
+                    // Mostrar info del nodo
+                    const node = nodes.find(n => n.id === nodeId);
+                    if (node) showNodeInfo(node);
+
+                    // Si llegamos al final, mostrar fórmula
+                    if (index === path.length - 1) {
+                        document.getElementById('formulaOutput').innerHTML = `
+                            <div>
+                                <div style="font-size: 0.9em; margin-bottom: 10px;">${constant.name}</div>
+                                <div style="font-size: 1.3em;">${constant.formula}</div>
+                                <div style="font-size: 0.85em; margin-top: 10px; opacity: 0.8;">ε observado ≈ ${constant.epsilon}</div>
+                            </div>
+                        `;
+                    }
+                }, delay);
+                delay += stepDelay;
+            });
+        }
+
+        function resetDiagram() {
+            document.querySelectorAll('.node').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.edge').forEach(el => el.classList.remove('active'));
+            document.getElementById('infoPanel').innerHTML = `
+                <h3>Información del Nodo</h3>
+                <p>Haz click en cualquier nodo del diagrama o selecciona una constante para ver el flujo de construcción.</p>
+            `;
+            document.getElementById('formulaOutput').textContent = 'Fórmula PLO aparecerá aquí';
+        }
+
+        // Event listeners
+        document.getElementById('constantSelect').addEventListener('change', (e) => {
+            if (e.target.value) {
+                tracePath(e.target.value);
+            }
+        });
+
+        document.getElementById('traceBtn').addEventListener('click', () => {
+            const selectedConstant = document.getElementById('constantSelect').value;
+            if (selectedConstant) {
+                tracePath(selectedConstant);
+            } else {
+                alert('Por favor selecciona una constante primero');
+            }
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', resetDiagram);
+
+        // Paso a paso
+        let stepMode = false;
+        let currentStep = 0;
+        let currentPath = [];
+
+        document.getElementById('stepBtn').addEventListener('click', () => {
+            const selectedConstant = document.getElementById('constantSelect').value;
+            if (!selectedConstant) {
+                alert('Por favor selecciona una constante primero');
+                return;
+            }
+
+            if (!stepMode) {
+                // Iniciar modo paso a paso
+                stepMode = true;
+                currentStep = 0;
+                resetDiagram();
+                
+                // Generar el camino
+                const constant = physicalConstants[selectedConstant];
+                currentPath = generatePath(constant);
+                
+                document.getElementById('stepBtn').textContent = '➜ Siguiente Paso';
+                
+                // Mostrar primer paso
+                showStep(currentStep, constant);
+            } else {
+                // Avanzar al siguiente paso
+                currentStep++;
+                if (currentStep < currentPath.length) {
+                    showStep(currentStep, physicalConstants[selectedConstant]);
+                } else {
+                    // Fin del recorrido
+                    stepMode = false;
+                    currentStep = 0;
+                    document.getElementById('stepBtn').textContent = '➜ Paso a Paso';
+                }
+            }
+        });
+
+        function generatePath(constant) {
+            const path = ["start", "dimensional"];
+            
+            if (constant.dimensional) {
+                path.push("identify_dim", "select_scale");
+            } else {
+                path.push("pure_form");
+            }
+            
+            path.push("has_mass");
+            if (constant.hasMass) {
+                path.push("include_3n");
+                if (constant.triadic) path.push("determine_n");
+            } else {
+                path.push("omit_3");
+            }
+            
+            path.push("temporal");
+            if (constant.temporal) {
+                path.push("select_kappa");
+                if (constant.stochastic === "π") path.push("kappa_pi");
+                else if (constant.stochastic === "λ") path.push("kappa_lambda");
+                else if (constant.stochastic === "γ") path.push("kappa_gamma");
+                else path.push("kappa_zeta");
+            } else {
+                path.push("discrete");
+            }
+            
+            path.push("weak");
+            path.push(constant.weakCoupling ? "include_19" : "omit_19");
+            path.push("assemble", "output");
+            
+            return path;
+        }
+
+        function showStep(stepIndex, constant) {
+            const nodeId = currentPath[stepIndex];
+            const nodeElement = document.getElementById(`node-${nodeId}`);
+            
+            if (nodeElement) {
+                nodeElement.classList.add('active');
+            }
+            
+            if (stepIndex > 0) {
+                const prevNodeId = currentPath[stepIndex - 1];
+                const edgeElement = document.getElementById(`edge-${prevNodeId}-${nodeId}`);
+                if (edgeElement) {
+                    edgeElement.classList.add('active');
+                }
+            }
+            
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) showNodeInfo(node);
+            
+            if (stepIndex === currentPath.length - 1) {
+                document.getElementById('formulaOutput').innerHTML = `
+                    <div>
+                        <div style="font-size: 0.9em; margin-bottom: 10px;">${constant.name}</div>
+                        <div style="font-size: 1.3em;">${constant.formula}</div>
+                        <div style="font-size: 0.85em; margin-top: 10px; opacity: 0.8;">ε observado ≈ ${constant.epsilon}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        } // Cierre de initFlowchart()
+    </script>
+</body>
+</html>

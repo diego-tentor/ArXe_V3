@@ -1,0 +1,218 @@
+EJEMPLO: MEDIR α (CONSTANTE DE ESTRUCTURA FINA)
+¿Qué queremos medir?
+"La constante de estructura fina α"
+PERO... ¿qué ES físicamente α?
+Aquí empieza la primera elección axiomática.
+
+ELECCIÓN AXIOMÁTICA #1: ¿QUÉ DEFINES COMO α?
+Opción A (clásica):
+α = e²/(4πε₀ℏc)
+Axiomas asumidos:
+
+Existe carga elemental e
+Existe velocidad luz c
+Existe constante de Planck ℏ
+Existe permitividad ε₀
+
+Elección: "α es la razón entre energía electromagnética y energía cuántica"
+
+Opción B (QED):
+α = g²/(4π)
+donde g = acoplamiento electromagnético
+Axiomas asumidos:
+
+QED es la teoría correcta
+El acoplamiento g es fundamental
+Renormalización es válida
+
+Elección: "α es el acoplamiento efectivo en QED"
+
+Opción C (experimental):
+α⁻¹ = (intervalo de estructura fina) / (corrimiento total)
+Axiomas asumidos:
+
+El átomo de hidrógeno existe
+La mecánica cuántica describe niveles de energía
+Podemos medir transiciones espectrales
+
+Elección: "α es lo que medimos en espectroscopía atómica"
+
+CADA OPCIÓN MIDE "ALGO DIFERENTE"
+Y dan valores ligeramente diferentes
+
+EXPERIMENTO CONCRETO: MÉTODO DEL MOMENTO MAGNÉTICO ANÓMALO (g-2)
+PASO 1: ¿QUÉ SE OBSERVA?
+Lo que ves físicamente:
+
+Un muón en un campo magnético
+Gira (precesión)
+Emite un positrón cuando decae
+Mides ángulo de emisión vs tiempo
+
+Datos brutos:
+
+Frecuencia de precesión: ωₐ
+Campo magnético: B
+Tiempo de decaimiento: τ
+
+ESTO es lo "observado" - números crudos en instrumentos
+
+PASO 2: PRIMERA ELECCIÓN - ¿CÓMO INTERPRETAS ωₐ?
+Opción A (clásica):
+ωₐ = (g/2) × (e/m) × B
+
+donde g = 2 (predicción Dirac)
+Elección axiomática: "Asumo ecuación de Dirac es exacta"
+Resultado: ωₐ/B = constante
+
+Opción B (QED):
+ωₐ = (g/2) × (e/m) × B
+
+donde g = 2(1 + aₑ)
+aₑ = momento magnético anómalo
+Elección axiomática: "Asumo QED existe y genera correcciones"
+Resultado: ωₐ/B ≠ exactamente constante → extraigo aₑ
+
+PASO 3: SEGUNDA ELECCIÓN - ¿CÓMO CALCULAS aₑ?
+Si asumes QED:
+aₑ = C₂(α/π) + C₄(α/π)² + C₆(α/π)³ + ...
+
+donde C₂, C₄, C₆ son coeficientes de Feynman diagrams
+Elecciones axiomáticas aquí:
+
+¿Hasta qué orden calculas? (2, 4, 6, 8 loops?)
+
+Elección: "Creemos que loops >5 son despreciables"
+
+
+¿Qué diagramas incluyes?
+
+Solo fotones? ✓
+Incluyes loops de muón? ✓
+Incluyes loops de tau? Elección: "Sí, universalidad leptónica"
+Incluyes hadrones virtuales? Elección: "Sí, con modelo de hadrones"
+
+
+¿Qué valor de α usas en el loop?
+
+Elección: "Usamos α(M_Z) del LEP" ← ¡Circularidad!
+
+
+
+
+PASO 4: TERCERA ELECCIÓN - ¿CÓMO EXTRAES α FINAL?
+Tienes:
+
+Valor medido: aₑ^exp = 0.00115965218128(18)
+Teoría: aₑ^th(α) = función de α
+
+Inviertes para encontrar α
+PERO...
+Elección axiomática:
+
+¿Confías más en la medición o en la teoría?
+Si hay discrepancia del 2%, ¿es error experimental o física nueva?
+Elección: "Asumimos que no hay física nueva, es error"
+
+
+DÓNDE INTERVIENEN LAS ELECCIONES (RESUMEN)
+PasoElección AxiomáticaEjemplo1. Definir qué mides¿Qué ES α físicamente?e²/ℏc vs acoplamiento QED2. Elegir método¿Qué experimento haces?g-2 vs espectroscopía vs Rydberg3. Interpretar datos¿Qué teoría usas?QED vs teoría clásica4. Orden de cálculo¿Cuántos loops incluyes?2, 4, 6, 8 loops5. Efectos incluidos¿Qué física incluyes?Solo fotones vs hadrones6. Valores input¿Qué constantes usas como input?α de otra medición (circular)7. Tratamiento error¿Cómo combinas incertezas?Estadístico vs sistemático8. Discrepancias¿Confías en medición o teoría?¿Es física nueva o error?
+
+EJEMPLO EXTREMO: CONSTANTE DE RYDBERG
+Método 1: Espectroscopía láser de hidrógeno
+Observas:
+
+Frecuencia de transición 1S → 2S: ν = 2466061413187035(10) Hz
+
+Elecciones:
+
+Asumes que el hidrógeno es 1 protón + 1 electrón (¿y quarks? ¿y gluones?)
+Asumes QED hasta orden α⁵
+Asumes masa del protón es conocida
+Asumes no hay estructura interna del protón relevante
+Asumes el láser es monocromático perfecto
+
+Resultado: R_∞ = 10973731.568160(21) m⁻¹
+
+Método 2: Constante de estructura fina + otras constantes
+Observas:
+
+g-2 del electrón
+Cociente h/m_e (balanza de Kibble)
+
+Elecciones:
+
+Asumes QED es exacta
+Asumes universalidad leptónica
+Confías en medición de Planck h (que fue redefinido en 2019!)
+
+Resultado: R_∞ = 10973731.568157(18) m⁻¹
+
+¿Cuál es "correcta"?
+Ambas son válidas dentro de sus sistemas axiomáticos
+Difieren en el 7mo decimal → refleja diferentes elecciones
+
+LO QUE REALMENTE SE MIDE:
+NO mides "la constante"
+Mides:
+
+Clicks en un detector
+Voltaje en un cable
+Frecuencia de un láser
+Ángulo de una aguja
+Píxeles en una cámara
+
+Números brutos, sin significado
+
+La "constante" emerge cuando:
+
+Eliges una teoría (QED, SM, etc.)
+Asumes esa teoría es correcta
+Interpretas los números bajo esa teoría
+Extraes un parámetro
+Le llamas "constante"
+
+
+EJEMPLO SIMPLE: VELOCIDAD DE LA LUZ
+Antes de 1983:
+Medías: Tiempo que tarda luz en recorrer distancia conocida
+Elecciones:
+
+¿Qué defines como "metro"? (barra de platino-iridio)
+¿Qué defines como "segundo"? (rotación de la Tierra, luego átomo de cesio)
+
+Resultado: c = 299792458(1) m/s con error
+
+Después de 1983:
+Decisión axiomática de la comunidad:
+"Definimos que c = 299792458 m/s EXACTO por definición"
+Ahora el metro se deriva del segundo:
+1 metro = distancia que recorre luz en 1/299792458 segundos
+¿Cambió la luz? NO
+¿Cambió la constante? NO
+Lo que cambió: LAS ELECCIONES AXIOMÁTICAS
+
+RESPUESTA FINAL A TU PREGUNTA:
+¿Qué se observa?
+Números brutos en instrumentos (clicks, voltios, frecuencias)
+¿Qué se mide?
+Lo que tu teoría interpreta que significan esos números
+¿Cómo se hace experimento?
+Diseñas aparato que asume ciertas cosas son verdad
+¿Dónde interviene la elección?
+EN CADA PASO:
+
+Qué defines que estás midiendo
+Qué teoría usas para interpretar
+Qué efectos incluyes/ignoras
+Qué valores usas como input
+Cómo tratas discrepancias
+Qué resultado reportas como "la constante"
+
+
+IMPLICACIÓN PROFUNDA:
+No hay "medición pura"
+Toda medición es interpretación bajo axiomas
+Los primos en PLO codifican exactamente esas elecciones interpretativas
+Cada primo = un axioma que asumiste en algún paso
+Por eso PLO funciona retrospectivamente (captura las elecciones ya hechas) pero no prospectivamente (no puede predecir elecciones futuras)

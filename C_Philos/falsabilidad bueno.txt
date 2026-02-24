@@ -1,0 +1,145 @@
+Reconsiderando la falsabilidad: más allá del dogmatismo metodológico
+Autor: Diego L. Tentor
+Fecha: Enero 2026
+
+Resumen
+Este artículo revisa el criterio de falsabilidad de Karl Popper, cuestionando la interpretación dominante que ha transformado su humildad epistemológica en una forma de dogmatismo metodológico. Argumentamos que la falsabilidad, correctamente entendida, no consiste en especificar condiciones bajo las cuales una teoría sería refutada, sino que constituye una actitud epistémica de reconocimiento de la falibilidad fundamental. Esta interpretación recupera la intuición original de Popper —a menudo oscurecida en la filosofía de la ciencia posterior— y resuena con enfoques contemporáneos del conocimiento científico que rechazan las pretensiones de verdad universal.
+
+Palabras clave: Falsabilidad, Karl Popper, racionalismo crítico, humildad epistémica, dogmatismo metodológico
+
+1. Introducción: La falsabilidad popperiana desfigurada
+La Logik der Forschung (1935) de Karl Popper introdujo la falsabilidad como criterio de demarcación entre ciencia y no-ciencia. Sin embargo, antes de explorar su reinterpretación, es esencial clarificar qué dijo —y qué no dijo— Popper, pues su pensamiento ha sido frecuentemente malentendido y reducido a una caricatura metodológica.
+
+Popper distinguió con total claridad entre:
+
+Falsabilidad (Falsifizierbarkeit): propiedad lógica de un sistema de enunciados.
+
+Falsación (Falsifikation): hecho metodológico-empírico.
+
+Su tesis no fue: "Una teoría es científica si existe un experimento que la refute", sino, mucho más estrictamente: "Una teoría es científica si admite, en principio, la posibilidad de ser falsa." (Popper, 1959, Cap. I, §6).
+
+En Conjectures and Refutations (1963), Popper contrapuso la actitud dogmática —aferrarse a una teoría incluso cuando es contradicha— con la actitud crítica: la disposición a considerar que una teoría puede ser falsa. La clave, pues, no es el experimento, sino la actitud lógica del sistema teórico frente a sí mismo.
+
+Para Popper no había acceso a la verdad en sí, ni verificación definitiva, ni criterio de verdad positiva. Solo eliminación provisional del error. La ciencia no buscaba certeza, sino conjeturas refutables. Sin embargo, la interpretación dominante hoy afirma: "Algo es científico si admite un caso de refutación". Este desplazamiento sutil reintroduce una posición privilegiada del observador, convierte la refutación en un acto de autoridad y restituye una verdad empírica fuerte. Eso no es Popper.
+
+La tesis de este artículo es que la falsabilidad, correctamente entendida, se trata fundamentalmente de una postura epistémica más que de un protocolo metodológico. No es la capacidad de enumerar condiciones específicas bajo las cuales uno sería demostrado equivocado, sino más bien el reconocimiento de que uno podría estar equivocado sin saber precisamente cómo o cuándo.
+
+2. La apropiación indebida de la falsabilidad: del criterio lógico al protocolo dogmático
+2.1 La interpretación estándar equivocada
+La filosofía de la ciencia contemporánea ha adoptado en gran medida lo que podríamos llamar la "interpretación protocolaria" de la falsabilidad:
+
+Interpretación protocolaria: Una teoría es falsable si y solo si se pueden especificar de antemano las observaciones empíricas que la refutarían concluyentemente.
+
+Esta interpretación aparece en materiales pedagógicos e incluso en el discurso filosófico profesional. Trata la falsabilidad como un criterio de lista de verificación —una teoría debe articular sus posibles falsadores para calificar como científica.
+
+2.2 Por qué esto es dogmático
+La interpretación protocolaria es en sí misma una forma de dogmatismo porque:
+
+Presupone omnisciencia epistémica: asume que el teórico puede anticipar todas las formas posibles en que su teoría podría fallar.
+
+Establece perímetros defensivos: al controlar la especificación de las condiciones de refutación, el teórico protege su teoría de desafíos no anticipados.
+
+Reinstaura el verificacionismo: la demanda de condiciones especificadas introduce subrepticiamente el mismo requisito de criterios positivos que Popper rechazó.
+
+Como enfatizó Popper, tanto el racionalismo (la visión de que ciertas posturas son demostrables solo por la razón) como el empirismo con su doctrina verificacionista son propensos al dogmatismo. La interpretación protocolaria de la falsabilidad paradójicamente vuelve dogmático al criterio mismo.
+
+2.3 Contexto histórico de la confusión
+La confusión puede derivar de la definición formal que Popper proporcionó: una teoría es científica si y solo si divide la clase de enunciados básicos en aquellos con los que es inconsistente (falsadores potenciales) y aquellos con los que es consistente. Sin embargo, esta caracterización lógica nunca tuvo la intención de convertirse en un requisito prescriptivo de que los científicos deban articular todos los falsadores potenciales de antemano.
+
+3. La posición real de Popper: la primacía de la actitud
+3.1 Falsabilidad como racionalismo crítico
+El racionalismo crítico de Popper implica la visión de que la discusión racional misma descansa en una decisión no racional de valorar la razón, enfatizando que progresamos teóricamente al someter nuestras teorías a escrutinio crítico y abandonando aquellas que han sido falsadas. La frase clave aquí es "decisión no racional de valorar la razón" —la racionalidad misma no puede justificarse racionalmente sin circularidad.
+
+Esto significa que la falsabilidad no es principalmente una propiedad lógica de los enunciados, sino un compromiso ético con la apertura intelectual. El racionalismo crítico solo puede realizarse en una sociedad abierta donde todas las visiones, incluso las más apreciadas, sean sometidas a crítica y autocrítica rigurosas.
+
+3.2 La asimetría lógica correctamente entendida
+Popper enfatizó la asimetría lógica entre verificación y falsación: los enunciados universales nunca son derivables de enunciados singulares, pero pueden ser contradichos por enunciados singulares, de modo que no importa cuántas instancias positivas de una generalización se observen, todavía es posible que la siguiente instancia la falsifique.
+
+La asimetría es lógica, no metodológica. Describe una característica estructural de las afirmaciones universales, no un procedimiento que los científicos deban seguir. El famoso ejemplo: el enunciado "todos los cisnes son blancos" puede ser falsado por un solo cisne negro —pero el punto de Popper era sobre la forma lógica de tales enunciados, no sobre que los ornitólogos deban especificar de antemano todas las posibles variaciones de color de los cisnes.
+
+3.3 Falibilismo sobre falsacionismo
+Popper sostiene que, aunque la teoría particular no falsada que hemos adoptado pueda ser verdadera, nunca podríamos saber que este es el caso; este falibilismo significa que es imposible proporcionar justificación para creer que una teoría científica particular es verdadera.
+
+La esencia de la posición de Popper es el falibilismo: el reconocimiento de que todo nuestro conocimiento es conjetural y revisable. La falsabilidad es simplemente el corolario lógico de esta humildad epistémica aplicada a los enunciados universales.
+
+3.4 El propio reconocimiento de Popper de la complejidad
+Popper permite explícitamente que, en la práctica, una sola instancia conflictiva o contraejemplo nunca es suficiente metodológicamente para la falsación, y que las teorías científicas a menudo se retienen aunque gran parte de la evidencia disponible entre en conflicto con ellas. Esto reconoce la tesis de Duhem-Quine: cuando una predicción falla, no podemos determinar si es la teoría central o las suposiciones auxiliares las que están en falla.
+
+Popper nunca afirmó que la falsación fuera metodológicamente simple o concluyente. Su criterio era sobre la estructura lógica de las afirmaciones científicas y la actitud con la que deberían sostenerse.
+
+5. Distinguiendo la falsabilidad genuina del dogmatismo metodológico
+5.1 Dos concepciones contrastadas
+Aspecto	Protocolo dogmático	Falsabilidad genuina
+Afirmación central	"Mi teoría sería falsa si ocurre X, Y, Z"	"Mi teoría podría ser falsa"
+Postura epistémica	Especificación defensiva	Apertura radical
+Quién controla los criterios	El teórico	Realidad/comunidad
+Relación con la verdad	Busca verificación mediante eliminación	Acepta incertidumbre permanente
+Ejemplo	"Esta teoría es falsable porque si encontramos violaciones de..."	"Esta teoría podría estar equivocada, aunque no sé exactamente cómo"
+5.2 El dogmatismo de las "condiciones especificadas"
+Cuando un teórico dice "mi teoría sería falsada si y solo si ocurren estas observaciones específicas", en realidad está:
+
+Reclamando privilegio epistémico sobre cómo su teoría podría fallar
+
+Limitando el dominio de la crítica potencial
+
+Estableciendo posiciones defensivas contra desafíos no anticipados
+
+Esto es precisamente lo que Popper se opuso. Su falibilismo enfatiza que logramos progreso sometiendo teorías a escrutinio crítico, eliminando teorías falsadas y resolviendo diferencias mediante discusión crítica en lugar de coerción.
+
+5.3 La postura popperiana auténtica
+La postura auténtica es:
+
+"Propongo esta teoría como una conjetura. Creo que ilumina fenómenos importantes. La he probado rigurosamente contra la evidencia disponible y ha sobrevivido. Sin embargo, reconozco que no poseo la Verdad, y permanezco abierto a que se me muestre equivocado de formas que actualmente no puedo anticipar."
+
+Esto no es una falla en especificar condiciones de falsación —es el reconocimiento de que tal especificación sería en sí misma dogmática.
+
+6. Implicaciones para la práctica científica
+6.1 Cómo se manifiesta la falsabilidad genuina
+La ciencia genuinamente falsable se caracteriza por:
+
+Honestidad intelectual sobre limitaciones e incertidumbres
+
+Apertura a la crítica desde ámbitos inesperados
+
+Disposición a revisar incluso compromisos fundamentales
+
+Ausencia de hipótesis auxiliares protectoras que inmunicen el núcleo
+
+Reconocimiento de que la teoría actual es provisional
+
+Nótese que ninguna de estas requiere especificación anticipada de condiciones de falsación. Son actitudes y prácticas, no protocolos.
+
+7. Implicaciones filosóficas
+7.1 El problema de la auto-aplicación
+Una objeción clásica: "¿Es la falsabilidad misma falsable?"
+
+Respuesta de la interpretación protocolaria: "No, por lo tanto es autorrefutante."
+
+Respuesta de la falsabilidad genuina: "La falsabilidad como actitud no requiere falsación más de lo que la honestidad requiere pruebas deshonestas. Es un compromiso de nivel meta con la apertura intelectual, no una teoría de nivel objeto."
+
+El falsacionismo no es en sí mismo falsable, y Popper reconoció esto, señalando que no importa si quiere hacer filosófica a la ciencia. La queja de los críticos revela su propia confusión: están tratando la falsabilidad como si fuera una teoría empírica que requiere los mismos estándares que propone para la ciencia, en lugar de un ideal regulativo para la práctica científica.
+
+7.2 La verdad como ideal regulativo
+La verdad se convierte en el ideal regulativo que hace posible la acción del científico y le da significado, mediante un proceso constantemente evolutivo de eliminación de lo falso.
+
+Este movimiento kantiano —la verdad como principio regulativo más que constitutivo— es esencial. Perseguimos la verdad como si pudiéramos alcanzarla, mientras sabemos que nunca lo haremos. Esto no es cinismo, sino madurez epistémica.
+
+8. Conclusión: recuperando la humildad radical de Popper
+El criterio de falsabilidad de Karl Popper ha sido domesticado —transformado de un desafío radical al dogmatismo en una cómoda lista de verificación metodológica. La "interpretación protocolaria" que domina las discusiones contemporáneas reinstaura irónicamente el mismo hubris epistémico que Popper buscó demoler.
+
+Correctamente entendida, la falsabilidad no se trata de especificar condiciones bajo las cuales uno sería demostrado equivocado. Se trata de admitir que uno podría estar equivocado, sin pretender saber exactamente cómo o cuándo esto se manifestará. Es una virtud epistémica —humildad intelectual— no un procedimiento metodológico.
+
+La idea clave es esta: el dogmatismo entra no cuando fallas en especificar cómo podrías estar equivocado, sino cuando reclamas controlar los términos de tu posible equivocación. La falsabilidad genuina requiere renunciar a ese control —admitir que la realidad podría contradecirte de formas que actualmente no puedes imaginar.
+
+Como enfatizó Popper, la democracia es valiosa no porque la mayoría siempre tenga razón, sino porque permite cambiar el gobierno sin derramamiento de sangre, tal como la ciencia progresa sometiendo teorías a escrutinio crítico en lugar de defenderlas dogmáticamente. Tanto la sociedad abierta como la ciencia abierta requieren el mismo compromiso fundamental: la voluntad de estar equivocado.
+
+El reconocimiento de que nuestras teorías son lecturas de la realidad, no posesiones de la verdad, es precisamente lo que hace posible el conocimiento genuino. Esta humildad radical —lejos de debilitar la empresa científica— la fortalece al mantenerla honesta, abierta y siempre en movimiento hacia una comprensión más profunda, aunque nunca definitiva, del mundo.
+
+Referencias
+Popper, K. R. (1935). Logik der Forschung: Zur Erkenntnistheorie der modernen Naturwissenschaft. Viena: Julius Springer.
+
+Popper, K. R. (1959). The Logic of Scientific Discovery. Londres: Hutchinson.
+
+Popper, K. R. (1945). The Open Society and Its Enemies (Vols. 1-2). Londres: Routledge.
+
+Popper, K. R. (1963). Conjectures and Refutations: The Growth of Scientific Knowledge. Londres: Routledge.

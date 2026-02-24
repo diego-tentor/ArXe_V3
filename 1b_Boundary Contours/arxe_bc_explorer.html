@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArXe — Boundary Condition Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0b0d12;
+  --surface: #111318;
+  --surface2: #161921;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #c8cdd8;
+  --dim: #545a68;
+  --bright: #e8ecf4;
+
+  --closed: #3b82f6;
+  --open: #f97316;
+  --prime-c: #22c55e;
+  --warn: #eab308;
+  --red: #ef4444;
+  --purple: #a855f7;
+
+  --serif: 'Crimson Pro', Georgia, serif;
+  --mono: 'Fira Code', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.logo {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--bright);
+}
+.logo em { color: var(--open); font-style: normal; }
+.header-right {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.tab {
+  padding: 0.7rem 1.4rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--bright); border-bottom-color: var(--open); }
+
+/* PANELS */
+.panel { display: none; padding: 2rem; max-width: 1140px; margin: 0 auto; }
+.panel.active { display: block; }
+
+/* SECTION TITLE */
+.sec-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--bright);
+  margin-bottom: 0.3rem;
+}
+.sec-sub {
+  font-size: 0.68rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.8rem;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* ══════════════════════════════════════════════
+   TAB 1 — BC STRUCTURE EXPLORER
+══════════════════════════════════════════════ */
+
+.explorer-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Arity selector */
+.arity-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.arity-header {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.arity-list { padding: 0.5rem 0; }
+.arity-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-align: left;
+  transition: all 0.16s;
+}
+.arity-btn:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+.arity-btn.active { color: var(--bright); border-left-color: var(--open); background: rgba(249,115,22,0.05); }
+.arity-n { font-size: 1rem; font-family: var(--serif); font-style: italic; min-width: 26px; }
+.arity-info { display: flex; flex-direction: column; gap: 1px; }
+.arity-level { font-size: 0.65rem; }
+.arity-physics { font-size: 0.58rem; color: var(--dim); }
+.arity-btn.active .arity-physics { color: rgba(249,115,22,0.7); }
+
+/* BC display */
+.bc-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.stat-box {
+  background: var(--surface);
+  padding: 1rem;
+  text-align: center;
+}
+.stat-val {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-style: italic;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.stat-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* BC grid visual */
+.bc-grid-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.2rem;
+}
+.bc-grid-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+.bc-matrix {
+  display: grid;
+  gap: 3px;
+}
+.bc-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  cursor: default;
+  transition: transform 0.15s;
+  position: relative;
+}
+.bc-cell:hover { transform: scale(1.15); z-index: 10; }
+.bc-cell.closed { background: rgba(59,130,246,0.7); border: 1px solid rgba(59,130,246,0.9); }
+.bc-cell.open   { background: rgba(249,115,22,0.7); border: 1px solid rgba(249,115,22,0.9); }
+.bc-cell.diag   { background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+
+/* BC legend */
+.bc-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.8rem;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  color: var(--dim);
+}
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 1px;
+}
+
+/* Description block */
+.desc-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--open);
+  padding: 1rem 1.2rem;
+}
+.desc-block p {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+.desc-block p + p { margin-top: 0.6rem; }
+.desc-block strong { color: var(--bright); }
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  padding: 0.5rem 0.8rem;
+  font-size: 0.7rem;
+  pointer-events: none;
+  z-index: 100;
+  display: none;
+  color: var(--bright);
+  max-width: 200px;
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════════════════
+   TAB 2 — LEVEL ASSIGNMENT
+══════════════════════════════════════════════ */
+
+.assign-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Phenomenon selector */
+.phenom-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.phenom-header {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.phenom-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-align: left;
+  transition: all 0.16s;
+  border-bottom: 1px solid var(--border);
+}
+.phenom-btn:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+.phenom-btn.active { color: var(--bright); background: rgba(255,255,255,0.03); }
+.phenom-complexity {
+  margin-left: auto;
+  font-size: 0.6rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+  white-space: nowrap;
+}
+.phenom-btn.active .phenom-complexity { border-color: var(--open); color: var(--open); }
+
+/* Assignment result */
+.assign-result {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Sufficiency ladder */
+.ladder {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.2rem;
+}
+.ladder-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+.ladder-row {
+  display: grid;
+  grid-template-columns: 60px 50px 70px 80px 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.75rem;
+  transition: background 0.15s;
+  position: relative;
+}
+.ladder-row:last-child { border-bottom: none; }
+.ladder-row.primary { background: rgba(249,115,22,0.06); }
+.lad-level { font-family: var(--serif); font-style: italic; color: var(--bright); }
+.lad-n { color: var(--dim); }
+.lad-bc { font-size: 0.72rem; }
+.lad-status {
+  font-size: 0.6rem;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.status-insuff { color: var(--red); border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.06); }
+.status-primary { color: var(--open); border-color: rgba(249,115,22,0.5); background: rgba(249,115,22,0.08); }
+.status-excess { color: var(--dim); border-color: var(--border); }
+.status-skip { color: var(--dim); border-color: var(--border); font-style: italic; }
+.lad-note { font-size: 0.65rem; color: var(--dim); }
+
+/* BC fill bar */
+.fill-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 14px;
+}
+.fill-bar-bg {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fill-bar-inner {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.fill-bar-num { font-size: 0.6rem; color: var(--dim); min-width: 28px; text-align: right; }
+
+/* Conclusion card */
+.concl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--open);
+  padding: 1.2rem;
+}
+.concl-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--bright);
+  margin-bottom: 0.8rem;
+}
+.concl-parts { display: flex; flex-direction: column; gap: 0.5rem; }
+.concl-part {
+  display: flex;
+  gap: 0.8rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.02);
+}
+.concl-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  min-width: 90px;
+  padding-top: 0.1rem;
+}
+.concl-text { color: var(--text); font-family: var(--serif); font-size: 0.88rem; line-height: 1.6; }
+.c-necessity { color: var(--red); }
+.c-parsimony { color: var(--prime-c); }
+.c-contingency { color: var(--purple); }
+
+/* ══════════════════════════════════════════════
+   TAB 3 — GAUGE SYMMETRY
+══════════════════════════════════════════════ */
+
+.gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 2rem;
+}
+.gauge-card {
+  background: var(--surface);
+  padding: 1.4rem;
+  cursor: pointer;
+  transition: background 0.16s;
+  border-bottom: 3px solid transparent;
+}
+.gauge-card:hover { background: var(--surface2); }
+.gauge-card.active { background: var(--surface2); }
+.gc-group { font-family: var(--serif); font-style: italic; font-size: 1.6rem; color: var(--bright); margin-bottom: 0.3rem; }
+.gc-name { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.8rem; }
+.gc-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.gc-row:last-child { border: none; }
+.gc-key { color: var(--dim); }
+.gc-val { color: var(--text); }
+
+.gauge-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-top: 1rem;
+  display: none;
+  animation: fadeUp 0.25s ease;
+}
+.gauge-detail.visible { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.gd-header {
+  background: var(--surface2);
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.gd-group { font-family: var(--serif); font-style: italic; font-size: 1.8rem; color: var(--bright); }
+.gd-formula { font-size: 0.75rem; color: var(--open); letter-spacing: 0.05em; }
+.gd-body {
+  padding: 1.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.gd-col h4 {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.7rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+}
+.gd-col p {
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* BC open visual — gauge generator */
+.open-bc-vis {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+.obc-dot {
+  width: 18px; height: 18px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+}
+
+/* ══════════════════════════════════════════════
+   TAB 4 — FORMULA VERIFIER
+══════════════════════════════════════════════ */
+
+.formula-wrap {
+  max-width: 700px;
+}
+.formula-intro {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+.formula-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.formula-input-row label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
+.f-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.6rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--bright);
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.f-input:focus { border-color: var(--open); }
+.f-btn {
+  padding: 0.6rem 1.4rem;
+  background: var(--open);
+  border: none;
+  color: #000;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.f-btn:hover { background: #fb923c; }
+
+.presets-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.preset-f {
+  padding: 0.3rem 0.8rem;
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.16s;
+}
+.preset-f:hover { border-color: var(--open); color: var(--open); }
+
+.verif-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: none;
+}
+.verif-result.visible { display: block; }
+.verif-header {
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.verif-expr { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--bright); }
+.verif-verdict {
+  font-size: 0.62rem;
+  padding: 0.2rem 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+.verdict-valid   { color: var(--prime-c); border-color: rgba(34,197,94,0.5);  background: rgba(34,197,94,0.06); }
+.verdict-partial { color: var(--warn);    border-color: rgba(234,179,8,0.5);   background: rgba(234,179,8,0.06); }
+.verdict-invalid { color: var(--red);     border-color: rgba(239,68,68,0.5);   background: rgba(239,68,68,0.06); }
+
+.verif-checks {
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--bg);
+}
+.verif-check {
+  background: var(--surface);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.75rem;
+}
+.vc-icon { font-size: 0.85rem; flex-shrink: 0; margin-top: 0.05rem; }
+.vc-text { flex: 1; line-height: 1.5; }
+.vc-label { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.2rem; }
+
+/* MISC */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+@media (max-width: 720px) {
+  .explorer-layout, .assign-layout, .gd-body { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .ladder-row { grid-template-columns: 50px 40px 1fr; }
+  .lad-bc, .lad-note { display: none; }
+  .panel { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Ar<em>X</em>e — Boundary Condition Explorer</div>
+  <div class="header-right">BC(n) = (n−1)(n−2)/2</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-panel="structure">BC Structure</button>
+  <button class="tab" data-panel="assignment">Level Assignment</button>
+  <button class="tab" data-panel="gauge">Gauge Symmetry</button>
+  <button class="tab" data-panel="verifier">Necessity Proof</button>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<!-- ══════════ PANEL 1: BC STRUCTURE ══════════ -->
+<div class="panel active" id="panel-structure">
+  <div class="sec-title">Boundary Condition Structure</div>
+  <div class="sec-sub">For a system of arity n, the number of BC pairs is BC(n) = (n−1)(n−2)/2. Each cell in the matrix below represents one BC pair (i,f). Closed BCs are structurally self-contained; open BCs require connection to other levels. Hover over cells to inspect each pair.</div>
+
+  <div class="explorer-layout">
+    <div>
+      <div class="arity-panel">
+        <div class="arity-header">Select arity n</div>
+        <div class="arity-list" id="arity-list"></div>
+      </div>
+    </div>
+
+    <div class="bc-display" id="bc-display"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 2: LEVEL ASSIGNMENT ══════════ -->
+<div class="panel" id="panel-assignment">
+  <div class="sec-title">Level Assignment: Necessity vs Contingency</div>
+  <div class="sec-sub">A phenomenon F with observable complexity C requires a level k such that BC(n(k)) ≥ C. The primary level is the minimal k satisfying this condition — not arbitrary, but structurally necessary. Select a phenomenon to see why it lives where it does.</div>
+
+  <div class="assign-layout">
+    <div class="phenom-list">
+      <div class="phenom-header">Physical phenomena</div>
+      <div id="phenom-list"></div>
+    </div>
+    <div class="assign-result" id="assign-result"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 3: GAUGE SYMMETRY ══════════ -->
+<div class="panel" id="panel-gauge">
+  <div class="sec-title">Open BC → Gauge Symmetry</div>
+  <div class="sec-sub">Open boundary conditions generate gauge freedom. The number of open BCs at a level determines the gauge group dimension. This is not a postulate — it follows from the structure of odd-arity systems, which necessarily possess at least one open BC.</div>
+
+  <div class="gauge-grid" id="gauge-grid"></div>
+  <div class="gauge-detail" id="gauge-detail"></div>
+</div>
+
+<!-- ══════════ PANEL 4: NECESSITY PROOF ══════════ -->
+<div class="panel" id="panel-verifier">
+  <div class="sec-title">Structural Necessity Verifier</div>
+  <div class="sec-sub">Enter a phenomenon and its complexity C, or choose a preset, to see the full necessity proof: which levels are structurally insufficient, which is primary (minimal sufficient), and which exhibit excess structure.</div>
+
+  <div class="formula-wrap">
+    <p class="formula-intro">
+      The Theorem of Structural Necessity states: if BC(n(k)) &lt; C<sub>F</sub>, then phenomenon F <em>cannot</em> manifest primarily at level k. This is not a probabilistic claim or a convention — it is a structural impossibility. Enter a complexity value C below.
+    </p>
+
+    <div class="formula-input-row">
+      <label>Complexity C</label>
+      <input type="number" class="f-input" id="c-input" value="45" min="1" max="500" style="max-width:120px">
+      <label>Name</label>
+      <input type="text" class="f-input" id="name-input" value="QED" style="max-width:140px">
+      <button class="f-btn" id="prove-btn">Prove</button>
+    </div>
+
+    <div class="presets-row">
+      <button class="preset-f" data-c="1"  data-name="Frequency">C=1 (Frequency)</button>
+      <button class="preset-f" data-c="6"  data-name="2D Space">C=6 (2D Space)</button>
+      <button class="preset-f" data-c="15" data-name="QCD Color">C=15 (QCD Color)</button>
+      <button class="preset-f" data-c="45" data-name="QED">C=45 (QED)</button>
+      <button class="preset-f" data-c="66" data-name="Weak Force">C=66 (Weak)</button>
+      <button class="preset-f" data-c="105" data-name="Generations">C=105 (Generations)</button>
+    </div>
+
+    <div class="verif-result" id="verif-result"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────
+
+const ARITIES = [
+  { n:3,  k:-1, level:'T⁻¹', physics:'Observer, π, gauge', color:'#f97316' },
+  { n:5,  k:-2, level:'T⁻²', physics:'Curvature, inertia', color:'#3b82f6' },
+  { n:7,  k:-3, level:'T⁻³', physics:'QCD Color', color:'#22c55e' },
+  { n:11, k:-5, level:'T⁻⁵', physics:'Electromagnetism (QED)', color:'#a855f7' },
+  { n:13, k:-6, level:'T⁻⁶', physics:'Weak interaction', color:'#eab308' },
+  { n:17, k:-8, level:'T⁻⁸', physics:'Particle generations', color:'#06b6d4' },
+  { n:19, k:-9, level:'T⁻⁹', physics:'Dark matter', color:'#6366f1' },
+];
+
+const PHENOMENA = [
+  { name:'Frequency / Observer', C:1,  kp:-1, physics:'T⁻¹ (n=3)', desc:'The minimal distinction: something happening vs not. A single BC pair is all that is needed to support a binary oscillation. This is the ternary level — observer, included middle, gauge seed.' },
+  { name:'2D Space', C:6, kp:-2, physics:'T⁻² (n=5)', desc:'Two independent spatial degrees of freedom require 6 BC pairs. Curvature and inertia emerge at this level. This is also where the golden ratio φ appears structurally.' },
+  { name:'QCD Color', C:15, kp:-3, physics:'T⁻³ (n=7)', desc:'Color confinement requires 15 BC pairs — exactly BC(7). The 7-arity system has 2 closed and 1 open BC, generating the SU(3) gauge structure with 3 color charges.' },
+  { name:'Mass / Objectivity', C:10, kp:3,  physics:'T³ (n=7)', desc:'The positive-k level T³ provides structural closure for mass. With 3 closed BCs, it supports stable, isolated massive objects — the ontological foundation of measurement.' },
+  { name:'QED (Electromagnetism)', C:45, kp:-5, physics:'T⁻⁵ (n=11)', desc:'QED complexity (1 gauge interaction, 1 conserved charge, infinite renormalization loops) requires exactly BC(11) = 45 pairs. k=-5 is the first level where this becomes structurally possible.' },
+  { name:'Weak Interaction', C:66, kp:-6, physics:'T⁻⁶ (n=13)', desc:'The weak force requires 66 BC pairs, corresponding to BC(13). Its level is structurally above QED, which is why electroweak unification involves mixing between T⁻⁵ and T⁻⁶.' },
+  { name:'Particle Generations', C:105, kp:-8, physics:'T⁻⁸ (n=17)', desc:'Three generations of fermions with hierarchical mass scales require the spectral structure of BC(17) = 120. The excess structure (120 vs 105) encodes the mass hierarchy between generations.' },
+];
+
+const GAUGE = [
+  {
+    group: 'SU(3)',
+    name: 'Quantum Chromodynamics',
+    n: 7, k: -3,
+    openBC: 2, closedBC: 1, totalBC: 15,
+    dimension: 8,
+    colors: 3,
+    coupling: 'α_s ≈ 0.12',
+    formula: 'BC(7) = 15, open = 2',
+    color: '#22c55e',
+    desc: 'SU(3) has 8 generators and 3 color charges. In ArXe, the 7-ary level (T⁻³) has 2 open boundary conditions, generating the gauge freedom that corresponds to the 3-color symmetry of QCD. Color confinement emerges because the open BCs cannot be observed in isolation.',
+    openExplan: 'The 2 open BCs at n=7 generate the 3-color gauge freedom. Quarks carry color charge because they occupy states that span the open boundary — they cannot be "closed" without involving another quark or gluon.',
+  },
+  {
+    group: 'U(1)',
+    name: 'Quantum Electrodynamics',
+    n: 11, k: -5,
+    openBC: 1, closedBC: 4, totalBC: 45,
+    dimension: 1,
+    colors: 1,
+    coupling: 'α ≈ 1/137',
+    formula: 'BC(11) = 45, open = 1',
+    color: '#a855f7',
+    desc: 'U(1) has 1 generator and encodes electric charge. At level T⁻⁵ (n=11), there is exactly 1 open boundary condition, generating the single phase rotation of U(1) gauge invariance. The fine structure constant α ≈ 1/137 encodes the structural depth of this level.',
+    openExplan: 'The single open BC at n=11 is the minimum possible for an odd-arity system. It generates exactly one gauge degree of freedom — the electromagnetic phase — and nothing more. This is why QED is Abelian.',
+  },
+  {
+    group: 'SU(2)',
+    name: 'Weak Interaction',
+    n: 13, k: -6,
+    openBC: 1, closedBC: 5, totalBC: 66,
+    dimension: 3,
+    colors: 2,
+    coupling: 'g_w ≈ 0.65',
+    formula: 'BC(13) = 66, open = 1',
+    color: '#eab308',
+    desc: 'SU(2) has 3 generators and governs isospin. At level T⁻⁶ (n=13), 1 open BC generates the gauge freedom for the weak force. The proximity of T⁻⁵ and T⁻⁶ reflects electroweak unification: at high energies, the EM and weak forces merge because their BC structures overlap.',
+    openExplan: 'Like QED, the weak force has 1 open BC at its primary level. But n=13 provides 66 total BC (vs 45 for n=11), giving the weak force more structural complexity — reflected in its non-Abelian nature and parity violation.',
+  },
+];
+
+// ─── UTILITIES ─────────────────────────────────────────────────
+
+const BC = n => (n-1)*(n-2)/2;
+const isPrime = n => { if (n<2) return false; for(let i=2;i<=Math.sqrt(n);i++) if(n%i===0) return false; return true; }
+
+const LEVELS_FOR_PROOF = [
+  { k:-1, n:3,  label:'T⁻¹', physics:'Observer, π' },
+  { k:-2, n:5,  label:'T⁻²', physics:'Curvature' },
+  { k:-3, n:7,  label:'T⁻³', physics:'QCD Color' },
+  { k:null, n:null, label:'k=-4', physics:'(does not exist — 4 not valid prime index)' },
+  { k:-5, n:11, label:'T⁻⁵', physics:'Electromagnetism' },
+  { k:-6, n:13, label:'T⁻⁶', physics:'Weak interaction' },
+  { k:-7, n:null, label:'k=-7', physics:'(does not exist)' },
+  { k:-8, n:17, label:'T⁻⁸', physics:'Particle generations' },
+  { k:-9, n:19, label:'T⁻⁹', physics:'Dark matter' },
+];
+
+// ─── TAB 1: BC STRUCTURE ───────────────────────────────────────
+
+function buildArityList() {
+  const list = document.getElementById('arity-list');
+  ARITIES.forEach((a, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'arity-btn' + (i===0?' active':'');
+    btn.dataset.idx = i;
+    btn.innerHTML = `
+      <span class="arity-n" style="color:${a.color}">${a.n}</span>
+      <span class="arity-info">
+        <span class="arity-level">${a.level} · k=${a.k}</span>
+        <span class="arity-physics">${a.physics}</span>
+      </span>
+    `;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.arity-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBCDisplay(a);
+    });
+    list.appendChild(btn);
+  });
+}
+
+function renderBCDisplay(a) {
+  const n = a.n;
+  const total = BC(n);
+  const openBC = n % 2 === 1 ? 1 : 0; // simplified: odd arity → 1 open BC minimum
+  const closedBC = total - openBC;
+  const display = document.getElementById('bc-display');
+
+  // Descriptions
+  const descs = {
+    3:  'n=3 is the first non-trivial arity. A single BC pair exists, and being odd-arity, it is necessarily open. This corresponds to T⁻¹: the observer level, where mediation and gauge freedom first appear. π emerges here via ternary geometry.',
+    5:  'n=5 provides 6 BC pairs. The 5-ary system can achieve partial closure, supporting the curvature and inertia structures of T⁻². The appearance of the golden ratio φ at this level reflects the self-similar structure of Markov processes.',
+    7:  'n=7 provides 15 BC pairs — exactly enough for QCD color structure. Two closed and one open BC generate the 3-color SU(3) gauge freedom. The heptagon\'s non-constructibility reflects the confinement of color charge.',
+    11: 'n=11 provides exactly 45 BC pairs — the minimal structure required by QED. Four closed and one open BC generate U(1) gauge invariance. This is why the fine structure constant encodes the structural depth of the 11-th prime level.',
+    13: 'n=13 provides 66 BC pairs, hosting the weak interaction. Its proximity to n=11 reflects the electroweak proximity: these two levels mix at high energies, with the additional structure (66 vs 45) encoding the non-Abelian character of SU(2).',
+    17: 'n=17 provides 120 BC pairs — far exceeding the minimal requirements of any single known force. This structural excess encodes the spectral separation of particle generations: different mass scales occupy different sub-structures within the 120 available BCs.',
+    19: 'n=19 provides 153 BC pairs and is associated with dark matter. Its structural depth (beyond the EM and weak levels) explains why dark matter does not interact electromagnetically: it lacks the required BC coupling to lower levels.',
+  };
+
+  display.innerHTML = `
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-val" style="color:${a.color}">${n}</div>
+        <div class="stat-label">Arity n</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">${total}</div>
+        <div class="stat-label">Total BC pairs</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--closed)">${closedBC}</div>
+        <div class="stat-label">Closed BC</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--open)">${openBC}</div>
+        <div class="stat-label">Open BC (min)</div>
+      </div>
+    </div>
+
+    <div class="bc-grid-wrap">
+      <div class="bc-grid-title">BC pair matrix — ${n}×${n} (hover to inspect)</div>
+      <div class="bc-matrix" id="bc-matrix" style="grid-template-columns:repeat(${n},1fr);max-width:${Math.min(n*36+20, 520)}px"></div>
+      <div class="bc-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(59,130,246,0.7)"></div>Closed BC</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(249,115,22,0.7)"></div>Open BC</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.04)"></div>Self (diagonal)</div>
+      </div>
+    </div>
+
+    <div class="desc-block">
+      <p><strong>BC(${n}) = (${n}−1)(${n}−2)/2 = ${total}</strong></p>
+      <p>${descs[n] || `n=${n} provides ${total} BC pairs with ${openBC} open BC.`}</p>
+    </div>
+  `;
+
+  // Build matrix
+  const matrix = document.getElementById('bc-matrix');
+  let pairIdx = 0;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const cell = document.createElement('div');
+      cell.className = 'bc-cell';
+      if (i === j) {
+        cell.classList.add('diag');
+      } else if (i < j) {
+        pairIdx++;
+        const isOpen = pairIdx <= openBC;
+        cell.classList.add(isOpen ? 'open' : 'closed');
+        cell.dataset.i = i+1;
+        cell.dataset.j = j+1;
+        cell.dataset.open = isOpen;
+        cell.addEventListener('mouseenter', (e) => showTooltip(e, `BC pair (${i+1}, ${j+1})\nType: ${isOpen ? 'Open — requires external connection' : 'Closed — self-contained'}`));
+        cell.addEventListener('mouseleave', hideTooltip);
+      } else {
+        cell.classList.add('diag');
+      }
+      matrix.appendChild(cell);
+    }
+  }
+}
+
+// ─── TAB 2: LEVEL ASSIGNMENT ───────────────────────────────────
+
+function buildPhenomList() {
+  const list = document.getElementById('phenom-list');
+  PHENOMENA.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'phenom-btn' + (i===0?' active':'');
+    btn.dataset.idx = i;
+    btn.innerHTML = `
+      <span>${p.name}</span>
+      <span class="phenom-complexity">C = ${p.C}</span>
+    `;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.phenom-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAssignment(p);
+    });
+    list.appendChild(btn);
+  });
+}
+
+function renderAssignment(p) {
+  const result = document.getElementById('assign-result');
+
+  const maxBC = 200;
+  const ladderRows = LEVELS_FOR_PROOF.map(lv => {
+    if (!lv.n) {
+      return `<div class="ladder-row">
+        <span class="lad-level" style="color:var(--dim)">${lv.label}</span>
+        <span class="lad-n" style="color:var(--dim)">—</span>
+        <span class="lad-bc"></span>
+        <span class="lad-status status-skip">skipped</span>
+        <span class="lad-note">${lv.physics}</span>
+      </div>`;
+    }
+    const bc = BC(lv.n);
+    const sufficient = bc >= p.C;
+    const primary = lv.k === p.kp;
+    const pct = Math.min(100, Math.round(bc / maxBC * 100));
+    const cPct = Math.min(100, Math.round(p.C / maxBC * 100));
+    const statusCls = !sufficient ? 'status-insuff' : primary ? 'status-primary' : 'status-excess';
+    const statusTxt = !sufficient ? 'insufficient' : primary ? 'primary ★' : 'excess';
+    const rowClass = primary ? 'ladder-row primary' : 'ladder-row';
+    const barColor = !sufficient ? 'var(--red)' : primary ? 'var(--orange)' : 'var(--dim)';
+
+    return `<div class="${rowClass}">
+      <span class="lad-level">${lv.label}</span>
+      <span class="lad-n">n=${lv.n}</span>
+      <span class="lad-bc">
+        <div class="fill-bar-wrap">
+          <div class="fill-bar-bg">
+            <div class="fill-bar-inner" style="width:${pct}%;background:${barColor}"></div>
+          </div>
+          <span class="fill-bar-num">${bc}</span>
+        </div>
+      </span>
+      <span class="lad-status ${statusCls}">${statusTxt}</span>
+      <span class="lad-note">${lv.physics}${primary ? ' ← primary level' : ''}</span>
+    </div>`;
+  }).join('');
+
+  const primaryLv = LEVELS_FOR_PROOF.find(lv => lv.k === p.kp);
+
+  result.innerHTML = `
+    <div class="ladder">
+      <div class="ladder-title">Structural sufficiency analysis · C = ${p.C}</div>
+      <div class="ladder-row" style="opacity:0.5;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase">
+        <span>Level</span><span>Arity</span>
+        <span>BC(n) <span style="color:var(--open)">━</span> <span style="color:var(--dim)">━</span> req'd</span>
+        <span>Status</span><span>Physics</span>
+      </div>
+      ${ladderRows}
+    </div>
+
+    <div class="concl-card">
+      <div class="concl-title">${p.name}</div>
+      <div class="concl-parts">
+        <div class="concl-part">
+          <span class="concl-label c-necessity">Necessity</span>
+          <span class="concl-text">${p.name} <strong>cannot</strong> manifest primarily below ${primaryLv ? primaryLv.label : '—'}: all earlier levels have BC(n) &lt; ${p.C}, which is structurally insufficient. This is a proof, not a convention.</span>
+        </div>
+        <div class="concl-part">
+          <span class="concl-label c-parsimony">Parsimony</span>
+          <span class="concl-text">${primaryLv ? primaryLv.label : '—'} is the <strong>minimal sufficient level</strong> with BC = ${primaryLv ? BC(primaryLv.n) : '—'}. Nature selects the least structure that satisfies complexity requirements (structural Occam's Razor).</span>
+        </div>
+        <div class="concl-part">
+          <span class="concl-label c-contingency">Contingency</span>
+          <span class="concl-text">${p.name} <strong>can also appear</strong> at higher levels through mixing, higher-order corrections, and unification effects. Primary assignment is necessary but not exclusive.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="desc-block" style="border-left-color:var(--prime-c)">
+      <p>${p.desc}</p>
+    </div>
+  `;
+}
+
+// ─── TAB 3: GAUGE SYMMETRY ─────────────────────────────────────
+
+function buildGaugeGrid() {
+  const grid = document.getElementById('gauge-grid');
+  GAUGE.forEach((g, i) => {
+    const card = document.createElement('div');
+    card.className = 'gauge-card';
+    card.style.borderBottomColor = 'transparent';
+    card.dataset.idx = i;
+
+    const dots = Array.from({length: g.totalBC}, (_, j) => {
+      const isOpen = j < g.openBC;
+      return `<div class="obc-dot" style="background:${isOpen ? g.color+'99' : 'rgba(255,255,255,0.08)'}"></div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="gc-group" style="color:${g.color}">${g.group}</div>
+      <div class="gc-name">${g.name}</div>
+      <div class="gc-row"><span class="gc-key">Level</span><span class="gc-val">${g.k < 0 ? 'T⁻'+Math.abs(g.k) : 'T'+g.k} (n=${g.n})</span></div>
+      <div class="gc-row"><span class="gc-key">Total BC</span><span class="gc-val">${g.totalBC}</span></div>
+      <div class="gc-row"><span class="gc-key">Open BC</span><span class="gc-val" style="color:${g.color}">${g.openBC}</span></div>
+      <div class="gc-row"><span class="gc-key">Coupling</span><span class="gc-val">${g.coupling}</span></div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.gauge-card').forEach(c=>{ c.classList.remove('active'); c.style.borderBottomColor='transparent'; });
+      card.classList.add('active');
+      card.style.borderBottomColor = g.color;
+      showGaugeDetail(g);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function showGaugeDetail(g) {
+  const detail = document.getElementById('gauge-detail');
+  const dotsAll = Array.from({length: Math.min(g.totalBC, 60)}, (_, j) => {
+    const isOpen = j < g.openBC;
+    return `<div class="obc-dot" title="${isOpen?'Open BC — generates gauge freedom':'Closed BC'}" style="background:${isOpen ? g.color : 'rgba(255,255,255,0.08)'};border:1px solid ${isOpen ? g.color : 'rgba(255,255,255,0.1)'}"></div>`;
+  }).join('') + (g.totalBC > 60 ? `<span style="font-size:0.65rem;color:var(--dim);padding:0.2rem 0.4rem">+${g.totalBC-60} more</span>` : '');
+
+  detail.classList.add('visible');
+  detail.innerHTML = `
+    <div class="gd-header">
+      <span class="gd-group" style="color:${g.color}">${g.group}</span>
+      <span class="gd-formula">${g.formula}</span>
+    </div>
+    <div class="gd-body">
+      <div class="gd-col">
+        <h4>From BC structure to gauge group</h4>
+        <p>${g.desc}</p>
+      </div>
+      <div class="gd-col">
+        <h4>Open BC mechanism</h4>
+        <p>${g.openExplan}</p>
+        <div class="open-bc-vis" style="margin-top:1rem">${dotsAll}</div>
+        <p style="margin-top:0.6rem;font-size:0.72rem;color:var(--dim)">
+          <span style="color:${g.color}">■</span> Open (${g.openBC}) &nbsp;
+          <span style="color:rgba(255,255,255,0.2)">■</span> Closed (${g.totalBC - g.openBC})
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+// ─── TAB 4: NECESSITY VERIFIER ─────────────────────────────────
+
+function runProof(C, name) {
+  const result = document.getElementById('verif-result');
+
+  const rows = LEVELS_FOR_PROOF.map(lv => {
+    if (!lv.n) {
+      return { lv, bc: null, status: 'skip' };
+    }
+    const bc = BC(lv.n);
+    return { lv, bc, status: bc < C ? 'insuff' : bc === C ? 'exact' : 'excess' };
+  });
+
+  const primaryRow = rows.find(r => r.lv.n && r.bc >= C);
+  const insuffRows = rows.filter(r => r.lv.n && r.bc < C);
+
+  const rowsHTML = rows.map(r => {
+    if (!r.lv.n) {
+      return `<div class="verif-check">
+        <span class="vc-icon" style="color:var(--dim)">—</span>
+        <div class="vc-text">
+          <div class="vc-label">Skipped level</div>
+          ${r.lv.label}: ${r.lv.physics}
+        </div>
+      </div>`;
+    }
+    const isPrimary = r === primaryRow;
+    const icon = r.bc < C ? '✗' : isPrimary ? '★' : '·';
+    const iconColor = r.bc < C ? 'var(--red)' : isPrimary ? 'var(--orange)' : 'var(--dim)';
+    const label = r.bc < C ? 'Structurally insufficient' : isPrimary ? 'Primary level (minimal sufficient)' : 'Structurally sufficient (excess)';
+    const comparison = r.bc < C
+      ? `BC(${r.lv.n}) = ${r.bc} < ${C} — cannot host ${name}`
+      : r.bc === C
+      ? `BC(${r.lv.n}) = ${r.bc} = ${C} — exactly sufficient`
+      : `BC(${r.lv.n}) = ${r.bc} > ${C} — sufficient with ${r.bc - C} excess BC`;
+
+    return `<div class="verif-check" style="${isPrimary ? 'background:rgba(249,115,22,0.06);border-left:2px solid var(--orange)' : ''}">
+      <span class="vc-icon" style="color:${iconColor}">${icon}</span>
+      <div class="vc-text">
+        <div class="vc-label">${label}</div>
+        <strong>${r.lv.label}</strong> (n=${r.lv.n}) · ${r.lv.physics}<br>
+        <span style="color:var(--dim)">${comparison}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const verdict = primaryRow ? 'valid' : 'invalid';
+  const verdictTxt = primaryRow ? `Primary level: ${primaryRow.lv.label}` : 'No sufficient level found';
+  const verdictCls = primaryRow ? 'verdict-valid' : 'verdict-invalid';
+
+  result.classList.add('visible');
+  result.innerHTML = `
+    <div class="verif-header">
+      <span class="verif-expr">${name} · C = ${C}</span>
+      <span class="verif-verdict ${verdictCls}">${verdictTxt}</span>
+    </div>
+    <div class="verif-checks">${rowsHTML}</div>
+    ${primaryRow ? `
+    <div style="padding:1rem 1.2rem;border-top:1px solid var(--border);font-family:var(--serif);font-size:0.9rem;line-height:1.8;color:var(--text)">
+      <strong style="color:var(--bright)">Conclusion:</strong>
+      ${name} <em>necessarily cannot</em> manifest primarily below ${primaryRow.lv.label} (${insuffRows.length} levels structurally insufficient).
+      It <em>must</em> appear at ${primaryRow.lv.label} at minimum (necessity + parsimony).
+      It <em>may also</em> appear at higher levels through mixing and higher-order effects (contingency).
+    </div>` : ''}
+  `;
+}
+
+// ─── TOOLTIP ───────────────────────────────────────────────────
+
+const tooltip = document.getElementById('tooltip');
+function showTooltip(e, text) {
+  tooltip.style.display = 'block';
+  tooltip.innerHTML = text.replace(/\n/g, '<br>');
+  positionTooltip(e);
+}
+function hideTooltip() { tooltip.style.display = 'none'; }
+document.addEventListener('mousemove', e => {
+  if (tooltip.style.display === 'block') positionTooltip(e);
+});
+function positionTooltip(e) {
+  tooltip.style.left = (e.clientX + 14) + 'px';
+  tooltip.style.top  = (e.clientY + 14) + 'px';
+}
+
+// ─── TABS ──────────────────────────────────────────────────────
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+  });
+});
+
+// ─── VERIFIER CONTROLS ─────────────────────────────────────────
+
+document.getElementById('prove-btn').addEventListener('click', () => {
+  const C = parseInt(document.getElementById('c-input').value);
+  const name = document.getElementById('name-input').value || 'Phenomenon';
+  if (C > 0) runProof(C, name);
+});
+
+document.querySelectorAll('.preset-f').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('c-input').value = btn.dataset.c;
+    document.getElementById('name-input').value = btn.dataset.name;
+    runProof(parseInt(btn.dataset.c), btn.dataset.name);
+  });
+});
+
+// ─── INIT ──────────────────────────────────────────────────────
+
+buildArityList();
+renderBCDisplay(ARITIES[0]);
+buildPhenomList();
+renderAssignment(PHENOMENA[0]);
+buildGaugeGrid();
+runProof(45, 'QED');
+</script>
+</body>
+</html>

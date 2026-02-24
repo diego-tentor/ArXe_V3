@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArXe — Number Identity Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f0e8;
+  --paper: #faf7f2;
+  --ink: #1a1714;
+  --dim: #8a8278;
+  --border: #d8d0c4;
+  --accent: #c0392b;
+  --blue: #2471a3;
+  --green: #1a7a4a;
+  --purple: #6c3483;
+  --orange: #ca6f1e;
+
+  --prime-color: #c0392b;
+  --sum-color: #2471a3;
+  --product-color: #1a7a4a;
+  --power-color: #6c3483;
+  --diff-color: #ca6f1e;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 1.8rem 2.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.logo span { color: var(--accent); font-style: normal; }
+.header-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #9a9590;
+}
+
+/* ── TABS ── */
+.tabs {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  gap: 0;
+}
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #7a7570;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--bg); }
+.tab-btn.active { color: var(--bg); border-bottom-color: var(--accent); }
+
+/* ── LAYOUT ── */
+.content { display: none; padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.content.active { display: block; }
+
+/* ── DECOMPOSER TAB ── */
+.decomp-header {
+  margin-bottom: 2rem;
+}
+.decomp-header h2 {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+.decomp-header p {
+  font-size: 0.78rem;
+  color: var(--dim);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* INPUT AREA */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.input-row label {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.num-input {
+  width: 100px;
+  padding: 0.6rem 0.8rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.num-input:focus { border-color: var(--accent); }
+
+.preset-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.preset-btn {
+  padding: 0.4rem 0.8rem;
+  background: none;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.preset-btn:hover { border-color: var(--ink); color: var(--ink); }
+.preset-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* MAIN RESULT AREA */
+.result-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* NUMBER IDENTITY CARD */
+.identity-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+.identity-card .big-n {
+  font-family: var(--font-serif);
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+}
+.id-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+}
+.id-row:last-child { border-bottom: none; }
+.id-key { color: var(--dim); }
+.id-val { color: var(--ink); font-weight: 500; }
+.prime-tag {
+  display: inline-block;
+  background: var(--prime-color);
+  color: white;
+  font-size: 0.58rem;
+  padding: 0.15rem 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 0.6rem;
+}
+.composite-tag {
+  display: inline-block;
+  background: var(--blue);
+  color: white;
+  font-size: 0.58rem;
+  padding: 0.15rem 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 0.6rem;
+}
+
+/* DECOMPOSITIONS */
+.decomps-area h3 {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+.decomp-type-section { margin-bottom: 1.5rem; }
+.decomp-type-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+.type-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.decomp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.decomp-item {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  padding: 0.7rem 1rem;
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.decomp-item:hover { background: white; }
+.decomp-item.selected { background: white; border-color: currentColor; }
+.decomp-expr {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+.decomp-meaning { font-size: 0.72rem; color: var(--dim); line-height: 1.5; }
+.decomp-validity {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.valid-yes { color: var(--green); border-color: var(--green); }
+.valid-no  { color: var(--accent); border-color: var(--accent); }
+.valid-partial { color: var(--orange); border-color: var(--orange); }
+
+/* DETAIL PANEL */
+.detail-panel {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--paper);
+  display: none;
+}
+.detail-panel.visible { display: block; }
+.detail-header {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.detail-header .dh-expr {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.3rem;
+}
+.detail-header .dh-type {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9a9590;
+}
+.detail-body {
+  padding: 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.detail-col h4 {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+}
+.detail-col p {
+  font-size: 0.8rem;
+  color: var(--ink);
+  line-height: 1.7;
+  font-family: var(--font-serif);
+}
+.detail-col code {
+  display: block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.72rem;
+  margin-top: 0.5rem;
+  line-height: 1.8;
+}
+
+/* VISUAL CANVAS */
+.vis-canvas-wrap {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--paper);
+  padding: 1.2rem;
+}
+.vis-canvas-wrap h3 {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+#decomp-canvas {
+  display: block;
+  width: 100%;
+  height: 120px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+/* ── CONSTANTS TAB ── */
+.constants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-top: 1.5rem;
+}
+.const-card {
+  background: var(--paper);
+  padding: 1.4rem;
+  cursor: pointer;
+  transition: background 0.18s;
+  border-left: 3px solid transparent;
+}
+.const-card:hover { background: white; }
+.const-card.selected { background: white; border-left-color: var(--accent); }
+.const-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.const-formula {
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.const-value { font-size: 0.68rem; color: var(--dim); }
+.const-desc { font-size: 0.72rem; color: var(--dim); margin-top: 0.5rem; line-height: 1.6; }
+
+.const-detail {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--paper);
+  display: none;
+}
+.const-detail.visible { display: block; }
+.cd-header {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 1rem 1.5rem;
+}
+.cd-header h2 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
+}
+.cd-header .cd-formula {
+  font-size: 0.8rem;
+  color: #e8a070;
+  letter-spacing: 0.05em;
+}
+.cd-body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+.cd-section h4 {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+}
+.term-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+.term-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.72rem;
+}
+.term-num {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: center;
+}
+.term-info { line-height: 1.4; }
+.term-level { color: var(--dim); font-size: 0.62rem; }
+
+/* VALIDITY CHECKER */
+.validity-section {
+  margin-top: 1.5rem;
+}
+.validity-section h3 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+}
+.validity-section p {
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+.validity-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+.validity-check {
+  background: var(--paper);
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.78rem;
+}
+.check-icon { font-size: 1rem; flex-shrink: 0; }
+.check-text { flex: 1; }
+.check-label { color: var(--dim); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── PHILOSOPHY TAB ── */
+.phil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.phil-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+.phil-card h3 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.phil-card p { font-size: 0.8rem; color: var(--dim); line-height: 1.75; }
+.phil-card p + p { margin-top: 0.6rem; }
+.phil-highlight {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+}
+.comparison-table th {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.comparison-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--paper);
+  vertical-align: top;
+}
+.comparison-table tr:hover td { background: white; }
+.comparison-table .framework-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+.comparison-table .arxe-row td { color: var(--accent); font-weight: 500; }
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .result-grid { grid-template-columns: 1fr; }
+  .detail-body { grid-template-columns: 1fr; }
+  .content { padding: 1.2rem; }
+  header { padding: 1.2rem; }
+}
+
+/* ANIMATE IN */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim { animation: fadeIn 0.28s ease; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Ar<span>X</span>e</div>
+  <div class="header-sub">Number-Arity Identity Explorer</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="decompose">Decomposer</button>
+  <button class="tab-btn" data-tab="constants">Physical Constants</button>
+  <button class="tab-btn" data-tab="philosophy">Philosophy</button>
+</div>
+
+<!-- ═══════════ TAB 1: DECOMPOSER ═══════════ -->
+<div class="content active" id="tab-decompose">
+  <div class="decomp-header">
+    <h2>Number Identity & Decompositions</h2>
+    <p>In ArXe, "n" <em>is</em> all that n-arity can logically mean. Every valid arithmetic decomposition of n corresponds to a possible physical configuration. Enter any number to explore its structural identity.</p>
+  </div>
+
+  <div class="input-row">
+    <label>Enter n</label>
+    <input type="number" class="num-input" id="num-input" value="7" min="1" max="99">
+    <label>Or select</label>
+    <div class="preset-btns" id="preset-btns">
+      <button class="preset-btn" data-n="3">3</button>
+      <button class="preset-btn" data-n="5">5</button>
+      <button class="preset-btn active" data-n="7">7</button>
+      <button class="preset-btn" data-n="11">11</button>
+      <button class="preset-btn" data-n="13">13</button>
+      <button class="preset-btn" data-n="77">77 (7×11)</button>
+      <button class="preset-btn" data-n="137">137 (α⁻¹)</button>
+    </div>
+  </div>
+
+  <div class="result-grid" id="result-grid"></div>
+  <div class="detail-panel" id="detail-panel"></div>
+  <div class="vis-canvas-wrap">
+    <h3>Visual Decomposition</h3>
+    <canvas id="decomp-canvas" height="120"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════ TAB 2: CONSTANTS ═══════════ -->
+<div class="content" id="tab-constants">
+  <div class="decomp-header">
+    <h2>Physical Constants as Structural Identities</h2>
+    <p>Each constant is derived from prime numbers that correspond to real ontological levels. Click any card to see the term-by-term breakdown and validity verification.</p>
+  </div>
+
+  <div class="constants-grid" id="constants-grid"></div>
+  <div class="const-detail" id="const-detail"></div>
+
+  <div class="validity-section" style="margin-top:2.5rem">
+    <h3>The Validity Criterion</h3>
+    <p>An ArXe expression is valid if and only if every number used is a fundamental prime (or prime power) corresponding to a real ontological level, and every operation carries a clear physical meaning.</p>
+    <div class="validity-checks">
+      <div class="validity-check">
+        <span class="check-icon">①</span>
+        <div class="check-text">
+          <div class="check-label">Prime / Power Requirement</div>
+          Each term must be a fundamental prime or valid power of a prime
+        </div>
+      </div>
+      <div class="validity-check">
+        <span class="check-icon">②</span>
+        <div class="check-text">
+          <div class="check-label">Level Correspondence</div>
+          Each prime p must correspond to a real level T^k where n(k) = p
+        </div>
+      </div>
+      <div class="validity-check">
+        <span class="check-icon">③</span>
+        <div class="check-text">
+          <div class="check-label">Operation Semantics</div>
+          Sum = sequential coupling · Product = simultaneous · Power = recursive · Difference = correction
+        </div>
+      </div>
+      <div class="validity-check">
+        <span class="check-icon">④</span>
+        <div class="check-text">
+          <div class="check-label">π Rule</div>
+          π appears if and only if ternary geometric ambiguity is physically present
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TAB 3: PHILOSOPHY ═══════════ -->
+<div class="content" id="tab-philosophy">
+  <div class="decomp-header">
+    <h2>Why Numbers Are Not Labels</h2>
+    <p>The Number-Arity Identity Principle resolves the numerology objection by establishing that numbers in ArXe carry zero hidden properties — their name, meaning, and structure are the same thing.</p>
+  </div>
+
+  <div class="phil-grid">
+    <div class="phil-card">
+      <h3>The Marble-and-Hole Trap</h3>
+      <p>Traditional logic says: <span class="phil-highlight">"The marble has the property of fitting in this hole."</span> This creates three ontological commitments: marble, hole, and the relation between them — three entities to explain one fact.</p>
+      <p>ArXe collapses all three into one. <span class="phil-highlight">"5" does not have the property of being five-ary. "5" IS the five-ary structure.</span> One commitment. Total transparency.</p>
+    </div>
+    <div class="phil-card">
+      <h3>Decompositional Freedom</h3>
+      <p>For any n, <span class="phil-highlight">every valid arithmetic decomposition is a valid physical configuration.</span> There is no privileged reading of a number.</p>
+      <p>5 = 5 (irreducible prime) · 5 = 3+2 (ternary + binary subsystems) · 5 = 4+1 · 5 = 2+2+1. <span class="phil-highlight">None is "more real" than the others.</span> Reality selects the configuration; the structure permits all of them.</p>
+    </div>
+    <div class="phil-card">
+      <h3>Why 7×11 and Not 8×10?</h3>
+      <p>The objection to α_s = 3π/(7×11): "Why those numbers?" <span class="phil-highlight">Because 7 and 11 are the arities of levels T⁻³ (color) and T⁻⁵ (EM).</span> A product decomposition means simultaneous coupling.</p>
+      <p>8 and 10 are not primes. They have no corresponding irreducible ontological levels. <span class="phil-highlight">They are not structurally forbidden — they are ontologically absent.</span></p>
+    </div>
+    <div class="phil-card">
+      <h3>Zero Free Parameters</h3>
+      <p>Every number in every ArXe formula for a physical constant is determined before looking at the data: it comes from the n(k) structure of the ontological hierarchy.</p>
+      <p><span class="phil-highlight">This is what distinguishes ArXe from numerology:</span> numerology selects numbers to fit. ArXe derives numbers from structure and then checks against experiment.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-serif);font-style:italic;font-size:1.1rem;margin:2rem 0 0.5rem">Comparison with Competing Frameworks</h3>
+  <p style="font-size:0.78rem;color:var(--dim);margin-bottom:0.5rem">How different philosophical positions treat the status of numbers.</p>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Framework</th>
+        <th>Number status</th>
+        <th>Ontology</th>
+        <th>Free params</th>
+        <th>Problem</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="framework-name">Platonism</td>
+        <td>Exists in ideal realm</td>
+        <td>Separate realm of forms</td>
+        <td>—</td>
+        <td>Requires 2 extra ontological commitments</td>
+      </tr>
+      <tr>
+        <td class="framework-name">Nominalism</td>
+        <td>Just a name/symbol</td>
+        <td>No reality</td>
+        <td>—</td>
+        <td>Cannot explain why mathematics works</td>
+      </tr>
+      <tr>
+        <td class="framework-name">Structuralism</td>
+        <td>Position in structure</td>
+        <td>Relations only</td>
+        <td>—</td>
+        <td>Relations still need relata</td>
+      </tr>
+      <tr>
+        <td class="framework-name">Standard Model</td>
+        <td>Labels for parameters</td>
+        <td>Unclear</td>
+        <td>~20</td>
+        <td>No explanation for why these values</td>
+      </tr>
+      <tr class="arxe-row">
+        <td class="framework-name">ArXe</td>
+        <td>Identity with structure</td>
+        <td>Transparent (1 realm)</td>
+        <td>0</td>
+        <td>— (Occam's Razor: most economical)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────
+
+const LEVELS = {
+  1:  { tk: 'T⁰',   physics: 'Temporal quantum Tf',       bc: '0/0' },
+  3:  { tk: 'T¹/T⁻¹', physics: 'Time / Observer + π',   bc: '1/0 or 0/1' },
+  5:  { tk: 'T²/T⁻²', physics: '2D Space / Curvature',   bc: '2/0 or 1/1' },
+  7:  { tk: 'T³/T⁻³', physics: 'Mass / QCD Color',       bc: '3/0 or 2/1' },
+  11: { tk: 'T⁻⁵',  physics: 'Electromagnetism, α',      bc: '4/1' },
+  13: { tk: 'T⁻⁶',  physics: 'Weak interaction, β-decay',bc: '5/1' },
+  17: { tk: 'T⁻⁸',  physics: 'Particle generations',     bc: '6/1' },
+  19: { tk: 'T⁻⁹',  physics: 'Dark matter (~532 GeV)',   bc: '7/1' },
+  23: { tk: 'T⁻¹¹', physics: 'Cosmic inflation',         bc: '8/1' },
+  29: { tk: 'T⁻¹⁴', physics: 'Dark energy, Λ',           bc: '10/1' },
+  31: { tk: 'T⁻¹⁵', physics: 'Phase transitions, chaos', bc: '11/1' },
+};
+
+function isPrime(n) {
+  if (n < 2) return false;
+  for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
+  return true;
+}
+
+function primeFactors(n) {
+  const factors = [];
+  let d = 2;
+  while (d * d <= n) {
+    while (n % d === 0) { factors.push(d); n /= d; }
+    d++;
+  }
+  if (n > 1) factors.push(n);
+  return factors;
+}
+
+function getDecompositions(n) {
+  const results = { prime: [], sum: [], product: [], power: [] };
+
+  // Irreducible (prime)
+  if (isPrime(n)) {
+    const lv = LEVELS[n];
+    results.prime.push({
+      expr: `${n}`,
+      meaning: lv ? `Irreducible ${n}-ary structure · Level ${lv.tk} · ${lv.physics}` : `Irreducible ${n}-ary structure (composite-level)`,
+      valid: lv ? 'yes' : 'partial',
+      type: 'prime',
+      detail: lv ? `${n} is a fundamental prime with a direct ontological correspondence to ${lv.tk} (${lv.physics}). It cannot be decomposed further — it represents an irreducible degree of logical complexity.` : `${n} is prime but has no named ontological level in ArXe's current table. It may correspond to a higher level not yet formalised.`,
+      terms: [{ n, role: 'Irreducible prime', level: lv ? lv.tk : '—', physics: lv ? lv.physics : 'Unknown level' }]
+    });
+  }
+
+  // Sum decompositions (a + b where both a,b > 1)
+  const sums = new Set();
+  for (let a = 2; a <= Math.floor(n / 2); a++) {
+    const b = n - a;
+    const key = [a, b].sort((x,y) => x-y).join('+');
+    if (!sums.has(key)) {
+      sums.add(key);
+      const aP = isPrime(a), bP = isPrime(b);
+      const aL = LEVELS[a], bL = LEVELS[b];
+      const valid = (aP && bP && aL && bL) ? 'yes' : (aP && bP) ? 'partial' : 'partial';
+      results.sum.push({
+        expr: `${a} + ${b}`,
+        meaning: `Sequential / subsystem coupling: ${a}-ary ${aL ? '('+aL.tk+')' : ''} + ${b}-ary ${bL ? '('+bL.tk+')' : ''}`,
+        valid,
+        type: 'sum',
+        detail: `Sum decomposition represents sequential or subsystem coupling. The ${a}-ary subsystem activates first or operates in series with the ${b}-ary subsystem. Physical example: T³ = T² + T¹ (2D space + time → 3D mass level).`,
+        terms: [
+          { n: a, role: 'First subsystem', level: aL ? aL.tk : '—', physics: aL ? aL.physics : isPrime(a) ? 'Prime, unnamed level' : 'Composite' },
+          { n: b, role: 'Second subsystem', level: bL ? bL.tk : '—', physics: bL ? bL.physics : isPrime(b) ? 'Prime, unnamed level' : 'Composite' },
+        ]
+      });
+    }
+  }
+
+  // Product decompositions (a × b)
+  for (let a = 2; a < n; a++) {
+    if (n % a === 0) {
+      const b = n / a;
+      if (b >= a) {
+        const aP = isPrime(a), bP = isPrime(b);
+        const aL = LEVELS[a], bL = LEVELS[b];
+        const valid = (aP && bP && aL && bL) ? 'yes' : (aP && bP) ? 'partial' : 'partial';
+        results.product.push({
+          expr: `${a} × ${b}`,
+          meaning: `Simultaneous coupling: ${a}-ary ${aL ? '('+aL.tk+')' : ''} × ${b}-ary ${bL ? '('+bL.tk+')' : ''}`,
+          valid,
+          type: 'product',
+          detail: `Product decomposition represents simultaneous coupling — both subsystems coexist and interact at the same level. Physical example: Photon = T⁻¹ × T⁻² (temporal × spatial oscillation). This is why α_s uses 7×11: color and EM couple simultaneously.`,
+          terms: [
+            { n: a, role: 'First coupled system', level: aL ? aL.tk : '—', physics: aL ? aL.physics : isPrime(a) ? 'Prime, unnamed level' : 'Composite' },
+            { n: b, role: 'Second coupled system', level: bL ? bL.tk : '—', physics: bL ? bL.physics : isPrime(b) ? 'Prime, unnamed level' : 'Composite' },
+          ]
+        });
+      }
+    }
+  }
+
+  // Power decompositions
+  for (let base = 2; base < n; base++) {
+    for (let exp = 2; exp <= 6; exp++) {
+      if (Math.pow(base, exp) === n) {
+        const bP = isPrime(base);
+        const bL = LEVELS[base];
+        const valid = (bP && bL) ? 'yes' : bP ? 'partial' : 'partial';
+        results.power.push({
+          expr: `${base}^${exp}`,
+          meaning: `Recursive structure: ${exp} nested levels of ${base}-ary ${bL ? '('+bL.tk+')' : ''}`,
+          valid,
+          type: 'power',
+          detail: `Power decomposition represents recursive nesting: ${exp} levels of ${base}-ary structure embedded within each other. Physical example: 3⁴ = 81 appears in muon mass formula, encoding four nested ternary couplings.`,
+          terms: [
+            { n: base, role: `Base (${exp}× nested)`, level: bL ? bL.tk : '—', physics: bL ? bL.physics : isPrime(base) ? 'Prime, unnamed level' : 'Composite' },
+          ]
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+// ─── RENDER DECOMPOSER ────────────────────────────────────────
+
+const COLORS = {
+  prime: '#c0392b',
+  sum: '#2471a3',
+  product: '#1a7a4a',
+  power: '#6c3483',
+};
+
+const TYPE_LABELS = {
+  prime: 'Irreducible',
+  sum: 'Sum  (+)  Sequential coupling',
+  product: 'Product  (×)  Simultaneous coupling',
+  power: 'Power  (^)  Recursive structure',
+};
+
+let selectedDecomp = null;
+
+function renderDecomposer(n) {
+  const grid = document.getElementById('result-grid');
+  const detailPanel = document.getElementById('detail-panel');
+  detailPanel.classList.remove('visible');
+  selectedDecomp = null;
+
+  const factors = primeFactors(n);
+  const factorStr = factors.length === 1 ? `${n} (prime)` : factors.join(' × ');
+  const lv = LEVELS[n];
+
+  // Identity card
+  let identityHTML = `
+    <div class="identity-card anim">
+      <div class="big-n">${n}</div>
+      <div class="id-row"><span class="id-key">Prime?</span><span class="id-val">${isPrime(n) ? 'Yes' : 'No'}</span></div>
+      <div class="id-row"><span class="id-key">Factorisation</span><span class="id-val">${factorStr}</span></div>
+      <div class="id-row"><span class="id-key">Level</span><span class="id-val">${lv ? lv.tk : '—'}</span></div>
+      <div class="id-row"><span class="id-key">Physics</span><span class="id-val">${lv ? lv.physics : '—'}</span></div>
+      <div class="id-row"><span class="id-key">BC</span><span class="id-val">${lv ? lv.bc : '—'}</span></div>
+      ${isPrime(n) ? `<div class="prime-tag">Prime · Irreducible level</div>` : `<div class="composite-tag">Composite · Decomposable</div>`}
+    </div>
+  `;
+
+  // Decompositions
+  const decomps = getDecompositions(n);
+  let decompsHTML = '<div class="decomps-area anim"><h3>All valid decompositions</h3>';
+
+  for (const [type, items] of Object.entries(decomps)) {
+    if (!items.length) continue;
+    const shown = items.slice(0, 6);
+    const more = items.length - shown.length;
+    decompsHTML += `
+      <div class="decomp-type-section">
+        <div class="decomp-type-label">
+          <span class="type-dot" style="background:${COLORS[type]}"></span>
+          ${TYPE_LABELS[type]}
+        </div>
+        <div class="decomp-list">
+          ${shown.map((d, i) => `
+            <div class="decomp-item" style="border-left-color:${COLORS[type]};color:${COLORS[type]}"
+                 data-type="${type}" data-idx="${i}">
+              <span class="decomp-expr" style="color:${COLORS[type]}">${d.expr}</span>
+              <span class="decomp-meaning">${d.meaning}</span>
+              <span class="decomp-validity ${d.valid === 'yes' ? 'valid-yes' : d.valid === 'no' ? 'valid-no' : 'valid-partial'}">
+                ${d.valid === 'yes' ? 'ArXe Valid' : d.valid === 'no' ? 'Invalid' : 'Partial'}
+              </span>
+            </div>
+          `).join('')}
+          ${more > 0 ? `<div class="decomp-item" style="color:var(--dim);cursor:default"><span>…and ${more} more</span></div>` : ''}
+        </div>
+      </div>
+    `;
+  }
+  decompsHTML += '</div>';
+
+  grid.innerHTML = identityHTML + decompsHTML;
+
+  // Click handlers
+  grid.querySelectorAll('.decomp-item[data-type]').forEach(el => {
+    el.addEventListener('click', () => {
+      grid.querySelectorAll('.decomp-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      const type = el.dataset.type;
+      const idx = parseInt(el.dataset.idx);
+      const d = decomps[type][idx];
+      showDecompDetail(d, COLORS[type]);
+      drawDecompVisual(n, d);
+    });
+  });
+
+  drawDecompVisual(n, null);
+}
+
+function showDecompDetail(d, color) {
+  const panel = document.getElementById('detail-panel');
+  const termsHTML = d.terms.map(t => `
+    <div class="term-row" style="background:${color}10;border-left:3px solid ${color}">
+      <span class="term-num" style="color:${color}">${t.n}</span>
+      <div class="term-info">
+        <div>${t.role}</div>
+        <div class="term-level">${t.level} · ${t.physics}</div>
+      </div>
+    </div>
+  `).join('');
+
+  panel.innerHTML = `
+    <div class="detail-header">
+      <span class="dh-expr" style="color:${color}aa">${d.expr}</span>
+      <span class="dh-type">${TYPE_LABELS[d.type]}</span>
+    </div>
+    <div class="detail-body">
+      <div class="detail-col">
+        <h4>Physical interpretation</h4>
+        <p>${d.detail}</p>
+      </div>
+      <div class="detail-col">
+        <h4>Term breakdown</h4>
+        <div class="term-breakdown">${termsHTML}</div>
+        <code>Validity: ${d.valid === 'yes' ? '✓ ArXe-valid' : d.valid === 'partial' ? '~ Partial (some terms lack level correspondence)' : '✗ Invalid'}</code>
+      </div>
+    </div>
+  `;
+  panel.classList.add('visible');
+}
+
+function drawDecompVisual(n, decomp) {
+  const canvas = document.getElementById('decomp-canvas');
+  canvas.width = canvas.offsetWidth || 800;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.fillStyle = '#f5f0e8';
+  ctx.fillRect(0, 0, W, H);
+
+  if (!decomp) {
+    // Default: show n as blocks
+    const blockW = Math.min(28, (W - 40) / n);
+    const gap = 3;
+    const total = n * blockW + (n - 1) * gap;
+    let x = (W - total) / 2;
+    const y = H / 2 - 18;
+    for (let i = 0; i < n; i++) {
+      const col = isPrime(n) ? '#c0392b' : '#2471a3';
+      ctx.fillStyle = col + 'cc';
+      ctx.fillRect(x, y, blockW, 36);
+      x += blockW + gap;
+    }
+    ctx.fillStyle = '#1a1714';
+    ctx.font = `500 11px 'IBM Plex Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`n = ${n}${isPrime(n) ? ' (prime)' : ''}`, W / 2, H - 12);
+    return;
+  }
+
+  const colors = { prime: '#c0392b', sum: '#2471a3', product: '#1a7a4a', power: '#6c3483' };
+  const col = colors[decomp.type];
+
+  if (decomp.type === 'prime') {
+    const blockW = Math.min(28, (W - 40) / n);
+    const gap = 3;
+    const total = n * blockW + (n - 1) * gap;
+    let x = (W - total) / 2;
+    const y = H / 2 - 18;
+    for (let i = 0; i < n; i++) {
+      ctx.fillStyle = col + 'cc';
+      ctx.fillRect(x, y, blockW, 36);
+      x += blockW + gap;
+    }
+  } else if (decomp.type === 'sum') {
+    const parts = decomp.expr.split('+').map(s => parseInt(s.trim()));
+    const blockW = Math.min(24, (W - 60) / n);
+    const gap = 2;
+    const total = n * blockW + (n - 1) * gap;
+    let x = (W - total) / 2;
+    const y = H / 2 - 18;
+    const partColors = ['#2471a3', '#1a7a4a', '#6c3483', '#ca6f1e'];
+    let pi = 0;
+    for (const part of parts) {
+      const c = partColors[pi % partColors.length];
+      for (let i = 0; i < part; i++) {
+        ctx.fillStyle = c + 'cc';
+        ctx.fillRect(x, y, blockW, 36);
+        x += blockW + gap;
+      }
+      // gap between parts
+      x += 6;
+      pi++;
+    }
+  } else if (decomp.type === 'product') {
+    const parts = decomp.expr.split('×').map(s => parseInt(s.trim()));
+    const [a, b] = parts;
+    const cellW = Math.min(20, (W - 60) / b);
+    const cellH = Math.min(20, (H - 40) / a);
+    const totalW = b * cellW + (b-1)*2;
+    const totalH = a * cellH + (a-1)*2;
+    const ox = (W - totalW) / 2, oy = (H - totalH) / 2;
+    for (let row = 0; row < a; row++) {
+      for (let col2 = 0; col2 < b; col2++) {
+        ctx.fillStyle = col + (row % 2 === 0 ? 'bb' : '77');
+        ctx.fillRect(ox + col2*(cellW+2), oy + row*(cellH+2), cellW, cellH);
+      }
+    }
+  } else if (decomp.type === 'power') {
+    const match = decomp.expr.match(/(\d+)\^(\d+)/);
+    if (match) {
+      const base = parseInt(match[1]), exp = parseInt(match[2]);
+      for (let e = 0; e < exp; e++) {
+        const size = 80 - e * 15;
+        const x = W/2 - size/2 + e * 8;
+        const y2 = H/2 - size/2 - e * 4;
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.3 + e * 0.15;
+        ctx.strokeRect(x, y2, size, size);
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  ctx.fillStyle = '#1a1714';
+  ctx.font = `400 11px 'IBM Plex Mono'`;
+  ctx.textAlign = 'center';
+  ctx.fillText(decomp.expr + ' — ' + (decomp.type === 'sum' ? 'Sequential' : decomp.type === 'product' ? 'Simultaneous' : decomp.type === 'power' ? 'Recursive' : 'Irreducible'), W/2, H - 10);
+}
+
+// ─── CONSTANTS DATA ───────────────────────────────────────────
+
+const CONSTANTS = [
+  {
+    name: 'Fine Structure Constant α⁻¹',
+    formula: '11² − 7² + 5×13',
+    value: '121 − 49 + 65 = 137',
+    measured: '137.036',
+    error: '~0.03%',
+    hasPi: false,
+    desc: 'The inverse fine structure constant governs the strength of EM coupling. ArXe derives it from the squared arities of EM (11²) and QCD color (7²), corrected by a product coupling of curvature (5) and weak (13).',
+    terms: [
+      { n: 11, op: 'squared', role: 'EM level (T⁻⁵)', physics: 'Electromagnetism, α', color: '#c0392b' },
+      { n: 7,  op: 'squared (subtracted)', role: 'Color level (T⁻³)', physics: 'QCD color, confinement', color: '#2471a3' },
+      { n: 5,  op: 'product with 13', role: 'Curvature level (T⁻²)', physics: 'Inertia, curvature', color: '#1a7a4a' },
+      { n: 13, op: 'product with 5', role: 'Weak level (T⁻⁶)', physics: 'Weak interaction, β-decay', color: '#6c3483' },
+    ],
+    validity: ['11 is prime → T⁻⁵ (EM) ✓', '7 is prime → T⁻³ (Color) ✓', '5 is prime → T⁻² (Curvature) ✓', '13 is prime → T⁻⁶ (Weak) ✓', '×: simultaneous coupling ✓', '−: correction/subtraction ✓', 'No π: no ternary geometric ambiguity ✓']
+  },
+  {
+    name: 'Strong Coupling α_s',
+    formula: '3π / (7 × 11)',
+    value: '3π / 77 ≈ 0.1225',
+    measured: '0.1179',
+    error: '~3.8%',
+    hasPi: true,
+    desc: 'The strong coupling constant α_s. The product 7×11 encodes the simultaneous coupling of the color level (T⁻³) and the EM level (T⁻⁵). π appears because 3-color symmetry introduces ternary geometric ambiguity.',
+    terms: [
+      { n: 3,  op: 'geometric factor with π', role: '3 colors → ternary geometry', physics: 'Color triplet, ternary symmetry', color: '#c0392b' },
+      { n: 7,  op: 'product denominator', role: 'Color level (T⁻³)', physics: 'QCD color, confinement', color: '#2471a3' },
+      { n: 11, op: 'product denominator', role: 'EM level (T⁻⁵)', physics: 'Electromagnetism, α', color: '#1a7a4a' },
+    ],
+    validity: ['3 is prime → T⁻¹ / ternary geometry ✓', '7 is prime → T⁻³ (Color) ✓', '11 is prime → T⁻⁵ (EM) ✓', '× in 7×11: simultaneous coupling ✓', 'π present: 3-color ambiguity ✓']
+  },
+  {
+    name: 'Weak Mixing sin²θ_w',
+    formula: '3 / 13',
+    value: '≈ 0.2308',
+    measured: '0.2312',
+    error: '~0.2%',
+    hasPi: false,
+    desc: 'The weak mixing angle (Weinberg angle). A pure ratio of ternary geometry (3) to the weak interaction level arity (13). Remarkable accuracy with zero free parameters.',
+    terms: [
+      { n: 3,  op: 'numerator', role: 'Ternary geometry', physics: 'Observer level T⁻¹, triangle', color: '#c0392b' },
+      { n: 13, op: 'denominator', role: 'Weak level (T⁻⁶)', physics: 'Weak interaction, β-decay', color: '#2471a3' },
+    ],
+    validity: ['3 is prime → ternary geometry ✓', '13 is prime → T⁻⁶ (Weak) ✓', '/: ratio / coupling fraction ✓', 'No π: pure algebraic ratio ✓']
+  },
+  {
+    name: 'Dark Matter mass M_DM',
+    formula: 'v × 19 / √(7×11)',
+    value: '246 × 19 / √77 ≈ 532 GeV',
+    measured: 'Not yet measured',
+    error: 'Prediction',
+    hasPi: false,
+    desc: 'Predicted dark matter candidate mass. v = 246 GeV is the electroweak VEV. 19 is the arity of the dark matter level T⁻⁹. The denominator √(7×11) encodes coupling to color and EM.',
+    terms: [
+      { n: 19, op: 'numerator scale', role: 'Dark matter level (T⁻⁹)', physics: 'Dark matter, hidden modulation', color: '#c0392b' },
+      { n: 7,  op: '√ denominator', role: 'Color level (T⁻³)', physics: 'QCD color, confinement', color: '#2471a3' },
+      { n: 11, op: '√ denominator', role: 'EM level (T⁻⁵)', physics: 'Electromagnetism, α', color: '#1a7a4a' },
+    ],
+    validity: ['19 is prime → T⁻⁹ (Dark Matter) ✓', '7 is prime → T⁻³ (Color) ✓', '11 is prime → T⁻⁵ (EM) ✓', '√(7×11): geometric mean of simultaneous coupling ✓', 'v = 246 GeV: EW scale (external input) ~']
+  },
+  {
+    name: 'Muon/Electron mass ratio',
+    formula: '3⁴ + 40π + …',
+    value: '81 + 125.7 ≈ 206.7',
+    measured: '206.77',
+    error: '~0.03%',
+    hasPi: true,
+    desc: 'The ratio of muon to electron mass. 3⁴ encodes four nested ternary levels (recursive structure). The π term captures the geometric coupling at the muon\'s additional level.',
+    terms: [
+      { n: 3,  op: 'base of power 3⁴', role: 'Ternary base', physics: 'Observer / ternary geometry T⁻¹', color: '#c0392b' },
+      { n: 4,  op: 'exponent (recursive depth)', role: 'Four nested ternary levels', physics: 'Recursive 3-ary structure', color: '#2471a3' },
+    ],
+    validity: ['3 is prime → T⁻¹ ✓', '3⁴: recursive nesting (power decomp) ✓', 'π present: geometric coupling ✓', '4 as exponent: depth of recursion ✓']
+  },
+];
+
+function renderConstants() {
+  const grid = document.getElementById('constants-grid');
+  grid.innerHTML = CONSTANTS.map((c, i) => `
+    <div class="const-card" data-idx="${i}">
+      <div class="const-name">${c.name}</div>
+      <div class="const-formula">${c.formula}</div>
+      <div class="const-value">${c.value} · Measured: ${c.measured} · Error: ${c.error}</div>
+      <div class="const-desc">${c.desc.slice(0, 100)}…</div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.const-card').forEach(el => {
+    el.addEventListener('click', () => {
+      grid.querySelectorAll('.const-card').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      showConstDetail(CONSTANTS[parseInt(el.dataset.idx)]);
+    });
+  });
+}
+
+function showConstDetail(c) {
+  const detail = document.getElementById('const-detail');
+  const termsHTML = c.terms.map(t => `
+    <div class="term-row" style="background:${t.color}10;border-left:3px solid ${t.color}">
+      <span class="term-num" style="color:${t.color}">${t.n}</span>
+      <div class="term-info">
+        <div>${t.role} · <em>${t.op}</em></div>
+        <div class="term-level">${t.physics}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const validHTML = c.validity.map(v => `
+    <div class="validity-check" style="padding:0.5rem 0.8rem">
+      <span class="check-icon">${v.includes('✓') ? '✓' : v.includes('~') ? '~' : '✗'}</span>
+      <span>${v.replace('✓','').replace('~','').replace('✗','').trim()}</span>
+    </div>
+  `).join('');
+
+  detail.innerHTML = `
+    <div class="cd-header">
+      <h2>${c.name}</h2>
+      <div class="cd-formula">${c.formula} = ${c.value}</div>
+    </div>
+    <div class="cd-body">
+      <div class="cd-section">
+        <h4>Description</h4>
+        <p style="font-family:var(--font-serif);font-size:0.88rem;line-height:1.8;color:var(--ink)">${c.desc}</p>
+        <p style="margin-top:0.8rem;font-size:0.72rem;color:var(--dim)">Measured: <strong>${c.measured}</strong> · ArXe: <strong>${c.value.split('≈')[1] || c.value}</strong> · Error: <strong>${c.error}</strong></p>
+      </div>
+      <div class="cd-section">
+        <h4>Term breakdown</h4>
+        <div class="term-breakdown">${termsHTML}</div>
+      </div>
+      <div class="cd-section" style="grid-column:1/-1">
+        <h4>ArXe Validity Checks</h4>
+        <div style="display:flex;flex-direction:column;gap:1px;background:var(--border)">${validHTML}</div>
+      </div>
+    </div>
+  `;
+  detail.classList.add('visible');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ─── TABS ────────────────────────────────────────────────────
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ─── INPUT HANDLERS ──────────────────────────────────────────
+
+const numInput = document.getElementById('num-input');
+numInput.addEventListener('input', () => {
+  const n = parseInt(numInput.value);
+  if (n > 0 && n < 200) {
+    document.querySelectorAll('.preset-btn').forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.n) === n);
+    });
+    renderDecomposer(n);
+  }
+});
+
+document.getElementById('preset-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.preset-btn');
+  if (!btn) return;
+  const n = parseInt(btn.dataset.n);
+  numInput.value = n;
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDecomposer(n);
+});
+
+// ─── INIT ────────────────────────────────────────────────────
+
+renderDecomposer(7);
+renderConstants();
+</script>
+</body>
+</html>

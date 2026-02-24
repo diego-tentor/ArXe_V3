@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArXe — Gauge as Ontological Indecidability</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #08090c;
+  --s1: #0f1116;
+  --s2: #14161d;
+  --border: rgba(255,255,255,0.07);
+  --b2: rgba(255,255,255,0.12);
+  --text: #b8bcc8;
+  --dim: #4a5060;
+  --bright: #e4e8f4;
+
+  --u1: #818cf8;   /* indigo — EM */
+  --su2: #34d399;  /* emerald — Weak */
+  --su3: #fb923c;  /* orange — Color/QCD */
+  --open-c: #f43f5e;
+  --closed-c: #64748b;
+
+  --serif: 'Spectral', Georgia, serif;
+  --mono: 'Space Mono', monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.logo { font-family: var(--serif); font-size: 1.3rem; font-style: italic; color: var(--bright); }
+.logo b { color: var(--open-c); font-style: normal; font-weight: 400; }
+.hdr-tag { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); }
+
+/* ── TABS ── */
+.tabs { display: flex; background: var(--s1); border-bottom: 1px solid var(--border); }
+.tab {
+  padding: 0.65rem 1.3rem;
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--bright); border-bottom-color: var(--open-c); }
+
+/* ── PANELS ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── COMMON ── */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+.sec-h {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--bright);
+  margin-bottom: 0.3rem;
+}
+.sec-sub {
+  font-size: 0.68rem;
+  color: var(--dim);
+  line-height: 1.7;
+  max-width: 580px;
+  margin-bottom: 2rem;
+  letter-spacing: 0.03em;
+}
+.tag {
+  display: inline-block;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid;
+}
+
+/* ════════════════════════════════════════
+   TAB 1 — GAUGE COLLAPSE SIMULATOR
+════════════════════════════════════════ */
+.sim-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr 280px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Selector */
+.gauge-sel { background: var(--s1); border: 1px solid var(--border); }
+.gsel-hdr { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+.gsel-btn {
+  display: flex; align-items: center; gap: 0.7rem;
+  width: 100%; padding: 0.75rem 1rem;
+  background: none; border: none; border-left: 3px solid transparent;
+  cursor: pointer; color: var(--dim);
+  font-family: var(--mono); font-size: 0.72rem;
+  text-align: left; transition: all 0.16s;
+  border-bottom: 1px solid var(--border);
+}
+.gsel-btn:last-child { border-bottom: none; }
+.gsel-btn:hover { background: rgba(255,255,255,0.02); color: var(--text); }
+.gsel-btn.active { color: var(--bright); background: rgba(255,255,255,0.03); }
+.gsel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.gsel-info { display: flex; flex-direction: column; gap: 1px; }
+.gsel-name { font-size: 0.75rem; }
+.gsel-sub { font-size: 0.58rem; color: var(--dim); }
+
+/* Canvas area */
+.canvas-area {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.canvas-area canvas {
+  display: block;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.sim-controls {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.sim-btn {
+  padding: 0.45rem 1rem;
+  background: none;
+  border: 1px solid var(--b2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.sim-btn:hover { border-color: var(--open-c); color: var(--open-c); }
+.sim-btn.primary { background: var(--open-c); border-color: var(--open-c); color: #000; }
+.sim-btn.primary:hover { background: #fb7185; }
+
+.sim-status {
+  margin-left: auto;
+  font-size: 0.58rem;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Info panel */
+.info-panel { background: var(--s1); border: 1px solid var(--border); }
+.ip-hdr {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.ip-body { padding: 1rem; }
+.ip-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.72rem;
+}
+.ip-row:last-child { border-bottom: none; }
+.ip-key { color: var(--dim); }
+.ip-val { color: var(--bright); }
+.ip-desc {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+.ip-desc strong { color: var(--bright); }
+.ip-phase-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--open-c);
+  margin-top: 0.8rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border);
+}
+
+/* Phase labels (bottom of canvas) */
+.phase-labels {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.6rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+}
+
+/* ════════════════════════════════════════
+   TAB 2 — COMPARISON (3 gauges side by side)
+════════════════════════════════════════ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 2rem;
+}
+.cmp-card { background: var(--s1); padding: 1.2rem; }
+.cmp-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+.cmp-group {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.cmp-meta { display: flex; flex-direction: column; gap: 2px; }
+.cmp-level { font-size: 0.65rem; color: var(--dim); }
+.cmp-prime { font-size: 0.6rem; }
+.cmp-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  font-size: 0.7rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.cmp-row:last-child { border: none; }
+.cmp-k { color: var(--dim); }
+.cmp-v { color: var(--text); }
+.cmp-canvas-wrap { margin: 0.8rem 0; }
+.cmp-desc {
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text);
+  border-left: 2px solid;
+  padding-left: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+/* versus table */
+.versus-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+.versus-col {
+  background: var(--s1);
+  padding: 1.2rem;
+}
+.versus-col h3 {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.versus-row {
+  padding: 0.4rem 0;
+  font-size: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  display: flex;
+  gap: 0.5rem;
+}
+.versus-row:last-child { border: none; }
+.vr-icon { flex-shrink: 0; }
+.vr-text { font-family: var(--serif); line-height: 1.6; }
+
+/* ════════════════════════════════════════
+   TAB 3 — CONFINEMENT
+════════════════════════════════════════ */
+.conf-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.conf-card { background: var(--s1); border: 1px solid var(--border); padding: 1.2rem; }
+.conf-card h3 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.conf-canvas { display: block; width: 100%; background: var(--bg); border: 1px solid var(--border); margin: 0.8rem 0; }
+.conf-btn {
+  padding: 0.4rem 0.9rem;
+  background: none;
+  border: 1px solid var(--b2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+  margin-top: 0.3rem;
+}
+.conf-btn:hover { border-color: var(--su3); color: var(--su3); }
+.conf-desc {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--text);
+  margin-top: 0.8rem;
+}
+.conf-desc strong { color: var(--bright); }
+
+/* ════════════════════════════════════════
+   TAB 4 — PREDICTIONS
+════════════════════════════════════════ */
+.pred-timeline {
+  position: relative;
+  padding-left: 2.5rem;
+}
+.pred-timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.pred-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  transition: border-color 0.2s;
+}
+.pred-item:hover { border-color: var(--b2); }
+.pred-dot {
+  position: absolute;
+  left: -2rem;
+  top: 1.1rem;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+.pred-status {
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.confirmed { color: #22c55e; }
+.predicted { color: var(--open-c); }
+.pred-prime { font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--bright); }
+.pred-name { font-size: 0.75rem; color: var(--dim); margin-top: 0.2rem; }
+.pred-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+.pred-col h4 { font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.4rem; }
+.pred-col p { font-family: var(--serif); font-size: 0.82rem; line-height: 1.65; color: var(--text); }
+
+/* MISC */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); }
+
+@media (max-width: 800px) {
+  .sim-layout { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .conf-layout { grid-template-columns: 1fr; }
+  .pred-body { grid-template-columns: 1fr; }
+  .versus-grid { grid-template-columns: 1fr; }
+  .wrap { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Ar<b>X</b>e — <em>Gauge as Ontological Indecidability</em></div>
+  <div class="hdr-tag">Open BC → Gauge freedom · February 2026</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="sim">Collapse Simulator</button>
+  <button class="tab" data-p="compare">Three Gauges</button>
+  <button class="tab" data-p="confinement">Confinement</button>
+  <button class="tab" data-p="predictions">Predictions</button>
+</div>
+
+<!-- ══ TAB 1: COLLAPSE SIMULATOR ══ -->
+<div class="panel active" id="panel-sim">
+<div class="wrap">
+  <div class="sec-h">Gauge Collapse Simulator</div>
+  <div class="sec-sub">Before measurement, all phases coexist — this is not a mathematical convention but an ontological state. The open BC makes all configurations equally real. Click "Measure / Fix Gauge" to see the BC close and one phase collapse into reality.</div>
+
+  <div class="sim-layout">
+    <div class="gauge-sel">
+      <div class="gsel-hdr">Select gauge</div>
+      <button class="gsel-btn active" data-g="u1">
+        <span class="gsel-dot" style="background:var(--u1)"></span>
+        <span class="gsel-info">
+          <span class="gsel-name" style="color:var(--u1)">U(1)</span>
+          <span class="gsel-sub">EM · Prime 11 · T⁻⁵</span>
+        </span>
+      </button>
+      <button class="gsel-btn" data-g="su2">
+        <span class="gsel-dot" style="background:var(--su2)"></span>
+        <span class="gsel-info">
+          <span class="gsel-name" style="color:var(--su2)">SU(2)</span>
+          <span class="gsel-sub">Weak · Prime 13 · T⁻⁶</span>
+        </span>
+      </button>
+      <button class="gsel-btn" data-g="su3">
+        <span class="gsel-dot" style="background:var(--su3)"></span>
+        <span class="gsel-info">
+          <span class="gsel-name" style="color:var(--su3)">SU(3)</span>
+          <span class="gsel-sub">Color · Prime 7 · T⁻³</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="canvas-area">
+      <canvas id="sim-canvas" height="300"></canvas>
+      <div class="sim-controls">
+        <button class="sim-btn" id="btn-reset">Reset (open BC)</button>
+        <button class="sim-btn primary" id="btn-measure">Measure / Fix Gauge</button>
+        <span class="sim-status" id="sim-status">STATE: Open BC · All phases coexist</span>
+      </div>
+      <div class="phase-labels" id="phase-labels"></div>
+    </div>
+
+    <div class="info-panel">
+      <div class="ip-hdr">Current gauge</div>
+      <div class="ip-body" id="ip-body"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ TAB 2: THREE GAUGES ══ -->
+<div class="panel" id="panel-compare">
+<div class="wrap">
+  <div class="sec-h">The Three Gauge Groups</div>
+  <div class="sec-sub">U(1), SU(2), SU(3) are not arbitrary choices — they emerge from the prime structure of levels T⁻⁵, T⁻⁶, T⁻³. Each has exactly 1 open BC, but the context (continuous phase, doublet, color triplet) determines which group structure results.</div>
+
+  <div class="compare-grid" id="compare-grid"></div>
+
+  <div style="margin-top:2rem">
+    <div class="sec-h" style="font-size:1.1rem">Standard Physics vs ArXe</div>
+    <div style="margin-top:0.8rem" class="versus-grid">
+      <div class="versus-col">
+        <h3 style="color:var(--dim)">Standard Physics</h3>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--dim)">·</span><span class="vr-text">Gauge = mathematical redundancy in how we write equations</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--dim)">·</span><span class="vr-text">Groups U(1), SU(2), SU(3) chosen because they match experiment</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--dim)">·</span><span class="vr-text">Confinement explained by non-Abelian QCD dynamics</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--dim)">·</span><span class="vr-text">Gauge fixing = choosing a mathematical convention</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--dim)">·</span><span class="vr-text">~19 free parameters with no structural explanation</span></div>
+      </div>
+      <div class="versus-col">
+        <h3 style="color:var(--open-c)">ArXe</h3>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--open-c)">→</span><span class="vr-text">Gauge = ontological indecidability — universe cannot choose between equivalent phases</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--open-c)">→</span><span class="vr-text">Groups emerge from primes 11, 13, 7 and their open BC structure — zero free parameters</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--open-c)">→</span><span class="vr-text">Confinement = ternary open BC that logically cannot close in isolation</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--open-c)">→</span><span class="vr-text">Gauge fixing = ontological collapse — closing an open BC</span></div>
+        <div class="versus-row"><span class="vr-icon" style="color:var(--open-c)">→</span><span class="vr-text">Groups are necessary consequences of exentation structure</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ TAB 3: CONFINEMENT ══ -->
+<div class="panel" id="panel-confinement">
+<div class="wrap">
+  <div class="sec-h">Why Confinement?</div>
+  <div class="sec-sub">Color is confined; electromagnetism is not. ArXe explains this asymmetry: T⁻³ (color) has a ternary open BC that cannot close alone — it requires R+G+B to form a colorless singlet. T⁻⁵ (EM) has an open BC that can be fixed externally, allowing free propagation.</div>
+
+  <div class="conf-layout">
+    <div class="conf-card">
+      <h3 style="color:var(--su3)">SU(3) Color — Confined</h3>
+      <canvas class="conf-canvas" id="conf-su3" height="220"></canvas>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="conf-btn" id="btn-pull-quark">Try to isolate quark</button>
+        <button class="conf-btn" id="btn-hadron">Form hadron (R+G+B)</button>
+        <button class="conf-btn" id="btn-reset-su3">Reset</button>
+      </div>
+      <div class="conf-desc">
+        The ternary open BC at T⁻³ cannot close by itself. A lone quark would leave an open BC exposed — <strong>this is structurally impossible.</strong> The universe forces color to combine: R+G+B → white (closed BC). Confinement is not a force — it is a logical necessity of the BC structure.
+      </div>
+    </div>
+
+    <div class="conf-card">
+      <h3 style="color:var(--u1)">U(1) EM — Not Confined</h3>
+      <canvas class="conf-canvas" id="conf-u1" height="220"></canvas>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="conf-btn" id="btn-em-free">Emit photon (free)</button>
+        <button class="conf-btn" id="btn-em-fix">Fix gauge externally</button>
+        <button class="conf-btn" id="btn-reset-u1">Reset</button>
+      </div>
+      <div class="conf-desc">
+        The single open BC at T⁻⁵ can be <strong>closed externally</strong> — by a detector, by interaction with charge, or by gauge fixing. Crucially, a photon can propagate with its BC still open (undetermined phase), which is why EM has infinite range. No structural prohibition on isolation exists.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ TAB 4: PREDICTIONS ══ -->
+<div class="panel" id="panel-predictions">
+<div class="wrap">
+  <div class="sec-h">Testable Predictions</div>
+  <div class="sec-sub">If open BC generate gauge symmetry, then every level T^k with k &lt; 0 should correspond to a gauge structure. Three are confirmed. The framework predicts structures at higher primes — falsifiable by experiment.</div>
+
+  <div class="pred-timeline" id="pred-timeline"></div>
+</div>
+</div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────
+
+const GAUGES = {
+  u1: {
+    name: 'U(1)', force: 'Electromagnetism', prime: 11, level: 'T⁻⁵', k: -5,
+    openBC: 1, closedBC: 4, totalBC: 45,
+    color: '#818cf8',
+    indecidability: 'Continuous phase θ ∈ [0, 2π)',
+    phases: ['θ=0', 'θ=π/4', 'θ=π/2', 'θ=3π/4', 'θ=π', 'θ=5π/4', 'θ=3π/2', 'θ=7π/4'],
+    consequence: 'Massless photon, infinite range',
+    bcStructure: '4 closed / 1 open',
+    collapseDesc: 'When you measure the photon\'s phase, the open BC closes and a specific θ is selected. Before measurement, all phases are equally real — not a superposition of our ignorance, but genuine ontological indecidability.',
+    openState: 'All phases θ ∈ [0,2π) coexist simultaneously. The electron\'s field has no "correct" phase — gauge invariance is not a convention but a reflection of this indecidability.',
+  },
+  su2: {
+    name: 'SU(2)', force: 'Weak Interaction', prime: 13, level: 'T⁻⁶', k: -6,
+    openBC: 1, closedBC: 5, totalBC: 66,
+    color: '#34d399',
+    indecidability: 'Doublet state: (νₑ, e⁻) or (u, d)',
+    phases: ['νₑ', 'e⁻', '|νₑ⟩+|e⁻⟩', 'cos α|νₑ⟩', 'sin β|e⁻⟩', '|mix 1⟩', '|mix 2⟩', '|mix 3⟩'],
+    consequence: 'Massive W±, Z bosons · Short range · Parity violation',
+    bcStructure: '5 closed / 1 open',
+    collapseDesc: 'Before weak interaction, the lepton state is genuinely undecided between νₑ and e⁻. The W± exchange closes the open BC — not choosing between two known states but actualising one from a prior indecidability.',
+    openState: 'Is it a neutrino or an electron? Before the weak interaction closes the BC, there is no answer — not because we don\'t know, but because the universe hasn\'t decided.',
+  },
+  su3: {
+    name: 'SU(3)', force: 'QCD Color', prime: 7, level: 'T⁻³', k: -3,
+    openBC: 1, closedBC: 2, totalBC: 15,
+    color: '#fb923c',
+    indecidability: 'Color permutation: R, G, B',
+    phases: ['Red', 'Green', 'Blue', 'R+G', 'G+B', 'R+B', 'RGB→white'],
+    consequence: 'Confinement · Asymptotic freedom · Gluons',
+    bcStructure: '2 closed / 1 open',
+    collapseDesc: 'There is no intrinsic reason to call one quark "red" rather than "green". SU(3) gauge freedom is this indecidability made precise. The open BC cannot close alone — confinement is the universe\'s only way to close it.',
+    openState: 'Which quark is red? Which is green? There is no fact of the matter — all color permutations are simultaneously real. This is not a labeling freedom; it is an ontological truth.',
+  }
+};
+
+const PREDICTIONS = [
+  { prime: 7, level: 'T⁻³', group: 'SU(3)', force: 'QCD Color', status: 'confirmed', color: '#fb923c',
+    std: 'SU(3) with 3 colors and 8 gluons', arxe: 'Prime 7, 2 closed / 1 open BC → ternary indecidability → color triplet. Confinement = ternary BC cannot close alone.', note: 'Confirmed experimentally' },
+  { prime: 11, level: 'T⁻⁵', group: 'U(1)', force: 'EM', status: 'confirmed', color: '#818cf8',
+    std: 'U(1) with 1 photon', arxe: 'Prime 11, 4 closed / 1 open BC → continuous phase → circle S¹. α⁻¹ = 11² − 7² + 5×13 = 137.', note: 'Confirmed experimentally' },
+  { prime: 13, level: 'T⁻⁶', group: 'SU(2)', force: 'Weak', status: 'confirmed', color: '#34d399',
+    std: 'SU(2) with W±, Z', arxe: 'Prime 13, 5 closed / 1 open BC → doublet indecidability → sphere S³. Electroweak mixing with T⁻⁵.', note: 'Confirmed experimentally' },
+  { prime: 17, level: 'T⁻⁸', group: '?', force: 'Hyperspace / Generations', status: 'predicted', color: '#f59e0b',
+    std: 'No SM explanation for 3 generations', arxe: 'Prime 17, 6 closed / 1 open BC → spectral gauge structure. Predicts a gauge symmetry associated with generation number — possibly broken at accessible energies.', note: 'Testable at future colliders' },
+  { prime: 19, level: 'T⁻⁹', group: '?', force: 'Dark Matter gauge', status: 'predicted', color: '#6366f1',
+    std: 'Dark matter gauge structure unknown', arxe: 'Prime 19, 7 closed / 1 open BC → hidden gauge group. Dark matter at ~532 GeV couples to this structure, which is why it does not interact with T⁻⁵ (EM).', note: 'Testable at LHC/FCC if M_DM ≈ 532 GeV' },
+  { prime: 23, level: 'T⁻¹¹', group: '?', force: 'Inflationary gauge', status: 'predicted', color: '#ec4899',
+    std: 'Inflation requires a scalar inflaton field — no gauge explanation', arxe: 'Prime 23, 8 closed / 1 open BC → fractal gauge structure. Self-similar open BC generates exponential expansion. Leaves imprint in CMB tensor modes.', note: 'Testable via CMB B-mode polarization' },
+];
+
+// ─── SIM CANVAS ────────────────────────────────────────────
+
+let simGauge = 'u1';
+let simState = 'open'; // open | collapsing | closed
+let simPhase = null;
+let animFrame = null;
+let spinAngle = 0;
+let collapseT = 0;
+
+function getCanvas(id) {
+  const c = document.getElementById(id);
+  c.width = c.offsetWidth * devicePixelRatio;
+  c.height = parseInt(c.getAttribute('height')) * devicePixelRatio;
+  c.style.height = c.getAttribute('height') + 'px';
+  return c;
+}
+
+function drawSim() {
+  const g = GAUGES[simGauge];
+  const canvas = document.getElementById('sim-canvas');
+  canvas.width = canvas.offsetWidth;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.36;
+
+  if (simGauge === 'u1') drawU1(ctx, cx, cy, R, g, W, H);
+  else if (simGauge === 'su2') drawSU2(ctx, cx, cy, R, g, W, H);
+  else drawSU3(ctx, cx, cy, R, g, W, H);
+}
+
+function drawU1(ctx, cx, cy, R, g, W, H) {
+  const phases = 24;
+  const alpha = simState === 'open' ? 0.18 + 0.08 * Math.sin(spinAngle * 0.8) : 0;
+
+  // Background glow ring
+  const grad = ctx.createRadialGradient(cx, cy, R*0.6, cx, cy, R*1.2);
+  grad.addColorStop(0, 'rgba(129,140,248,0.06)');
+  grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad;
+  ctx.beginPath(); ctx.arc(cx, cy, R*1.2, 0, Math.PI*2); ctx.fill();
+
+  if (simState === 'open') {
+    // All phases coexist — spinning ring of arrows
+    for (let i = 0; i < phases; i++) {
+      const a = (i / phases) * Math.PI * 2 + spinAngle * 0.3;
+      const x = cx + Math.cos(a) * R;
+      const y = cy + Math.sin(a) * R;
+      const fade = 0.35 + 0.25 * Math.sin(a * 3 + spinAngle);
+      ctx.strokeStyle = `rgba(129,140,248,${fade})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI*2); ctx.stroke();
+
+      // Phase arrow
+      const ax = cx + Math.cos(a) * (R + 20);
+      const ay = cy + Math.sin(a) * (R + 20);
+      ctx.strokeStyle = `rgba(129,140,248,${fade * 0.5})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(ax, ay); ctx.stroke();
+    }
+
+    // Orbit ring
+    ctx.strokeStyle = 'rgba(129,140,248,0.2)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Center label
+    ctx.fillStyle = 'rgba(129,140,248,0.6)';
+    ctx.font = `12px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText('e^(iθ)', cx, cy + 4);
+    ctx.font = `9px 'Space Mono'`;
+    ctx.fillStyle = 'rgba(129,140,248,0.35)';
+    ctx.fillText('θ ∈ [0, 2π)', cx, cy + 18);
+
+  } else if (simState === 'collapsing') {
+    const t = collapseT;
+    const selectedAngle = simPhase;
+
+    for (let i = 0; i < phases; i++) {
+      const a = (i / phases) * Math.PI * 2;
+      const dist = Math.abs(a - selectedAngle) % (Math.PI*2);
+      const d = Math.min(dist, Math.PI*2 - dist);
+      const fade = Math.max(0, (1 - t) * (1 - d / Math.PI));
+      if (fade < 0.01) continue;
+      const x = cx + Math.cos(a) * R * (1 - t * 0.5);
+      const y = cy + Math.sin(a) * R * (1 - t * 0.5);
+      ctx.strokeStyle = `rgba(129,140,248,${fade})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(x, y, 6 * (1-t*0.5), 0, Math.PI*2); ctx.stroke();
+    }
+
+    const px = cx + Math.cos(selectedAngle) * R;
+    const py = cy + Math.sin(selectedAngle) * R;
+    ctx.fillStyle = `rgba(129,140,248,${t})`;
+    ctx.beginPath(); ctx.arc(px, py, 8 + t * 4, 0, Math.PI*2); ctx.fill();
+
+  } else {
+    // Closed — single phase
+    const a = simPhase;
+    const px = cx + Math.cos(a) * R;
+    const py = cy + Math.sin(a) * R;
+
+    ctx.strokeStyle = 'rgba(129,140,248,0.15)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 5]);
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = '#818cf8';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+
+    ctx.fillStyle = '#818cf8';
+    ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.font = `9px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText('θ', px, py + 3);
+
+    ctx.fillStyle = '#818cf8';
+    ctx.font = `10px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`θ = ${(a * 180 / Math.PI).toFixed(0)}°`, cx, cy + 4);
+    ctx.font = `9px 'Space Mono'`;
+    ctx.fillStyle = 'rgba(129,140,248,0.5)';
+    ctx.fillText('BC closed · gauge fixed', cx, cy + 18);
+  }
+}
+
+function drawSU2(ctx, cx, cy, R, g, W, H) {
+  const states = [
+    { label: 'νₑ', x: cx - R, y: cy, col: '#34d399' },
+    { label: 'e⁻', x: cx + R, y: cy, col: '#f43f5e' },
+  ];
+
+  if (simState === 'open') {
+    // Both states coexist — connected with oscillating line
+    const osc = Math.sin(spinAngle * 1.5);
+
+    ctx.strokeStyle = `rgba(52,211,153,0.25)`;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.moveTo(states[0].x, states[0].y); ctx.lineTo(states[1].x, states[1].y); ctx.stroke();
+    ctx.setLineDash([]);
+
+    states.forEach((s, i) => {
+      const a = i === 0 ? 0.5 + osc * 0.3 : 0.5 - osc * 0.3;
+      const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 35);
+      grd.addColorStop(0, s.col + '60');
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 35, 0, Math.PI*2); ctx.fill();
+
+      ctx.strokeStyle = s.col;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = a;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 20, 0, Math.PI*2); ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      ctx.fillStyle = s.col;
+      ctx.font = `bold 11px 'Space Mono'`;
+      ctx.textAlign = 'center';
+      ctx.fillText(s.label, s.x, s.y + 4);
+    });
+
+    ctx.fillStyle = 'rgba(52,211,153,0.5)';
+    ctx.font = `9px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText('open BC: both states coexist', cx, cy + 55);
+    ctx.fillText('α|νₑ⟩ + β|e⁻⟩', cx, cy + 68);
+
+  } else if (simState === 'collapsing') {
+    const chosen = simPhase > 0 ? 1 : 0;
+    const other = 1 - chosen;
+    const t = collapseT;
+
+    states.forEach((s, i) => {
+      const a = i === chosen ? t : 1-t;
+      ctx.strokeStyle = s.col;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = a;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 20 + (i===chosen ? t*8 : 0), 0, Math.PI*2); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = s.col + (i===chosen ? 'ff' : '44');
+      ctx.font = `bold 11px 'Space Mono'`;
+      ctx.textAlign = 'center';
+      ctx.fillText(s.label, s.x, s.y + 4);
+    });
+
+  } else {
+    const chosen = simPhase > 0 ? 1 : 0;
+    const s = states[chosen];
+    const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 40);
+    grd.addColorStop(0, s.col + '50');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(s.x, s.y, 40, 0, Math.PI*2); ctx.fill();
+
+    ctx.strokeStyle = s.col;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(s.x, s.y, 24, 0, Math.PI*2); ctx.stroke();
+    ctx.fillStyle = s.col;
+    ctx.font = `bold 13px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText(s.label, s.x, s.y + 5);
+
+    ctx.fillStyle = 'rgba(52,211,153,0.5)';
+    ctx.font = `9px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText('W± exchange closed BC', cx, cy + 55);
+    ctx.fillText(`→ collapsed to ${s.label}`, cx, cy + 68);
+  }
+}
+
+function drawSU3(ctx, cx, cy, R, g, W, H) {
+  const colors3 = [
+    { label: 'R', col: '#ef4444', angle: -Math.PI/2 },
+    { label: 'G', col: '#22c55e', angle: -Math.PI/2 + 2*Math.PI/3 },
+    { label: 'B', col: '#3b82f6', angle: -Math.PI/2 + 4*Math.PI/3 },
+  ];
+
+  const pts = colors3.map(c => ({
+    ...c,
+    x: cx + Math.cos(c.angle) * R * 0.75,
+    y: cy + Math.sin(c.angle) * R * 0.75,
+  }));
+
+  if (simState === 'open') {
+    // All colors spinning, connected, coexisting
+    const rot = spinAngle * 0.4;
+    const rpts = pts.map(p => ({
+      ...p,
+      x: cx + Math.cos(p.angle + rot) * R * 0.75,
+      y: cy + Math.sin(p.angle + rot) * R * 0.75,
+    }));
+
+    for (let i = 0; i < rpts.length; i++) {
+      for (let j = i+1; j < rpts.length; j++) {
+        const grad = ctx.createLinearGradient(rpts[i].x, rpts[i].y, rpts[j].x, rpts[j].y);
+        grad.addColorStop(0, rpts[i].col + '40');
+        grad.addColorStop(1, rpts[j].col + '40');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4,4]);
+        ctx.beginPath(); ctx.moveTo(rpts[i].x, rpts[i].y); ctx.lineTo(rpts[j].x, rpts[j].y); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    rpts.forEach(p => {
+      const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 30);
+      grd.addColorStop(0, p.col + '60'); grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 30, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = p.col;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 18, 0, Math.PI*2); ctx.stroke();
+      ctx.fillStyle = p.col;
+      ctx.font = `bold 11px 'Space Mono'`;
+      ctx.textAlign = 'center';
+      ctx.fillText(p.label, p.x, p.y + 4);
+    });
+
+    ctx.fillStyle = 'rgba(251,146,60,0.5)';
+    ctx.font = `9px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText('No intrinsic reason to prefer R over G over B', cx, cy + R + 10);
+
+  } else if (simState === 'collapsing') {
+    const sel = Math.floor((simPhase % (Math.PI*2)) / (Math.PI*2/3));
+    pts.forEach((p, i) => {
+      const t = collapseT;
+      const a = i === sel ? t : 1-t;
+      ctx.strokeStyle = p.col;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = Math.max(0, a);
+      ctx.beginPath(); ctx.arc(p.x, p.y, 18 + (i===sel ? t*6 : 0), 0, Math.PI*2); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = p.col + (i===sel ? 'ff' : '33');
+      ctx.font = `bold 11px 'Space Mono'`;
+      ctx.textAlign = 'center';
+      ctx.fillText(p.label, p.x, p.y + 4);
+    });
+
+  } else {
+    const sel = Math.floor((simPhase % (Math.PI*2)) / (Math.PI*2/3));
+    pts.forEach((p, i) => {
+      const active = i === sel;
+      const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, active ? 32 : 16);
+      grd.addColorStop(0, p.col + (active ? '60' : '15'));
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(p.x, p.y, active ? 32 : 16, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = p.col;
+      ctx.lineWidth = active ? 2.5 : 1;
+      ctx.globalAlpha = active ? 1 : 0.3;
+      ctx.beginPath(); ctx.arc(p.x, p.y, active ? 22 : 16, 0, Math.PI*2); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = p.col + (active ? 'ff' : '44');
+      ctx.font = `bold 11px 'Space Mono'`;
+      ctx.textAlign = 'center';
+      ctx.fillText(p.label, p.x, p.y + 4);
+    });
+    const sp = pts[sel];
+    ctx.fillStyle = 'rgba(251,146,60,0.5)';
+    ctx.font = `9px 'Space Mono'`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`"${pts[sel].label}" selected — BC closed`, cx, cy + R + 10);
+    ctx.fillText('(but other quarks now constrained)', cx, cy + R + 23);
+  }
+}
+
+// ── Animate ──────────────────────────────────────────────
+
+function animLoop() {
+  spinAngle += 0.03;
+  if (simState === 'collapsing') {
+    collapseT = Math.min(1, collapseT + 0.025);
+    if (collapseT >= 1) {
+      simState = 'closed';
+      updateStatus();
+    }
+  }
+  drawSim();
+  animFrame = requestAnimationFrame(animLoop);
+}
+
+function startAnim() {
+  if (animFrame) cancelAnimationFrame(animFrame);
+  animLoop();
+}
+
+function updateStatus() {
+  const el = document.getElementById('sim-status');
+  if (simState === 'open') el.textContent = 'STATE: Open BC · All phases coexist';
+  else if (simState === 'collapsing') el.textContent = 'STATE: Collapsing · BC closing…';
+  else el.textContent = 'STATE: Closed BC · Gauge fixed';
+}
+
+function updateInfoPanel() {
+  const g = GAUGES[simGauge];
+  document.getElementById('ip-body').innerHTML = `
+    <div class="ip-row"><span class="ip-key">Group</span><span class="ip-val" style="color:${g.color}">${g.name}</span></div>
+    <div class="ip-row"><span class="ip-key">Force</span><span class="ip-val">${g.force}</span></div>
+    <div class="ip-row"><span class="ip-key">Level</span><span class="ip-val">${g.level} (k=${g.k})</span></div>
+    <div class="ip-row"><span class="ip-key">Prime</span><span class="ip-val">${g.prime}</span></div>
+    <div class="ip-row"><span class="ip-key">BC structure</span><span class="ip-val">${g.bcStructure}</span></div>
+    <div class="ip-row"><span class="ip-key">Indecidability</span><span class="ip-val">${g.indecidability}</span></div>
+    <div class="ip-row"><span class="ip-key">Consequence</span><span class="ip-val">${g.consequence}</span></div>
+    <div class="ip-phase-label">${simState === 'open' ? '↑ Open BC state' : simState === 'collapsing' ? '⟳ Collapsing…' : '✓ BC closed'}</div>
+    <div class="ip-desc">${simState === 'open' ? g.openState : g.collapseDesc}</div>
+  `;
+}
+
+// ── Controls ─────────────────────────────────────────────
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  simState = 'open'; simPhase = null; collapseT = 0; updateStatus(); updateInfoPanel();
+});
+
+document.getElementById('btn-measure').addEventListener('click', () => {
+  if (simState !== 'open') return;
+  simState = 'collapsing';
+  collapseT = 0;
+  simPhase = Math.random() * Math.PI * 2;
+  updateStatus(); updateInfoPanel();
+});
+
+document.querySelectorAll('.gsel-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gsel-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    simGauge = btn.dataset.g;
+    simState = 'open'; simPhase = null; collapseT = 0;
+    updateStatus(); updateInfoPanel();
+  });
+});
+
+// ── Compare canvases ─────────────────────────────────────
+
+function buildCompare() {
+  const grid = document.getElementById('compare-grid');
+  const G = [GAUGES.su3, GAUGES.u1, GAUGES.su2];
+  G.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'cmp-card';
+    card.innerHTML = `
+      <div class="cmp-top">
+        <div class="cmp-group" style="color:${g.color}">${g.name}</div>
+        <div class="cmp-meta">
+          <div class="cmp-level">${g.level} · k=${g.k}</div>
+          <div class="cmp-prime" style="color:${g.color}">Prime ${g.prime}</div>
+        </div>
+      </div>
+      <div class="cmp-canvas-wrap"><canvas id="cmp-${g.name.replace('(','').replace(')','')}" height="130" style="display:block;width:100%;background:var(--bg);border:1px solid var(--border)"></canvas></div>
+      <div class="cmp-row"><span class="cmp-k">BC structure</span><span class="cmp-v">${g.bcStructure}</span></div>
+      <div class="cmp-row"><span class="cmp-k">Total BC</span><span class="cmp-v">${g.totalBC}</span></div>
+      <div class="cmp-row"><span class="cmp-k">Indecidability</span><span class="cmp-v">${g.indecidability}</span></div>
+      <div class="cmp-row"><span class="cmp-k">Consequence</span><span class="cmp-v">${g.consequence}</span></div>
+      <div class="cmp-desc" style="border-color:${g.color}">${g.openState}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function drawCompareMini(g) {
+    const canvas = document.getElementById(`cmp-${g.name.replace('(','').replace(')','')}`);
+    if (!canvas) return;
+    // Use fixed logical size regardless of panel visibility
+    const W = 300, H = 130;
+    canvas.width = W; canvas.height = H;
+    canvas.style.height = H + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    const cx = W/2, cy = H/2, R = Math.min(W,H)*0.33;
+
+      if (g.name === 'U(1)') {
+        ctx.strokeStyle = g.color + '40'; ctx.lineWidth=1; ctx.setLineDash([3,4]);
+        ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+        for (let i=0;i<16;i++) {
+          const a=(i/16)*Math.PI*2;
+          const x=cx+Math.cos(a)*R, y=cy+Math.sin(a)*R;
+          ctx.strokeStyle=g.color+(i<2?'ff':'44');
+          ctx.lineWidth=1.5;
+          ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.stroke();
+        }
+        ctx.fillStyle=g.color+'80';ctx.font=`9px 'Space Mono'`;ctx.textAlign='center';
+        ctx.fillText('all θ coexist',cx,cy+4);
+      } else if (g.name === 'SU(2)') {
+        ['νₑ','e⁻'].forEach((l,i) => {
+          const x = cx + (i===0?-R*0.65:R*0.65), y=cy;
+          const c = i===0?'#34d399':'#f43f5e';
+          ctx.strokeStyle=c;ctx.lineWidth=1.5;
+          ctx.beginPath();ctx.arc(x,y,16,0,Math.PI*2);ctx.stroke();
+          ctx.fillStyle=c;ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';
+          ctx.fillText(l,x,y+4);
+        });
+        ctx.strokeStyle='rgba(52,211,153,0.3)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
+        ctx.beginPath();ctx.moveTo(cx-R*0.65+16,cy);ctx.lineTo(cx+R*0.65-16,cy);ctx.stroke();ctx.setLineDash([]);
+        ctx.fillStyle='rgba(52,211,153,0.4)';ctx.font=`8px 'Space Mono'`;ctx.textAlign='center';
+        ctx.fillText('simultaneous',cx,cy+35);
+      } else {
+        [['R','#ef4444',-Math.PI/2],['G','#22c55e',-Math.PI/2+2*Math.PI/3],['B','#3b82f6',-Math.PI/2+4*Math.PI/3]].forEach(([l,c,a])=>{
+          const x=cx+Math.cos(a)*R*0.7,y=cy+Math.sin(a)*R*0.7;
+          ctx.strokeStyle=c;ctx.lineWidth=1.5;
+          ctx.beginPath();ctx.arc(x,y,15,0,Math.PI*2);ctx.stroke();
+          ctx.fillStyle=c;ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';
+          ctx.fillText(l,x,y+4);
+        });
+        ctx.fillStyle='rgba(251,146,60,0.4)';ctx.font=`8px 'Space Mono'`;ctx.textAlign='center';
+        ctx.fillText('indistinguishable',cx,cy+H/2-12);
+      }
+}
+
+function drawAllCompareMinis() {
+  [GAUGES.su3, GAUGES.u1, GAUGES.su2].forEach(g => drawCompareMini(g));
+}
+
+// ── Confinement canvases ──────────────────────────────────
+
+let confSU3State = 'bound';
+let confEMState = 'idle';
+
+function drawConfinement() {
+  drawConfSU3();
+  drawConfU1();
+}
+
+function drawConfSU3() {
+  const canvas = document.getElementById('conf-su3');
+  canvas.width = canvas.offsetWidth;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2;
+
+  if (confSU3State === 'bound') {
+    const cols=[['R','#ef4444',-Math.PI/2],['G','#22c55e',-Math.PI/2+2*Math.PI/3],['B','#3b82f6',-Math.PI/2+4*Math.PI/3]];
+    const R=60;
+    cols.forEach(([l,c,a])=>{
+      const x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
+      ctx.strokeStyle=c+'80';ctx.lineWidth=1.5;ctx.setLineDash([3,4]);
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle=c+'30';ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle=c;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,16,0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle=c;ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';ctx.fillText(l,x,y+4);
+    });
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.beginPath();ctx.arc(cx,cy,8,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font=`7px 'Space Mono'`;ctx.textAlign='center';ctx.fillText('RGB',cx,cy+3);
+    ctx.fillStyle='rgba(251,146,60,0.5)';ctx.font=`9px 'Space Mono'`;ctx.textAlign='center';
+    ctx.fillText('Hadron: R+G+B = white (BC closed)',cx,H-15);
+
+  } else if (confSU3State === 'pulling') {
+    ctx.fillStyle='rgba(239,68,68,0.15)';ctx.beginPath();ctx.arc(cx-60,cy,25,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx-60,cy,18,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#ef4444';ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';ctx.fillText('R',cx-60,cy+4);
+
+    ctx.strokeStyle='rgba(239,68,68,0.6)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(cx-42,cy);ctx.lineTo(cx-10,cy);ctx.stroke();
+
+    ctx.strokeStyle='rgba(239,68,68,0.4)';ctx.lineWidth=1;ctx.setLineDash([2,3]);
+    ctx.beginPath();ctx.moveTo(cx-10,cy);ctx.lineTo(cx+40,cy);ctx.stroke();ctx.setLineDash([]);
+
+    ctx.fillStyle='rgba(239,68,68,0.3)';ctx.font=`8px 'Space Mono'`;ctx.textAlign='center';
+    ctx.fillText('string tension increases →',cx+15,cy-12);
+    ctx.fillStyle='var(--open-c)';ctx.font=`9px 'Space Mono'`;
+    ctx.fillText('cannot isolate — BC cannot close alone',cx,H-15);
+
+  } else { // pair produced
+    [['R','#ef4444',cx-70],['G','#22c55e',cx],['B','#3b82f6',cx+70]].forEach(([l,c,x])=>{
+      ctx.strokeStyle=c;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,cy,15,0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle=c;ctx.font=`bold 9px 'Space Mono'`;ctx.textAlign='center';ctx.fillText(l,x,cy+4);
+    });
+    ctx.fillStyle='rgba(251,146,60,0.5)';ctx.font=`8px 'Space Mono'`;ctx.textAlign='center';
+    ctx.fillText('Energy → new quark pair · confinement holds',cx,H-15);
+  }
+}
+
+function drawConfU1() {
+  const canvas = document.getElementById('conf-u1');
+  canvas.width = canvas.offsetWidth;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2;
+
+  if (confEMState === 'idle') {
+    ctx.strokeStyle='rgba(129,140,248,0.4)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx-60,cy,18,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#818cf8';ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';ctx.fillText('e⁻',cx-60,cy+4);
+    ctx.fillStyle='rgba(129,140,248,0.4)';ctx.font=`9px 'Space Mono'`;
+    ctx.fillText('EM field — open BC, undetermined phase',cx,H-15);
+
+  } else if (confEMState === 'emitting') {
+    ctx.strokeStyle='rgba(129,140,248,0.4)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx-70,cy,18,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#818cf8';ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';ctx.fillText('e⁻',cx-70,cy+4);
+
+    // Photon propagating
+    const phaseDots = 5;
+    for(let i=0;i<phaseDots;i++) {
+      const x=cx-40+i*20,y=cy;
+      ctx.strokeStyle=`rgba(129,140,248,${0.8-i*0.12})`;
+      ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.stroke();
+    }
+    ctx.fillStyle='rgba(129,140,248,0.5)';ctx.font=`8px 'Space Mono'`;ctx.textAlign='center';
+    ctx.fillText('photon propagates freely — BC still open (phase free)',cx,H-15);
+    ctx.fillText('infinite range: no BC closure required',cx,H-4);
+
+  } else { // fixed
+    ctx.strokeStyle='rgba(129,140,248,0.4)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx-70,cy,18,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#818cf8';ctx.font=`bold 10px 'Space Mono'`;ctx.textAlign='center';ctx.fillText('e⁻',cx-70,cy+4);
+
+    ctx.strokeStyle='rgba(100,180,100,0.7)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx+60,cy,18,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#86efac';ctx.font=`bold 9px 'Space Mono'`;ctx.textAlign='center';ctx.fillText('det.',cx+60,cy+4);
+
+    ctx.strokeStyle='rgba(129,140,248,0.6)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx-52,cy);ctx.lineTo(cx+42,cy);ctx.stroke();
+
+    ctx.fillStyle='rgba(129,140,248,0.5)';ctx.font=`8px 'Space Mono'`;ctx.textAlign='center';
+    ctx.fillText('detector closes BC externally → gauge fixed',cx,H-15);
+  }
+}
+
+// ── Confinement buttons ───────────────────────────────────
+
+document.getElementById('btn-pull-quark').addEventListener('click',()=>{ confSU3State='pulling'; drawConfinement(); });
+document.getElementById('btn-hadron').addEventListener('click',()=>{ confSU3State='pair'; drawConfinement(); });
+document.getElementById('btn-reset-su3').addEventListener('click',()=>{ confSU3State='bound'; drawConfinement(); });
+document.getElementById('btn-em-free').addEventListener('click',()=>{ confEMState='emitting'; drawConfinement(); });
+document.getElementById('btn-em-fix').addEventListener('click',()=>{ confEMState='fixed'; drawConfinement(); });
+document.getElementById('btn-reset-u1').addEventListener('click',()=>{ confEMState='idle'; drawConfinement(); });
+
+// ── Predictions ───────────────────────────────────────────
+
+function buildPredictions() {
+  const tl = document.getElementById('pred-timeline');
+  PREDICTIONS.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'pred-item';
+    const dotCol = p.status === 'confirmed' ? '#22c55e' : p.color;
+    item.innerHTML = `
+      <div class="pred-dot" style="background:${dotCol}"></div>
+      <div class="pred-status ${p.status === 'confirmed' ? 'confirmed' : 'predicted'}">
+        ${p.status === 'confirmed' ? '✓ Confirmed' : '⟳ Predicted'}
+      </div>
+      <div style="display:flex;align-items:baseline;gap:0.8rem">
+        <div class="pred-prime" style="color:${p.color}">${p.group}</div>
+        <div class="pred-name">Prime ${p.prime} · ${p.level} · ${p.force}</div>
+      </div>
+      <div class="pred-body">
+        <div class="pred-col">
+          <h4>Standard Model view</h4>
+          <p>${p.std}</p>
+        </div>
+        <div class="pred-col">
+          <h4>ArXe derivation</h4>
+          <p>${p.arxe}</p>
+        </div>
+      </div>
+      ${p.note ? `<div style="margin-top:0.6rem;font-size:0.62rem;color:var(--dim);letter-spacing:0.1em">${p.note}</div>` : ''}
+    `;
+    tl.appendChild(item);
+  });
+}
+
+// ── Tabs ─────────────────────────────────────────────────
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.p).classList.add('active');
+    if (btn.dataset.p === 'confinement') { setTimeout(drawConfinement, 50); }
+    if (btn.dataset.p === 'compare') { setTimeout(drawAllCompareMinis, 30); }
+  });
+});
+
+// ── Init ─────────────────────────────────────────────────
+
+updateInfoPanel();
+startAnim();
+buildCompare();
+buildPredictions();
+setTimeout(() => { drawAllCompareMinis(); drawConfinement(); }, 200);
+window.addEventListener('resize', () => {
+  setTimeout(() => { drawSim(); drawConfinement(); drawAllCompareMinis(); }, 100);
+});
+</script>
+</body>
+</html>
