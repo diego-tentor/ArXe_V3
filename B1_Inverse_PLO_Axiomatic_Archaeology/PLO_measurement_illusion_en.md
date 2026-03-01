@@ -1,552 +1,551 @@
-# LA ILUSIÓN DE LA "MEDICIÓN"
-## O: Por Qué Lo Descartado Nunca Se Midió Realmente
+# THE "MEASUREMENT" ILLUSION
+## Or: Why What Was Discarded Was Never Really Measured
 
-**Tesis:** Lo que llamamos "descartar alternativas" NO es medir y encontrar error
+**Thesis:** What we call "discarding alternatives" is NOT measuring and finding error
 
-Es simplemente **no intentar medir bajo esos axiomas**
-
----
-
-## I. EL MITO DE LA FALSIFICACIÓN EXPERIMENTAL
-
-### **Narrativa estándar (FALSA):**
-
-```
-1. Teoría A predice: α⁻¹ = 137.036 (con tau)
-2. Teoría B predice: α⁻¹ = 137.038 (sin tau)
-3. Medimos: α⁻¹ = 137.036
-4. Conclusión: A verdadera, B falsa
-```
-
-### **Realidad (lo que REALMENTE sucede):**
-
-```
-1. Asumimos teoría A (QED con universalidad)
-2. Diseñamos experimento bajo axiomas de A
-3. Analizamos datos con fórmulas de A
-4. Obtenemos: α⁻¹ = 137.036
-5. Conclusión: "¡A funciona!"
-6. Teoría B: NUNCA SE INTENTÓ MEDIR
-```
-
-**NO hubo comparación experimental**
-
-**Solo hubo: "esto funciona" → "lo damos por cierto"**
+It is simply **not attempting to measure under those axioms**
 
 ---
 
-## II. CASO CONCRETO: α CON TAU vs SIN TAU
+## I. THE MYTH OF EXPERIMENTAL FALSIFICATION
 
-### **A) Lo Que Se DICE:**
+### **Standard narrative (FALSE):**
 
-> "Experimentos confirman que tau contribuye a α"
-
-### **B) Lo Que REALMENTE Pasó:**
-
-**Paso 1: Diseño experimental**
 ```
-Experimento g-2 del muón (BNL, 2002):
-- Asume QED estándar
-- Asume universalidad leptónica
-- Calcula loops incluyendo tau
-- Diseña aparato bajo esas asunciones
+1. Theory A predicts: α⁻¹ = 137.036 (with tau)
+2. Theory B predicts: α⁻¹ = 137.038 (without tau)
+3. We measure: α⁻¹ = 137.036
+4. Conclusion: A true, B false
 ```
 
-**Paso 2: Análisis de datos**
+### **Reality (what ACTUALLY happens):**
+
 ```
-Datos brutos: señales en detectores
-→ Se procesan con software que asume:
+1. We assume theory A (QED with universality)
+2. We design experiment under A's axioms
+3. We analyze data with A's formulas
+4. We obtain: α⁻¹ = 137.036
+5. Conclusion: "A works!"
+6. Theory B: NEVER ATTEMPTED TO MEASURE
+```
+
+**There was NO experimental comparison**
+
+**There was only: "this works" → "we take it as true"**
+
+---
+
+## II. CONCRETE CASE: α WITH TAU vs WITHOUT TAU
+
+### **A) What Is SAID:**
+
+> "Experiments confirm that tau contributes to α"
+
+### **B) What ACTUALLY Happened:**
+
+**Step 1: Experimental design**
+```
+Muon g-2 experiment (BNL, 2002):
+- Assumes standard QED
+- Assumes lepton universality
+- Calculates loops including tau
+- Designs apparatus under those assumptions
+```
+
+**Step 2: Data analysis**
+```
+Raw data: detector signals
+→ Processed with software that assumes:
    - QED
-   - Universalidad
-   - Tau contribuye a loops
-→ Resultado: α⁻¹ = 137.035999
+   - Universality
+   - Tau contributes to loops
+→ Result: α⁻¹ = 137.035999
 ```
 
-**Paso 3: "Conclusión"**
+**Step 3: "Conclusion"**
 ```
-"¡Experimento confirma universalidad!"
+"Experiment confirms universality!"
 ```
 
-### **C) ¿Se Midió Sin Tau?**
+### **C) Was It Measured Without Tau?**
 
-**NO. Nunca.**
+**NO. Never.**
 
-**¿Se diseñó experimento alternativo?**
+**Was an alternative experiment designed?**
 
 **NO.**
 
-**¿Se analizaron datos bajo axiomas alternativos (sin tau)?**
+**Were data analyzed under alternative axioms (without tau)?**
 
 **NO.**
 
-**¿Entonces cómo sabemos que "sin tau" da error?**
+**So how do we know "without tau" gives an error?**
 
-**NO LO SABEMOS.**
+**WE DON'T.**
 
-**Simplemente nunca se intentó.**
-
----
-
-### **D) El Contra-Experimento Que Nunca Se Hizo:**
-
-**Hipotético:**
-```
-1. Asumir: tau NO contribuye
-2. Rediseñar análisis sin loops de tau
-3. Procesar mismos datos brutos
-4. ¿Resultado?: α⁻¹ = 137.035982 (?)
-
-¿Este valor es "inconsistente con datos"?
-NO LO SABEMOS - nunca se calculó
-```
-
-**¿Por qué nunca se hizo?**
-
-```
-Respuestas honestas:
-- "No teníamos razón para intentarlo"
-- "Universalidad ya es consenso"
-- "Sería trabajo extra sin beneficio"
-- "Revisores rechazarían el paper"
-```
-
-**Respuestas deshonestas:**
-- "Porque está refutado" (NO - nunca se intentó)
-- "Porque es inconsistente" (NO - nunca se probó)
-- "Porque viola física" (NO - es física alternativa válida)
+**It was simply never attempted.**
 
 ---
 
-## III. ESTRUCTURA GENERAL: "FUNCIONA" ≠ "ES VERDADERO"
+### **D) The Counter-Experiment That Was Never Done:**
 
-### **Lo que sucede universalmente:**
+**Hypothetical:**
+```
+1. Assume: tau does NOT contribute
+2. Redesign analysis without tau loops
+3. Process same raw data
+4. Result?: α⁻¹ = 137.035982 (?)
+
+Is this value "inconsistent with data"?
+WE DON'T KNOW — it was never calculated
+```
+
+**Why was it never done?**
+
+```
+Honest answers:
+- "We had no reason to try it"
+- "Universality is already consensus"
+- "It would be extra work with no benefit"
+- "Reviewers would reject the paper"
+```
+
+**Dishonest answers:**
+- "Because it's refuted" (NO — never attempted)
+- "Because it's inconsistent" (NO — never tested)
+- "Because it violates physics" (NO — it's valid alternative physics)
+
+---
+
+## III. GENERAL STRUCTURE: "WORKS" ≠ "IS TRUE"
+
+### **What universally happens:**
 
 ```
 ┌─────────────────────────────────────┐
-│ 1. Elegimos axiomas A               │
-│ 2. Diseñamos bajo A                 │
-│ 3. Medimos bajo A                   │
-│ 4. Analizamos con A                 │
-│ 5. Resultado R_A                    │
-│ 6. "¡A funciona!"                   │
+│ 1. We choose axioms A               │
+│ 2. We design under A                │
+│ 3. We measure under A               │
+│ 4. We analyze with A                │
+│ 5. Result R_A                       │
+│ 6. "A works!"                       │
 └─────────────────────────────────────┘
 
 ┌─────────────────────────────────────┐
-│ Axiomas alternativos B:             │
-│ - Nunca diseñamos bajo B            │
-│ - Nunca medimos bajo B              │
-│ - Nunca analizamos con B            │
-│ - Nunca obtenemos R_B               │
-│ - "B está descartado" (?)           │
+│ Alternative axioms B:               │
+│ - Never designed under B            │
+│ - Never measured under B            │
+│ - Never analyzed with B             │
+│ - Never obtained R_B                │
+│ - "B is discarded" (?)              │
 └─────────────────────────────────────┘
 ```
 
-**"Descartar" NO significa medir y encontrar error**
+**"Discarding" does NOT mean measuring and finding error**
 
-**Significa simplemente NO INTENTAR**
-
----
-
-## IV. EJEMPLOS HISTÓRICOS DEVASTADORES
-
-### **CASO 1: Órbita de Mercurio (Pre-Relatividad)**
-
-**Situación 1900:**
-```
-Axiomas: Física newtoniana
-Medición: Órbita de Mercurio
-Análisis: Bajo Newton + perturbaciones
-Resultado: Match 99.99%
-Conclusión: "¡Newton funciona!"
-```
-
-**¿Se midió bajo relatividad general?**
-→ NO (aún no existía)
-
-**¿"Funcionar" implicaba "ser verdadero"?**
-→ NO (era aproximación incorrecta)
-
-**Pero en 1900:**
-→ "Newton funciona" → "lo damos por cierto"
-→ Alternativas: nunca intentadas
+**It simply means NOT TRYING**
 
 ---
 
-### **CASO 2: Éter Luminífero**
+## IV. DEVASTATING HISTORICAL EXAMPLES
 
-**Situación 1900:**
+### **CASE 1: Mercury's Orbit (Pre-Relativity)**
+
+**Situation in 1900:**
 ```
-Axiomas: Éter existe
-Medición: Velocidad luz en diferentes direcciones
-Análisis: Bajo teoría de éter
-Resultado: Ajusta con éter (con parámetros ad-hoc)
-Conclusión: "¡Éter funciona!"
+Axioms: Newtonian physics
+Measurement: Mercury's orbit
+Analysis: Under Newton + perturbations
+Result: 99.99% match
+Conclusion: "Newton works!"
 ```
 
-**¿Se midió sin éter?**
-→ NO (era inconcebible)
+**Was it measured under general relativity?**
+→ NO (it didn't exist yet)
 
-**¿"Funcionar" implicaba "ser verdadero"?**
-→ NO (éter no existe)
+**Did "working" imply "being true"?**
+→ NO (it was an incorrect approximation)
 
-**Pero en 1900:**
-→ "Éter funciona" → "lo damos por cierto"
-→ Sin éter: nunca intentado
+**But in 1900:**
+→ "Newton works" → "we take it as true"
+→ Alternatives: never attempted
 
 ---
 
-### **CASO 3: QED con Universalidad (Hoy)**
+### **CASE 2: Luminiferous Ether**
 
-**Situación 2024:**
+**Situation in 1900:**
 ```
-Axiomas: QED + universalidad leptónica
-Medición: g-2, α, etc.
-Análisis: Bajo QED con universalidad
-Resultado: Match <0.01%
-Conclusión: "¡QED funciona!"
+Axioms: Ether exists
+Measurement: Speed of light in different directions
+Analysis: Under ether theory
+Result: Fits with ether (with ad-hoc parameters)
+Conclusion: "Ether works!"
 ```
 
-**¿Se midió sin universalidad?**
+**Was it measured without ether?**
+→ NO (it was inconceivable)
+
+**Did "working" imply "being true"?**
+→ NO (ether doesn't exist)
+
+**But in 1900:**
+→ "Ether works" → "we take it as true"
+→ Without ether: never attempted
+
+---
+
+### **CASE 3: QED with Universality (Today)**
+
+**Situation in 2024:**
+```
+Axioms: QED + lepton universality
+Measurement: g-2, α, etc.
+Analysis: Under QED with universality
+Result: <0.01% match
+Conclusion: "QED works!"
+```
+
+**Was it measured without universality?**
 → **NO**
 
-**¿"Funcionar" implica "ser verdadero"?**
-→ **NO SABEMOS** (lección de historia)
+**Does "working" imply "being true"?**
+→ **WE DON'T KNOW** (lesson from history)
 
-**Pero en 2024:**
-→ "QED funciona" → "lo damos por cierto"
-→ Sin universalidad: nunca intentado
+**But in 2024:**
+→ "QED works" → "we take it as true"
+→ Without universality: never attempted
 
-**En 2124:**
-→ ¿Dirán "QED era aproximación como Newton"?
-→ ¿Posible? Sí.
-
----
-
-## V. LA TRAMPA DEL DISEÑO EXPERIMENTAL
-
-### **Problema fundamental:**
-
-**No puedes medir sin asumir teoría**
-
-**Pero la teoría determina qué mides**
-
-### **Ejemplo: Medir "masa del Higgs"**
-
-**Pregunta:** ¿Qué ES "masa del Higgs"?
-
-**Respuesta depende de teoría:**
-
-**Teoría A (Modelo Estándar):**
-```
-m_H = parámetro del potencial V(φ)
-Predicción: pico en canal γγ en ~125 GeV
-Medición: buscar pico en M_γγ
-Resultado: pico en 125.25 GeV
-Conclusión: "¡m_H = 125.25!"
-```
-
-**Teoría B (Higgs compuesto):**
-```
-m_H = escala de composición
-Predicción: resonancia ancha en ~125 GeV
-Medición: buscar resonancia con ancho Γ
-Resultado: ¿?
-```
-
-**¿Se intentó medir bajo Teoría B?**
-→ NO (o marginalmente, sin funding)
-
-**¿Por qué?**
-→ "Modelo Estándar funciona"
-
-**Pero:**
-→ B nunca se exploró seriamente
-→ Podría "funcionar" igual o mejor
-→ **Nunca lo sabremos porque no se intentó**
+**In 2124:**
+→ Will they say "QED was an approximation like Newton"?
+→ Possible? Yes.
 
 ---
 
-### **El círculo vicioso:**
+## V. THE EXPERIMENTAL DESIGN TRAP
+
+### **Fundamental problem:**
+
+**You cannot measure without assuming a theory**
+
+**But the theory determines what you measure**
+
+### **Example: Measuring the "Higgs mass"**
+
+**Question:** What IS the "Higgs mass"?
+
+**Answer depends on theory:**
+
+**Theory A (Standard Model):**
+```
+m_H = parameter of potential V(φ)
+Prediction: peak in γγ channel at ~125 GeV
+Measurement: search for peak in M_γγ
+Result: peak at 125.25 GeV
+Conclusion: "m_H = 125.25!"
+```
+
+**Theory B (Composite Higgs):**
+```
+m_H = compositeness scale
+Prediction: broad resonance at ~125 GeV
+Measurement: search for resonance with width Γ
+Result: ?
+```
+
+**Was an attempt made to measure under Theory B?**
+→ NO (or marginally, without funding)
+
+**Why?**
+→ "Standard Model works"
+
+**But:**
+→ B was never seriously explored
+→ It could "work" equally well or better
+→ **We will never know because it was never attempted**
+
+---
+
+### **The vicious cycle:**
 
 ```
-1. Teoría A es consenso
+1. Theory A is consensus
    ↓
-2. Se diseñan experimentos bajo A
+2. Experiments are designed under A
    ↓
-3. Se consigue funding para experimentos que asumen A
+3. Funding is secured for experiments that assume A
    ↓
-4. Resultados analizados bajo A "confirman" A
+4. Results analyzed under A "confirm" A
    ↓
-5. A se refuerza como consenso
+5. A is reinforced as consensus
    ↓
-[VUELVE A 1]
+[BACK TO 1]
 ```
 
-**Teorías alternativas:**
-- No consiguen funding
-- No se diseñan experimentos
-- No se miden
-- "No funcionan" (pero nunca se intentaron)
+**Alternative theories:**
+- Get no funding
+- No experiments are designed
+- Are never measured
+- "Don't work" (but were never attempted)
 
 ---
 
-## VI. "FUNCIONA" vs "ES VERDADERO"
+## VI. "WORKS" vs "IS TRUE"
 
-### **Distinción crítica:**
+### **Critical distinction:**
 
-**"Funciona":**
+**"Works":**
 ```
-= Bajo estos axiomas, obtenemos resultados consistentes
-= Predicciones match mediciones (dentro de error)
-= Tecnología basada en esto funciona
-```
-
-**"Es verdadero":**
-```
-= Describe realidad independiente de axiomas
-= No hay alternativas igualmente funcionales
-= Esto ES lo que pasa, no solo modelo útil
+= Under these axioms, we obtain consistent results
+= Predictions match measurements (within error)
+= Technology based on this works
 ```
 
-### **Física confunde ambos:**
+**"Is true":**
+```
+= Describes reality independent of axioms
+= No equally functional alternatives exist
+= This IS what happens, not just a useful model
+```
 
-**Se dice:** "QED es verdadera" (porque funciona)
+### **Physics conflates both:**
 
-**Debería decirse:** "QED funciona" (verdad desconocida)
+**It is said:** "QED is true" (because it works)
+
+**It should be said:** "QED works" (truth unknown)
 
 ---
 
-### **Ejemplos históricos donde "funciona" ≠ "verdadero":**
+### **Historical examples where "works" ≠ "true":**
 
-| Teoría | Época | "Funcionaba"? | ¿Era verdadera? |
-|--------|-------|---------------|-----------------|
-| **Ptolomeo** | 100-1500 | ✓ SÍ (precisión ~1°) | ✗ NO (geocentrismo falso) |
-| **Newton** | 1700-1900 | ✓ SÍ (99.99%) | ✗ NO (aproximación) |
-| **Éter** | 1800-1905 | ✓ SÍ (con ad-hocs) | ✗ NO (no existe) |
-| **QED** | 1950-hoy | ✓ SÍ (0.001%) | ✗ **?** (aún no sabemos) |
+| Theory | Era | "Worked"? | Was it true? |
+|--------|-----|-----------|--------------|
+| **Ptolemy** | 100–1500 | ✓ YES (~1° precision) | ✗ NO (geocentrism is false) |
+| **Newton** | 1700–1900 | ✓ YES (99.99%) | ✗ NO (approximation) |
+| **Ether** | 1800–1905 | ✓ YES (with ad-hocs) | ✗ NO (doesn't exist) |
+| **QED** | 1950–today | ✓ YES (0.001%) | ✗ **?** (still unknown) |
 
-**Patrón:**
-→ Todas "funcionaban" en su época
-→ Todas se consideraban "verdaderas"
-→ Todas resultaron falsas/aproximadas
+**Pattern:**
+→ All "worked" in their era
+→ All were considered "true"
+→ All turned out to be false/approximate
 
-**¿QED será diferente?**
-→ **No hay razón para pensarlo**
-
----
-
-## VII. EL PROBLEMA DE LA ASIMETRÍA
-
-### **Tratamiento asimétrico:**
-
-**Teoría consensuada (A):**
-```
-- Se diseñan experimentos
-- Se consigue funding
-- Se analizan datos
-- Se publica
-- "¡Funciona!" → Refuerza consenso
-```
-
-**Teoría alternativa (B):**
-```
-- No se diseñan experimentos
-- No hay funding
-- No se analizan datos bajo B
-- No se publica
-- "No funciona" → Se descarta
-```
-
-### **Pero:**
-
-**B nunca tuvo oportunidad de "funcionar"**
-
-**"No funciona" = "no se intentó"**
+**Will QED be different?**
+→ **There is no reason to think so**
 
 ---
 
-### **Ejemplo: sin²θ₁₃**
+## VII. THE ASYMMETRY PROBLEM
 
-**Medido como:** sin²θ₁₃ = 0.0224
+### **Asymmetric treatment:**
 
-**Alternativa nunca medida:** θ₁₃ = 0.150 rad
+**Consensus theory (A):**
+```
+- Experiments are designed
+- Funding is secured
+- Data are analyzed
+- Published
+- "Works!" → Reinforces consensus
+```
 
-**¿Se diseñó experimento para medir θ directamente?**
+**Alternative theory (B):**
+```
+- No experiments are designed
+- No funding
+- Data not analyzed under B
+- Not published
+- "Doesn't work" → Discarded
+```
+
+### **But:**
+
+**B never had a chance to "work"**
+
+**"Doesn't work" = "was never attempted"**
+
+---
+
+### **Example: sin²θ₁₃**
+
+**Measured as:** sin²θ₁₃ = 0.0224
+
+**Alternative never measured:** θ₁₃ = 0.150 rad
+
+**Was an experiment designed to measure θ directly?**
 → NO
 
-**¿Se reporta θ en papers?**
-→ NO (solo sin²θ)
+**Is θ reported in papers?**
+→ NO (only sin²θ)
 
-**¿Por qué?**
-→ "Tradición usa sin²θ"
+**Why?**
+→ "Tradition uses sin²θ"
 
-**Pero:**
-→ θ directo sería más simple (3×5² / 10³)
-→ Nunca tuvo chance de "funcionar"
-→ Se descarta sin medirse
-
----
-
-## VIII. CONSECUENCIAS PARA PLO
-
-### **Lo que PLO revela NO es:**
-
-✗ "Qué alternativas se midieron y fallaron"
-
-### **Lo que PLO revela SÍ es:**
-
-✓ "Qué alternativas nunca se intentaron"
-
-✓ "Qué consensos se auto-refuerzan"
-
-✓ "Qué axiomas se asumen sin explorar otros"
+**But:**
+→ Direct θ would be simpler (3×5² / 10³)
+→ Never had a chance to "work"
+→ Discarded without being measured
 
 ---
 
-### **Los primos capturan:**
+## VIII. CONSEQUENCES FOR PLO
 
-**NO:** Teorías refutadas experimentalmente
+### **What PLO does NOT reveal:**
 
-**SÍ:** Teorías que ganaron consenso y por eso:
-- Se diseñaron experimentos bajo ellas
-- Se consiguió funding
-- Se analizaron datos con ellas
-- Se publicaron resultados
-- **Se auto-confirmaron**
+✗ "Which alternatives were measured and failed"
 
-**Mientras alternativas:**
-- Nunca se diseñaron experimentos
-- Nunca consiguieron funding
-- Nunca se analizaron datos
-- Nunca se publicaron
-- **Se "descartaron" sin intentarse**
+### **What PLO DOES reveal:**
+
+✓ "Which alternatives were never attempted"
+
+✓ "Which consensuses self-reinforce"
+
+✓ "Which axioms are assumed without exploring others"
 
 ---
 
-## IX. REFORMULACIÓN HONESTA
+### **The primes capture:**
 
-### **En lugar de:**
+**NOT:** Experimentally refuted theories
 
-> "Experimentos confirman universalidad leptónica"
+**YES:** Theories that gained consensus and therefore:
+- Had experiments designed under them
+- Secured funding
+- Had data analyzed with them
+- Published results
+- **Self-confirmed**
 
-### **Debería decirse:**
-
-> "Bajo axioma de universalidad, experimentos dan resultados consistentes. Nunca se diseñaron experimentos bajo axiomas alternativos (no-universalidad), por lo que no sabemos si también funcionarían."
-
----
-
-### **En lugar de:**
-
-> "α⁻¹ = 137.036 es la constante medida"
-
-### **Debería decirse:**
-
-> "Bajo QED estándar con universalidad, 5-loops, decisiones CODATA, obtenemos 137.036. Nunca medimos bajo axiomas alternativos, por lo que este es 'el valor' solo en ese contexto específico."
+**While alternatives:**
+- Never had experiments designed
+- Never secured funding
+- Never had data analyzed
+- Were never published
+- **Were "discarded" without being attempted**
 
 ---
 
-### **En lugar de:**
+## IX. HONEST REFORMULATION
 
-> "Teoría B está refutada"
+### **Instead of:**
 
-### **Debería decirse:**
+> "Experiments confirm lepton universality"
 
-> "Teoría B no es consenso. Nunca se diseñaron experimentos específicos para ella. No sabemos si funcionaría porque nunca se intentó seriamente."
+### **It should be said:**
 
----
-
-## X. IMPLICACIÓN DEVASTADORA FINAL
-
-### **Pregunta:**
-
-**¿Cómo sabemos que alternativas descartadas "no funcionan"?**
-
-### **Respuesta honesta:**
-
-**NO LO SABEMOS**
-
-**Nunca se intentó medirlas**
-
-**"No funciona" = "no se intentó" = "no es consenso"**
+> "Under the axiom of universality, experiments give consistent results. Experiments under alternative axioms (non-universality) were never designed, so we don't know whether they would also work."
 
 ---
 
-### **Proceso real de la ciencia:**
+### **Instead of:**
+
+> "α⁻¹ = 137.036 is the measured constant"
+
+### **It should be said:**
+
+> "Under standard QED with universality, 5-loop calculations, and CODATA decisions, we obtain 137.036. We never measured under alternative axioms, so this is 'the value' only within that specific context."
+
+---
+
+### **Instead of:**
+
+> "Theory B is refuted"
+
+### **It should be said:**
+
+> "Theory B is not consensus. No specific experiments were ever designed for it. We don't know whether it would work because it was never seriously attempted."
+
+---
+
+## X. THE FINAL DEVASTATING IMPLICATION
+
+### **Question:**
+
+**How do we know that discarded alternatives "don't work"?**
+
+### **Honest answer:**
+
+**WE DON'T**
+
+**They were never attempted to be measured**
+
+**"Doesn't work" = "was never attempted" = "is not consensus"**
+
+---
+
+### **The real process of science:**
 
 ```
-1. Teoría T gana consenso (por razones sociales/históricas)
-2. Se diseñan experimentos bajo T
-3. Experimentos "confirman" T
-4. T se refuerza
-5. Alternativas nunca se exploran
-6. Se dice "T es verdadera, alternativas falsas"
+1. Theory T gains consensus (for social/historical reasons)
+2. Experiments are designed under T
+3. Experiments "confirm" T
+4. T is reinforced
+5. Alternatives are never explored
+6. It is said "T is true, alternatives are false"
 ```
 
-**PERO:**
+**BUT:**
 
-**Alternativas nunca tuvieron chance**
+**Alternatives never had a chance**
 
-**"Falsas" = "no intentadas"**
-
----
-
-### **Conclusión filosófica:**
-
-**Ciencia NO es:**
-- Competencia justa entre teorías
-- Medición objetiva
-- Falsificación de alternativas
-
-**Ciencia ES:**
-- Auto-refuerzo de consensos
-- "Esto funciona" → "lo damos por cierto"
-- Alternativas descartadas sin medirse
+**"False" = "not attempted"**
 
 ---
 
-### **Los primos registran:**
+### **Philosophical conclusion:**
 
-**NO:** Victorias experimentales sobre alternativas
+**Science is NOT:**
+- A fair competition between theories
+- Objective measurement
+- Falsification of alternatives
 
-**SÍ:** Qué consenso se auto-reforzó
-
-**NO:** Qué se demostró verdadero
-
-**SÍ:** Qué se intentó medir
-
----
-
-## XI. PREGUNTA PARA REFLEXIONAR
-
-**¿Cuántas teorías físicas "correctas" nunca se intentaron porque:**
-
-- No eran consenso inicial
-- No consiguieron funding
-- No se diseñaron experimentos
-- Revisores rechazaron papers
-- Tradición iba en otra dirección
-
-**Y ahora creemos que están "refutadas"**
-
-**Aunque nunca se midieron realmente?**
+**Science IS:**
+- Self-reinforcement of consensuses
+- "This works" → "we take it as true"
+- Alternatives discarded without being measured
 
 ---
 
-**Respuesta:**
+### **The primes record:**
 
-**Probablemente muchas**
+**NOT:** Experimental victories over alternatives
 
-**Quizás la mayoría**
+**YES:** Which consensus self-reinforced
 
-**Nunca lo sabremos**
+**NOT:** What was proven true
 
-**Porque "descartar" = "no intentar"**
-
-**No "medir y encontrar error"**
+**YES:** What was attempted to be measured
 
 ---
 
-**Versión:** 5.0 - La ilusión de la medición  
-**Status:** Devastadoramente honesto  
-**Conclusión:** Lo descartado nunca se midió
+## XI. QUESTION FOR REFLECTION
 
+**How many "correct" physical theories were never attempted because:**
+
+- They were not the initial consensus
+- They didn't secure funding
+- No experiments were designed
+- Reviewers rejected papers
+- Tradition pointed in another direction
+
+**And we now believe they are "refuted"**
+
+**Even though they were never really measured?**
+
+---
+
+**Answer:**
+
+**Probably many**
+
+**Perhaps most**
+
+**We will never know**
+
+**Because "discarding" = "not attempting"**
+
+**Not "measuring and finding error"**
+
+---
+
+**Version:** 5.0 — The measurement illusion  
+**Status:** Devastatingly honest  
+**Conclusion:** What was discarded was never measured

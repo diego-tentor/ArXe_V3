@@ -7,11 +7,8 @@
 
 This document formally specifies the expanded foundations of ArXe Theory from T⁰ to T³ and beyond. ArXe is a generative ontological theory that explains the emergence of structure, existence, spatiality, temporality and objectivity from contradictory principles.
 
-It claim logical rigor
-It does not claim or achieve classical demonstrative proof 
-
-(traducir: al entender que la demostración clásica presupone una concepción binaria (todo o es verdadero o falso)
-y platonista (la verdad existe independiente de ser verificada)
+It claims logical rigour.  
+It does not claim or achieve classical demonstrative proof — recognising that classical demonstration presupposes a binary conception of truth (every statement is either true or false) and a Platonist one (truth exists independently of verification).
 
 
 
@@ -166,6 +163,9 @@ When ArXe says "n(-3) = 7 encodes color", we mean:
 
 ❌ We do NOT specify "if X happens, ArXe is refuted"
 ❌ Because that presupposes binary truth/falsity we reject
+```
+
+---
 
 ## 4. Recursive Fractal Ontology
 
@@ -546,7 +546,7 @@ Result: All phases "simultaneous" until measurement
 ## 9. Structure of Exentations (Original + Enhanced)
 
 ### 9.1 T⁰ - Absolute Non-existence
-```
+
 **Logic**: Unary  
 **BC**: 0 closed, 0 open  
 **n(0)** = 1
@@ -561,7 +561,7 @@ S ∧ ¬S    (is and is-not simultaneously)
 ---
 
 ### 9.2 T¹ - Homogeneous Positive Time
-``
+
 **Logic**: Binary, Unary  
 **BC**: 1 closed, 0 open  
 **n(1)** = 3 → Can encode with **prime 2** (temporal base)  
@@ -1035,9 +1035,7 @@ Ontological indecidability before measurement
 All "phases" coexist until BC closes
 ```
 
-**Gauge fixing** 
-= closing open BC = ontological collapse (similar to wave function collapse, but at BC level)
-````
+**Gauge fixing** = closing open BC = ontological collapse (similar to wave function collapse, but at BC level)
 
 ### 12.4 Space is Not Fundamental
 
@@ -1352,7 +1350,7 @@ The precision of constant derivations (M_H: 0.008% error, m_μ/m_e: 0.0003% erro
 **Mathematical Foundations**:
 - Prime Number Theorem: Hadamard (1896)
 - Boundary Value Problems: Courant-Hilbert
-- Recursive Functions: GÃ¶del, Church, Turing
+- Recursive Functions: Gödel, Church, Turing
 
 **Philosophical Context**:
 - Mathematical Universe: Tegmark (2014)

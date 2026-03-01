@@ -51,6 +51,27 @@ This does not entail unfalsifiability. Section 13 presents concrete, testable pr
 
 ---
 
+## How to Evaluate This Theory
+
+ArXe is not a paper. It is a **theoretical corpus** — a structured set of documents whose arguments are distributed across multiple registers: formal, epistemological, empirical, and philosophical. This has a direct consequence for how the theory should be evaluated: assessing it from a single document, or from any proper subset of the corpus, will systematically produce an incomplete or distorted verdict.
+
+This is not a rhetorical disclaimer. It follows from the nature of what ArXe proposes.
+
+Any theory that attempts to address questions simultaneously at the level of ontological structure, physical prediction, and epistemic framework will necessarily exceed what a single document can carry. Evaluating ArXe's treatment of physical constants without reading the epistemological framework is like evaluating a proof while ignoring its axioms. Evaluating the Prime Logic Grammar without the core ontological hierarchy is like evaluating a notation system without the mathematics it encodes. Each document in the corpus performs a distinct function; none of them is the theory in its entirety.
+
+There is also a more specific risk. Because ArXe operates at a level of abstraction that sits above standard physical formalism, a reader encountering it through only one document is likely to mistake the register of that document for the register of the whole. The core theory document, read alone, may appear more speculative than it is — because the formal constraints that ground it are developed elsewhere. The empirical patterns document, read alone, may appear merely numerological — because the structural logic that motivates those patterns is developed elsewhere. The epistemological framework, read alone, may appear to be hedging — because the concrete predictions it qualifies are developed elsewhere.
+
+The minimum corpus for a fair evaluation is the following:
+
+- [The Logical-Physical Co-emergence of the Universe](https://github.com/diego-tentor/ArXe_V3/blob/master/1_Core/arxe_1_core_theory_V3_en.md)
+- [Summary](https://github.com/diego-tentor/ArXe_V3/blob/master/summary.md)
+
+A reader who has engaged with all of these is in a position to assess ArXe on its own terms — which is the only evaluation that is methodologically defensible. A reader who has engaged with fewer is in a position to form provisional impressions, which may be useful, but should be held lightly.
+
+We ask only for the standard that any serious theoretical proposal deserves: to be read as a whole before being judged as a whole.
+
+---
+
 ## What This Site Contains
 
 This site presents the full theoretical corpus of ArXe, including:
