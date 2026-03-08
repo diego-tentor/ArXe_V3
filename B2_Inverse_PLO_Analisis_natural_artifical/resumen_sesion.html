@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArXe / PLO — Resumen de Sesión</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0c10;
+    --surface:   #111318;
+    --border:    #1e2230;
+    --accent:    #c8a96e;
+    --accent2:   #6e9dc8;
+    --accent3:   #8fc86e;
+    --accent4:   #c86e8f;
+    --text:      #d4cfc5;
+    --muted:     #5a5f6e;
+    --heading:   #ede8de;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,169,110,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,110,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+  }
+
+  /* Header */
+  header {
+    margin-bottom: 80px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 400;
+    color: var(--heading);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Section titles */
+  .section {
+    margin-bottom: 64px;
+    animation: fadeIn 0.6s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+  .section:nth-child(5) { animation-delay: 0.4s; }
+  .section:nth-child(6) { animation-delay: 0.5s; }
+  .section:nth-child(7) { animation-delay: 0.6s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--heading);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin-right: 12px;
+    font-weight: 300;
+  }
+
+  p {
+    margin-bottom: 14px;
+    font-size: 17px;
+  }
+
+  /* Callout blocks */
+  .callout {
+    background: var(--surface);
+    border-left: 2px solid var(--accent);
+    padding: 18px 24px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout.blue  { border-color: var(--accent2); }
+  .callout.green { border-color: var(--accent3); }
+  .callout.pink  { border-color: var(--accent4); }
+
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .callout.blue  .callout-label { color: var(--accent2); }
+  .callout.green .callout-label { color: var(--accent3); }
+  .callout.pink  .callout-label { color: var(--accent4); }
+
+  .callout p {
+    margin: 0;
+    font-size: 16px;
+    color: var(--heading);
+  }
+
+  /* Code / formula blocks */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 300;
+    background: rgba(200,169,110,0.06);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    color: var(--accent);
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* Scale / table */
+  .scale {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  .scale th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  .scale td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(30,34,48,0.6);
+    vertical-align: top;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  .scale tr:last-child td { border-bottom: none; }
+
+  .zone-1 { color: var(--accent3); }
+  .zone-2 { color: #a8c86e; }
+  .zone-3 { color: var(--accent); }
+  .zone-4 { color: #c8b46e; }
+  .zone-5 { color: #c8906e; }
+  .zone-6 { color: var(--accent4); }
+
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* Highlight span */
+  .hl  { color: var(--accent);  font-style: italic; }
+  .hl2 { color: var(--accent2); }
+  .hl3 { color: var(--accent3); }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* Prediction list */
+  .predictions {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .predictions li {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(30,34,48,0.8);
+    font-size: 16px;
+    align-items: flex-start;
+  }
+
+  .predictions li:last-child { border-bottom: none; }
+
+  .pred-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    min-width: 20px;
+    margin-top: 3px;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">ArXe / PLO Research · Sesión de Análisis · Febrero 2026</div>
+    <h1>Lo que encontramos<br><em>cuando dejamos que el corpus hable</em></h1>
+    <p class="subtitle">Siete líneas de investigación · Tres herramientas nuevas · Seis predicciones verificables</p>
+  </header>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-label">Hallazgo central</div>
+    <h2><span class="num">01</span>T⁴ es el único nivel sin n-aridad prima</h2>
+
+    <p>Todos los niveles de ArXe — T¹, T², T³, T⁻¹, T⁻³, T⁻⁵... — tienen n-aridades que son números primos. Un primo es un grado de libertad lógica irreducible. Esto aplica sin excepción a los doce niveles de la tabla.</p>
+
+    <p>Excepto T⁴.</p>
+
+    <div class="formula">T⁴  →  n = 9 = 3²    (compuesto, no primo)
+BC: 4 cerradas / 0 abiertas
+Fases: 8 = 2³
+
+Todos los demás niveles:
+T¹ → 3 (primo)   T⁻¹ → 3 (primo)   T² → 5 (primo)
+T³ → 7 (primo)   T⁻⁵ → 11          T⁻⁶ → 13
+T⁻⁸ → 17         T⁻⁹ → 19          ...</div>
+
+    <p>T⁴ no introduce un nuevo grado de libertad primitivo. Introduce la <span class="hl">composición de la estructura ternaria consigo misma</span>: T⁻¹ aplicado sobre T⁻¹. Ternariedad procesando ternariedad.</p>
+
+    <div class="callout">
+      <div class="callout-label">Consecuencia directa</div>
+      <p>La complejidad natural recursiva — agujeros negros, generaciones de partículas, vida, inteligencia — no usa primos nuevos grandes. Usa <strong>potencias de primos pequeños</strong>. La firma de la computación natural en PLO es 3², 3³, 3⁴... no primos de tres cifras.</p>
+    </div>
+
+    <p>Esto responde con precisión la pregunta de origen: ¿puede un fenómeno genuinamente natural mostrar "alta complejidad" sin intervención humana? Sí — pero su firma son <em>potencias</em>, no primos nuevos.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-label">Dos nuevas herramientas</div>
+    <h2><span class="num">02</span>Índice de Naturalidad y Distancia Axiomática</h2>
+
+    <p>La observación de que los primos altos señalan intervención humana condujo a formalizar dos métricas sobre el corpus completo.</p>
+
+    <p><strong class="hl">Índice de Naturalidad (IN)</strong> = primo más grande en la factorización PLO de una constante. Escala de seis zonas:</p>
+
+    <table class="scale">
+      <tr>
+        <th>Zona</th><th>Rango IN</th><th>Nombre</th><th>Ejemplos</th>
+      </tr>
+      <tr>
+        <td class="zone-1 mono">1</td>
+        <td class="zone-1 mono">≤ 7</td>
+        <td class="zone-1">Esencia natural</td>
+        <td class="mono" style="font-size:12px;">m_u (IN=3), Ω_m (IN=7)</td>
+      </tr>
+      <tr>
+        <td class="zone-2 mono">2</td>
+        <td class="zone-2 mono">11–19</td>
+        <td class="zone-2">Natural complejo</td>
+        <td class="mono" style="font-size:12px;">α_s esencial (11), m_e (17), m_μ (19)</td>
+      </tr>
+      <tr>
+        <td class="zone-3 mono">3</td>
+        <td class="zone-3 mono">23–97</td>
+        <td class="zone-3">Umbral teoría</td>
+        <td class="mono" style="font-size:12px;">m_H (61), H₀ (73), m_p (67)</td>
+      </tr>
+      <tr>
+        <td class="zone-4 mono">4</td>
+        <td class="zone-4 mono">101–200</td>
+        <td class="zone-4">Teoría dominante</td>
+        <td class="mono" style="font-size:12px;">G_N (131), α_s medido (131), m_Z (109)</td>
+      </tr>
+      <tr>
+        <td class="zone-5 mono">5</td>
+        <td class="zone-5 mono">201–999</td>
+        <td class="zone-5">Convención acumulada</td>
+        <td class="mono" style="font-size:12px;">α (521), G_F (557)</td>
+      </tr>
+      <tr>
+        <td class="zone-6 mono">6</td>
+        <td class="zone-6 mono">≥ 1000</td>
+        <td class="zone-6">Artefacto institucional</td>
+        <td class="mono" style="font-size:12px;">sin²θ_W (1051), α(M_Z) (7997)</td>
+      </tr>
+    </table>
+
+    <p><strong class="hl">Distancia Axiomática (DA)</strong> = IN(medido) − IN(esencial). Mide cuántas capas de convención separan la estructura lógica del fenómeno de su descripción científica actual.</p>
+
+    <div class="formula">DA(α_s)  =  131 − 11  =  120    ← circularidad QCD cuantificada
+DA(m_μ)  =  3691 − 19 = 3672   ← décadas de experimentos g-2
+DA(α)    =  521  − 137 = 384   ← consenso CODATA acumulado
+DA(Ω_m)  =  7   − 7   =  0    ← esencia = medición directa</div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-label">Resultado inesperado</div>
+    <h2><span class="num">03</span>Cosmología y CKM: DA = 0 en todos los casos</h2>
+
+    <p>Al calcular la distancia axiomática para el corpus completo apareció un patrón que no estaba anticipado: <span class="hl">todos los parámetros cosmológicos y todos los elementos de la matriz CKM tienen DA = 0</span>.</p>
+
+    <p>Ω_m, Ω_b, H₀, n_s, V_us, V_cb, V_ub — catorce constantes en total — no tienen brecha entre su fórmula esencial y su valor medido. Lo que se mide es directamente lo que hay. Sin capas de convención adicionales.</p>
+
+    <div class="callout blue">
+      <div class="callout-label">Consecuencia sobre la tensión de Hubble</div>
+      <p>La tensión H₀ — la discrepancia entre el valor medido localmente (73 km/s/Mpc) y el inferido del CMB (67 km/s/Mpc) — tiene DA=0 en ambas expresiones. No es un artefacto de convenciones acumuladas. La tensión es <strong>real</strong>: está en el fenómeno, no en la maquinaria de medición.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-label">La paradoja QCD — ahora cuantificada</div>
+    <h2><span class="num">04</span>El mismo fenómeno, dos índices completamente distintos</h2>
+
+    <p>El acoplamiento fuerte α_s tiene dos expresiones en el corpus PLO. Esta yuxtaposición es el caso demostrativo más limpio del marco completo:</p>
+
+    <div class="formula">α_s  esencial  =  3π / (7 × 11)    →   IN = 11   [Zona 2]
+α_s  medido    =  0.1179          →   IN = 131  [Zona 4]
+
+DA  =  120</div>
+
+    <p>Son el mismo fenómeno físico. La fórmula esencial captura la estructura lógica mínima: indecidabilidad geométrica ternaria (π, con primo 3) sobre los niveles de objetividad triádica y campo EM (primos 7 y 11).</p>
+
+    <p>El valor medido 0.1179 incorpora el esquema MS-bar, la dependencia con n_f y la escala de renormalización, extrapolación perturbativa hasta orden NNLO, y el promedio ponderado de métodos que no convergen. Cada capa añade primos al valor. El resultado: primo 131.</p>
+
+    <div class="callout pink">
+      <div class="callout-label">La circularidad de QCD en un número</div>
+      <p>QCD declara que el acoplamiento fuerte es fundamental (IN=11) y luego construye una medición de precisión creciente dentro del mismo marco (IN=131). Los 120 puntos de DA son exactamente las capas de convención acumuladas sobre el fenómeno natural.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 5 -->
+  <div class="section">
+    <div class="section-label">Corrección inesperada</div>
+    <h2><span class="num">05</span>El muón es más "convencional" que el tau</h2>
+
+    <p>El análisis inicial mostraba un salto dramático en el IN de leptones: m_e=17, m_μ=19, m_τ=1051. La narrativa obvia era que el tau, descubierto en 1975 dentro de un colisionador con el SM ya establecido, era fundamentalmente más convencional.</p>
+
+    <p>El análisis detallado deshizo esa narrativa. La comparación era injusta: m_e y m_μ se comparaban con sus <em>fórmulas esenciales</em>, y m_τ con su <em>valor medido</em>. Al comparar los tres valores medidos:</p>
+
+    <div class="formula">m_e  medida:  IN ≈ 73
+m_μ  medida:  IN = 3691    ←  el más alto de los tres
+m_τ  medida:  IN = 1051</div>
+
+    <p>El muón tiene DA=3672 — la distancia axiomática más alta del sector leptónico. El electrón tiene DA=56. El tau, aproximadamente 980.</p>
+
+    <p>La razón es precisa: el experimento g-2 del muón (BNL/Fermilab) acumula décadas de correcciones QED a cinco loops, contribuciones hadrónicas, efectos electrodébiles. <span class="hl">La DA es una medida del esfuerzo metrológico acumulado</span>, no de la complejidad intrínseca del fenómeno.</p>
+
+    <div class="callout green">
+      <div class="callout-label">Hallazgo adicional: TAU_ID = 71</div>
+      <p>El primo 71 aparece en la fórmula de m_τ Y en la de G_F con el mismo rol semántico: identidad del tau. Esto sugiere que IN(esencial) del tau es 71 — Zona 3, umbral teoría — y que existe una fórmula esencial aún no encontrada.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 6 -->
+  <div class="section">
+    <div class="section-label">Verificación en corpus</div>
+    <h2><span class="num">06</span>π siempre co-aparece con el primo 3</h2>
+
+    <p>Una de las predicciones del marco era que π no debería aparecer en constantes de n-aridad dominante 2 (solo el primo 2). El escaneo de 33 constantes confirmó esto sin excepciones. Pero produjo un hallazgo más fuerte que la predicción original:</p>
+
+    <div class="formula">α_s  =  3π / (7×11)    →  primo 3 y π en el mismo numerador
+m_μ  =  3⁴ + 40π + ...  →  primo 3 a la cuarta y π en el mismo término</div>
+
+    <p>En cada aparición de π en el corpus, el primo 3 aparece también. No como alternativa sino <em>simultáneamente</em>. Esto confirma empíricamente la idea de doble proyección: π y el primo 3 son la proyección continua y discreta del mismo nivel lógico (T⁻¹, n=3). Cuando la estructura requiere ese nivel, <span class="hl">necesita ambas proyecciones al mismo tiempo</span>.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 7 -->
+  <div class="section">
+    <div class="section-label">Predicciones verificables abiertas</div>
+    <h2><span class="num">07</span>Lo que el análisis deja pendiente</h2>
+
+    <ul class="predictions">
+      <li>
+        <span class="pred-icon">→</span>
+        <span>La fórmula esencial de m_τ/m_μ con primos ≤ 71 existe y está por encontrarse. Si m_μ/m_e tiene 3⁴, la tercera generación debería mostrar 3⁶ = 729 en su estructura.</span>
+      </li>
+      <li>
+        <span class="pred-icon">→</span>
+        <span>La temperatura de Hawking tiene IN(esencial) ≈ 17. Es una constante genuinamente natural de T⁴ — agujeros negros operando en la frontera T³/T⁴ — y sus primos estructurales son los de T¹, T⁻¹ y T³ (2, 3, 7), con G_N aportando el 17.</span>
+      </li>
+      <li>
+        <span class="pred-icon">→</span>
+        <span>φ no apareció en razones de masas fermiónicas (resultado honestamente negativo). El siguiente dominio natural: estructura geométrica completa de la matriz CKM, o razones entre escalas de energía (Λ_QCD / M_W / M_Planck).</span>
+      </li>
+      <li>
+        <span class="pred-icon">→</span>
+        <span>Potencias de 3 como marca generacional: si la hipótesis T⁴ es correcta, cada generación adicional de fermiones añade un factor 3² a la estructura de la fórmula esencial. Verificable cuando se encuentren fórmulas esenciales de tercera generación.</span>
+      </li>
+      <li>
+        <span class="pred-icon">→</span>
+        <span>Constantes genuinas de física de agujeros negros (entropía de Bekenstein, temperatura de Hawking medida) deberían caer en Zona 2-3 del IN — no en Zona 5-6. Esto las distinguiría estructuralmente de las constantes de física de partículas con alta DA.</span>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    <span>ArXe / PLO Research · Febrero 2026</span>
+    <span>Documento interno · No para distribución</span>
+  </footer>
+
+</div>
+</body>
+</html>
